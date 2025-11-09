@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Banco de ODA – Fase 5 · Mtro. Martín Reta</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root {
+      --bg: #f3f4ff;
+      --bg-soft: #ffffff;
+      --primary: #4f46e5;
+      --accent: #f97316;
+      --text: #111827;
+      --muted: #6b7280;
+      --card-radius: 18px;
+      --shadow: 0 16px 35px rgba(15, 23, 42, 0.18);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #e0e7ff 0, #eef2ff 35%, #f9fafb 100%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 14px 10px 20px;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 10% 18%;
+      background: url("escudo_escuela.png") center/contain no-repeat;
+      opacity: 0.03;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 1180px;
+      background: radial-gradient(circle at top left, #e0e7ff 0, #ffffff 45%, #eef2ff 100%);
+      border-radius: 26px;
+      box-shadow: var(--shadow);
+      padding: 16px 18px 18px;
+      border: 1px solid #c7d2fe;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    header {
+      display: grid;
+      grid-template-columns: auto minmax(0, 2.2fr) auto;
+      gap: 10px;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #c7d2fe;
+    }
+
+    @media (max-width: 900px) {
+      header {
+        grid-template-columns: 1fr;
+        text-align: center;
+      }
+    }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-box {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
+    }
+
+    .logo-box img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: 1.3rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .title-block h1 .icon {
+      font-size: 1.6rem;
+    }
+
+    .title-meta {
+      margin-top: 4px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .chips {
+      margin-top: 4px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      font-size: 0.75rem;
+    }
+
+    .chip {
+      border-radius: 999px;
+      padding: 2px 10px;
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      color: #3730a3;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .chip .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #4f46e5;
+    }
+
+    .author-block {
+      font-size: 0.78rem;
+      color: #4b5563;
+      text-align: right;
+    }
+
+    @media (max-width: 900px) {
+      .author-block {
+        text-align: center;
+      }
+    }
+
+    .author-block strong {
+      display: block;
+      font-size: 0.86rem;
+      color: #111827;
+    }
+
+    main {
+      margin-top: 6px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.7fr) minmax(260px, 0.9fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 960px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--bg-soft);
+      border-radius: var(--card-radius);
+      border: 1px solid #e5e7eb;
+      padding: 10px 11px;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
+
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #111827;
+    }
+
+    .card-title .icon {
+      font-size: 1.1rem;
+    }
+
+    .card-body {
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    /* NAV CAMPOS */
+    .field-nav {
+      margin-top: 4px;
+      margin-bottom: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .field-btn {
+      border-radius: 999px;
+      border: 1px solid #c7d2fe;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 0.8rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .field-btn span.icon {
+      font-size: 0.9rem;
+    }
+
+    .field-btn.active {
+      background: #4f46e5;
+      color: #f9fafb;
+      border-color: #4f46e5;
+      box-shadow: 0 6px 16px rgba(79, 70, 229, 0.45);
+    }
+
+    /* GRID DE ODA */
+    .oda-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .oda-card {
+      border-radius: 16px;
+      border: 1px solid #e5e7eb;
+      background: #ffffff;
+      padding: 9px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .oda-pill {
+      font-size: 0.7rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .oda-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .oda-meta {
+      font-size: 0.78rem;
+      color: #6b7280;
+    }
+
+    .oda-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      font-size: 0.72rem;
+      margin-top: 2px;
+    }
+
+    .oda-badge {
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #f3f4f6;
+      color: #4b5563;
+    }
+
+    .oda-actions {
+      margin-top: 6px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: none;
+      font-size: 0.8rem;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: #4f46e5;
+      color: #f9fafb;
+    }
+
+    .btn-secondary {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .btn span.icon {
+      font-size: 0.95rem;
+    }
+
+    /* PANEL LATERAL */
+    .tips-list {
+      margin: 4px 0 0;
+      padding-left: 18px;
+      font-size: 0.82rem;
+    }
+
+    .tips-list li {
+      margin-bottom: 3px;
+    }
+
+    .avatar-box {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (max-width: 480px) {
+      .avatar-box {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* NUEVO CONTENEDOR RECTANGULAR DEL AVATAR */
+    .avatar-frame {
+      width: 110px;
+      border-radius: 16px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px;
+      border: 2px solid #fee2e2;
+      box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+    }
+
+    .avatar-frame img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+      object-fit: contain;
+    }
+
+    .avatar-text {
+      font-size: 0.83rem;
+      color: #374151;
+    }
+
+    .avatar-text strong {
+      color: #b91c1c;
+    }
+
+    footer {
+      margin-top: 4px;
+      padding-top: 7px;
+      border-top: 1px solid #c7d2fe;
+      font-size: 0.78rem;
+      color: #6b7280;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    footer .project {
+      font-style: italic;
+      color: #4b5563;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="logos">
+        <div class="logo-box">
+          <img src="sep_logo.png" alt="Logotipo SEP">
+        </div>
+        <div class="logo-box">
+          <img src="escudo_escuela.png" alt="Escudo Escuela Primaria Gral. Lázaro Cárdenas">
+        </div>
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🌐</span>
+          <span>Banco de ODA – Fase 5</span>
+        </h1>
+        <div class="title-meta">
+          Recursos interactivos basados en la Nueva Escuela Mexicana para 5.º y 6.º de primaria.<br>
+          Pensados para compartir entre docentes y trabajar en aula o sala de cómputo.
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Campos formativos: Lenguajes, Saberes y Pensamiento Científico, Ética y Humanidades</span>
+          <span class="chip">Proyecto eje: “Mi historia, mi voz, mi camino”</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- COLUMNA IZQUIERDA: TARJETAS DE ODA -->
+      <section class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="icon">🧩</span>
+            <span>Selecciona una ODA para abrirla</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p style="margin-top:0;margin-bottom:6px;">
+            Elige primero el <strong>campo formativo</strong> y luego da clic en “Abrir ODA” para trabajar directamente en el navegador.
+          </p>
+
+          <!-- NAV POR CAMPO FORMATIVO -->
+          <div class="field-nav">
+            <button class="field-btn active" data-field="todos">
+              <span class="icon">⭐</span> Todos
+            </button>
+            <button class="field-btn" data-field="lenguajes">
+              <span class="icon">📚</span> Lenguajes
+            </button>
+            <button class="field-btn" data-field="humano">
+              <span class="icon">🏡</span> De lo humano a lo comunitario
+            </button>
+            <button class="field-btn" data-field="etica">
+              <span class="icon">🌿</span> Ética, Naturaleza y Sociedades
+            </button>
+            <button class="field-btn" data-field="matematicas">
+              <span class="icon">🔢</span> Saberes y Pensamiento Matemático
+            </button>
+          </div>
+
+          <div class="oda-grid">
+            <!-- LENGUAJES – AUTOBIOGRAFÍA -->
+            <article class="oda-card" data-field="lenguajes">
+              <span class="oda-pill">Lenguajes · Fase 5</span>
+              <h2 class="oda-title">Narración de sucesos autobiográficos</h2>
+              <p class="oda-meta">
+                Proyecto “Mi historia, mi voz, mi camino”. Trabajo con comas, puntos, puntos y aparte y dos puntos a partir de textos autobiográficos.
+              </p>
+              <div class="oda-badges">
+                <span class="oda-badge">Escritura guiada</span>
+                <span class="oda-badge">Signos de puntuación</span>
+                <span class="oda-badge">Autobiografía</span>
+              </div>
+              <div class="oda-actions">
+                <a class="btn btn-primary" href="oda_lenguajes_autobiografia_plantilla2.html" target="_blank" rel="noopener noreferrer">
+                  <span class="icon">📖</span> Abrir ODA
+                </a>
+              </div>
+            </article>
+
+            <!-- DE LO HUMANO A LO COMUNITARIO – FAMILIA -->
+            <article class="oda-card" data-field="humano">
+              <span class="oda-pill">De lo humano a lo comunitario</span>
+              <h2 class="oda-title">La familia: pertenencia y autonomía</h2>
+              <p class="oda-meta">
+                Las familias como espacio para el sentido de pertenencia, la autonomía y la sana convivencia. Actividades sobre árbol familiar, lectura y compromisos.
+              </p>
+              <div class="oda-badges">
+                <span class="oda-badge">Convivencia</span>
+                <span class="oda-badge">Autonomía</span>
+                <span class="oda-badge">Ejes: inclusión, vida saludable</span>
+              </div>
+              <div class="oda-actions">
+                <a class="btn btn-primary" href="ODA-HUM-Familia-v2.html" target="_blank" rel="noopener noreferrer">
+                  <span class="icon">🏡</span> Abrir ODA
+                </a>
+              </div>
+            </article>
+
+            <!-- ÉTICA, NATURALEZA Y SOCIEDADES – BIODIVERSIDAD -->
+            <article class="oda-card" data-field="etica">
+              <span class="oda-pill">Ética, Naturaleza y Sociedades</span>
+              <h2 class="oda-title">Biodiversidad y mapas de nuestro territorio</h2>
+              <p class="oda-meta">
+                Valoración de la biodiversidad en localidad, entidad y México. Uso de mapas, factores físicos y acciones sustentables.
+              </p>
+              <div class="oda-badges">
+                <span class="oda-badge">Mapas interactivos</span>
+                <span class="oda-badge">Biodiversidad</span>
+                <span class="oda-badge">Acciones sustentables</span>
+              </div>
+              <div class="oda-actions">
+                <a class="btn btn-primary" href="oda_etica_biodiversidad (1).html" target="_blank" rel="noopener noreferrer">
+                  <span class="icon">🌎</span> Abrir ODA
+                </a>
+              </div>
+            </article>
+
+            <!-- SABERES Y PENSAMIENTO MATEMÁTICO – ESTUDIO NÚMEROS (FIJO) -->
+            <article class="oda-card" data-field="matematicas">
+              <span class="oda-pill">Saberes y Pensamiento Matemático</span>
+              <h2 class="oda-title">Estudio de los números (versión fija)</h2>
+              <p class="oda-meta">
+                Lectura, escritura y ordenamiento de números naturales hasta nueve cifras y decimales en contextos cotidianos.
+              </p>
+              <div class="oda-badges">
+                <span class="oda-badge">Números grandes</span>
+                <span class="oda-badge">Comparación</span>
+                <span class="oda-badge">Decimales</span>
+              </div>
+              <div class="oda-actions">
+                <a class="btn btn-primary" href="oda_pensamiento_matematico_estudio_numeros.html" target="_blank" rel="noopener noreferrer">
+                  <span class="icon">🔢</span> Abrir ODA
+                </a>
+              </div>
+            </article>
+
+            <!-- SABERES Y PENSAMIENTO MATEMÁTICO – ESTUDIO NÚMEROS (DINÁMICA) -->
+            <article class="oda-card" data-field="matematicas">
+              <span class="oda-pill">Saberes y Pensamiento Matemático</span>
+              <h2 class="oda-title">Estudio de los números (versión dinámica)</h2>
+              <p class="oda-meta">
+                Misma línea de trabajo, pero con generación aleatoria de cantidades para practicar varias veces ordenamiento y decimales.
+              </p>
+              <div class="oda-badges">
+                <span class="oda-badge">Generación aleatoria</span>
+                <span class="oda-badge">Práctica ilimitada</span>
+              </div>
+              <div class="oda-actions">
+                <a class="btn btn-primary" href="oda_pensamiento_matematico_estudio_numeros_dinamica.html" target="_blank" rel="noopener noreferrer">
+                  <span class="icon">♻️</span> Abrir ODA
+                </a>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA: GUÍA PARA DOCENTES -->
+      <aside class="card">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="icon">👨‍🏫</span>
+            <span>Guía rápida para docentes</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="avatar-box">
+            <div class="avatar-frame">
+              <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, colega.</strong><br>
+              Estas ODA están pensadas para fase 5 en contexto rural/multigrado, alineadas con los campos formativos de la NEM. Puedes usarlas tal cual
+              o adaptarlas a tu planeación.
+            </div>
+          </div>
+          <ul class="tips-list">
+            <li><strong>1.</strong> Abre la ODA que quieras y proyecta en el aula o trabaja en equipos en la sala de cómputo.</li>
+            <li><strong>2.</strong> Integra las actividades a tu <em>proyecto de aula</em> o a tu secuencia didáctica.</li>
+            <li><strong>3.</strong> Combina Lenguajes + Matemáticas + Ética/Lo Humano en un mismo proyecto (“Mi historia, mi voz, mi camino”).</li>
+            <li><strong>4.</strong> Si vas a compartir la página, sube esta carpeta completa a un servicio de hosting o al sitio web de tu escuela.</li>
+          </ul>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      <div class="project">
+        Banco de ODA para Fase 5 · Versión docente.
+      </div>
+      <div>
+        Puedes seguir ampliando este portal agregando nuevas ODA y tarjetas en esta página.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Filtro por campo formativo
+    const fieldButtons = document.querySelectorAll('.field-btn');
+    const odaCards = document.querySelectorAll('.oda-card');
+
+    fieldButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        fieldButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        const field = btn.dataset.field;
+
+        odaCards.forEach(card => {
+          const cardField = card.dataset.field;
+          if (field === 'todos' || cardField === field) {
+            card.style.display = 'flex';
+          } else {
+            card.style.display = 'none';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>
