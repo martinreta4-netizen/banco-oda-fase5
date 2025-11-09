@@ -1,0 +1,1548 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Biodiversidad y mapas (Ética, Naturaleza y Sociedades)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#15803d;
+      --primary-soft:#dcfce7;
+      --accent:#22c55e;
+      --accent-soft:#bbf7d0;
+      --text:#0f172a;
+      --muted:#4b5563;
+      --border:#e5e7eb;
+      --card:#ffffff;
+      --shadow:0 18px 40px rgba(15,23,42,.2);
+      --danger:#b91c1c;
+      --danger-soft:#fee2e2;
+      --fortaleza:#1d4ed8;
+      --fortaleza-soft:#dbeafe;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#bbf7d0 0,#ecfdf5 35%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:10% 18%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1200px;
+      background:linear-gradient(135deg,#ecfdf3 0,#ffffff 40%,#f0fdf4 100%);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #bbf7d0;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.4fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #bbf7d0;
+    }
+    @media(max-width:900px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+    }
+    .logo-left img{
+      max-height:60px;
+      width:auto;
+      display:block;
+    }
+    @media(max-width:900px){
+      .logo-left{display:flex;justify-content:flex-start;}
+      .logo-left img{margin:0 auto;}
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.18rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-block h1 .icon{
+      font-size:1.5rem;
+    }
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .title-meta strong{color:#14532d;}
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:4px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#166534;
+      padding:2px 9px;
+      border-radius:999px;
+      background:#bbf7d0;
+    }
+    .phase-label span.icon{
+      font-size:1rem;
+    }
+    .chips{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .chip{
+      border-radius:999px;
+      padding:2px 10px;
+      font-size:.78rem;
+      border:1px solid #bbf7d0;
+      background:#ecfdf3;
+      color:#166534;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#16a34a;
+    }
+    .author-block{
+      font-size:.78rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:900px){
+      .author-block{text-align:center;}
+    }
+    .author-block strong{
+      display:block;
+      font-size:.86rem;
+      color:#14532d;
+    }
+
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,1.9fr) minmax(260px,0.9fr);
+      gap:12px;
+      margin-top:6px;
+    }
+    @media(max-width:960px){
+      main{
+        grid-template-columns:1fr;
+      }
+    }
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:10px 11px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .card-title{
+      font-size:.9rem;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card-title .icon{
+      font-size:1.1rem;
+    }
+    .card-body{
+      font-size:.86rem;
+      color:var(--muted);
+    }
+    .left-column{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .right-column{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .objective-list{
+      margin:4px 0 0;
+      padding-left:18px;
+    }
+    .objective-list li{
+      margin-bottom:3px;
+    }
+    .tags-row{
+      margin-top:5px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      font-size:.78rem;
+    }
+    .tag-pill{
+      padding:2px 8px;
+      border-radius:999px;
+      border:1px dashed #bbf7d0;
+      background:#f0fdf4;
+      color:#166534;
+    }
+
+    /* Navegación vertical de módulos */
+    .modules-layout{
+      display:grid;
+      grid-template-columns:210px minmax(0,1fr);
+      gap:10px;
+    }
+    @media(max-width:800px){
+      .modules-layout{
+        grid-template-columns:1fr;
+      }
+    }
+    .modules-nav{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .module-button{
+      border-radius:14px;
+      border:1px solid #bbf7d0;
+      background:#ecfdf3;
+      padding:8px 9px;
+      font-size:.82rem;
+      cursor:pointer;
+      display:flex;
+      align-items:flex-start;
+      gap:8px;
+      text-align:left;
+      color:#166534;
+      transition:all .18s ease;
+    }
+    .module-badge{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      background:#bbf7d0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.8rem;
+      font-weight:700;
+      flex-shrink:0;
+    }
+    .module-text-main{
+      font-weight:600;
+      font-size:.84rem;
+    }
+    .module-text-sub{
+      font-size:.76rem;
+      color:#6b7280;
+    }
+    .module-button.active{
+      background:linear-gradient(135deg,#16a34a,#22c55e);
+      color:#ecfdf3;
+      border-color:#16a34a;
+      box-shadow:0 12px 25px rgba(22,163,74,.35);
+      transform:translateY(-1px);
+    }
+    .module-button.active .module-badge{
+      background:#ecfdf3;
+      color:#166534;
+    }
+    .modules-panels{
+      background:#f9fafb;
+      border-radius:16px;
+      border:1px solid #e5e7eb;
+      padding:9px 10px;
+    }
+    .module-panel{
+      display:none;
+      font-size:.86rem;
+    }
+    .module-panel.active{
+      display:block;
+    }
+
+    .status{
+      margin-top:6px;
+      font-size:.82rem;
+      border-radius:12px;
+      padding:6px 8px;
+      display:flex;
+      align-items:flex-start;
+      gap:6px;
+    }
+    .status-info{
+      background:#ecfdf3;
+      color:#166534;
+      border:1px solid #bbf7d0;
+    }
+    .status-success{
+      background:#ecfdf3;
+      color:#166534;
+      border:1px solid #22c55e;
+    }
+    .status-error{
+      background:var(--danger-soft);
+      color:var(--danger);
+      border:1px solid #fecaca;
+    }
+
+    .question-block{
+      margin-top:5px;
+      padding:7px 8px;
+      border-radius:12px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:.85rem;
+    }
+    .question-block h3{
+      margin:0 0 4px;
+      font-size:.9rem;
+      color:#166534;
+    }
+    .options-list{
+      list-style:none;
+      margin:4px 0 0;
+      padding:0;
+    }
+    .options-list li{
+      margin-bottom:3px;
+    }
+    .options-list label{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+      font-size:.84rem;
+      color:#4b5563;
+    }
+    .mini-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:7px;
+      margin-top:6px;
+    }
+    .mini-card{
+      border-radius:12px;
+      padding:6px 7px;
+      background:#ecfdf3;
+      border:1px solid #bbf7d0;
+      font-size:.82rem;
+      color:#065f46;
+    }
+    .mini-card strong{
+      color:#166534;
+    }
+
+    .map-container{
+      margin-top:5px;
+      border-radius:14px;
+      overflow:hidden;
+      border:1px solid #bbf7d0;
+      background:#e5f9f1;
+    }
+    .map-toolbar{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+      justify-content:space-between;
+      padding:6px 7px;
+      font-size:.8rem;
+      background:linear-gradient(90deg,#16a34a,#22c55e);
+      color:#ecfdf3;
+    }
+    .map-toolbar select{
+      border-radius:999px;
+      border:none;
+      padding:3px 8px;
+      font-size:.8rem;
+    }
+    .map-frame{
+      width:100%;
+      height:210px;
+      border:0;
+      display:block;
+      background:#022c22;
+    }
+    .map-caption{
+      padding:5px 7px 7px;
+      font-size:.78rem;
+      color:#064e3b;
+      background:#f0fdf4;
+    }
+    .map-links{
+      margin-top:4px;
+    }
+    .map-links a{
+      display:inline-block;
+      margin-right:6px;
+      font-size:.76rem;
+      text-decoration:none;
+      color:#166534;
+      font-weight:600;
+    }
+    .map-links a span{
+      margin-right:3px;
+      font-size:.78rem;
+    }
+    .map-links a:hover{
+      text-decoration:underline;
+    }
+
+    .factor-row{
+      display:grid;
+      grid-template-columns:1.2fr 1.1fr;
+      gap:6px;
+      align-items:center;
+      margin-top:4px;
+      font-size:.84rem;
+    }
+    .factor-row select{
+      width:100%;
+      padding:3px 7px;
+      border-radius:999px;
+      border:1px solid #bbf7d0;
+      font-size:.82rem;
+      background:#f9fafb;
+    }
+
+    .actions-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:8px;
+      margin-top:6px;
+    }
+    .action-card{
+      border-radius:12px;
+      padding:6px 7px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:.82rem;
+    }
+    .action-title{
+      font-weight:600;
+      margin-bottom:2px;
+      color:#065f46;
+    }
+    .action-options{
+      margin-top:4px;
+      display:flex;
+      gap:8px;
+      font-size:.8rem;
+    }
+    .action-options label{
+      display:flex;
+      align-items:center;
+      gap:3px;
+      cursor:pointer;
+    }
+
+    .btn-row{
+      margin-top:7px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+    }
+    .btn-primary{
+      background:#16a34a;
+      color:#ecfdf3;
+    }
+    .btn-secondary{
+      background:#e5e7eb;
+      color:#111827;
+    }
+    .btn-outline{
+      background:#fff;
+      color:#166534;
+      border:1px solid #bbf7d0;
+    }
+
+    .student-card .card-body{
+      font-size:.84rem;
+    }
+    .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.82rem;
+      margin-bottom:6px;
+    }
+    .student-row label{
+      font-weight:600;
+      color:#14532d;
+    }
+    .student-row input{
+      padding:5px 9px;
+      border-radius:999px;
+      border:1px solid #bbf7d0;
+      font-size:.83rem;
+    }
+
+    .progress-card .card-body{
+      font-size:.8rem;
+    }
+    .progress-list{
+      list-style:none;
+      margin:4px 0 0;
+      padding:0;
+    }
+    .progress-list li{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:3px;
+    }
+    .pill{
+      padding:2px 6px;
+      border-radius:999px;
+      font-size:.74rem;
+    }
+    .pill-done{
+      background:#bbf7d0;
+      color:#166534;
+    }
+    .pill-pending{
+      background:#fee2e2;
+      color:#b91c1c;
+    }
+
+    .avatar-card{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:10px;
+      align-items:center;
+    }
+    @media(max-width:480px){
+      .avatar-card{grid-template-columns:1fr;}
+    }
+    .avatar-circle{
+      width:150px;
+      height:150px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 20%,#bbf7d0,#16a34a);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border:3px solid #bbf7d0;
+    }
+    .avatar-circle img{
+      height:96%;
+      width:auto;
+      object-fit:contain;
+    }
+    .avatar-text{
+      font-size:.84rem;
+      color:#111827;
+    }
+    .avatar-text strong{
+      color:#166534;
+    }
+    .avatar-steps{
+      margin-top:4px;
+      font-size:.8rem;
+      color:#4b5563;
+      padding-left:18px;
+    }
+    .badge-step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:#16a34a;
+      color:#fff;
+      font-size:.72rem;
+      margin-right:4px;
+    }
+
+    .gallery-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(90px,1fr));
+      gap:6px;
+      margin-top:4px;
+    }
+    .gallery-item{
+      border-radius:12px;
+      overflow:hidden;
+      border:1px solid #bbf7d0;
+      background:#022c22;
+      min-height:60px;
+      position:relative;
+      cursor:pointer;
+    }
+    .gallery-item.selected{
+      outline:2px solid #22c55e;
+      box-shadow:0 0 0 2px #bbf7d0;
+    }
+    .gallery-placeholder{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#a7f3d0;
+      font-size:.9rem;
+      height:100%;
+      width:100%;
+    }
+    .gallery-caption{
+      position:absolute;
+      left:4px;
+      bottom:3px;
+      right:4px;
+      font-size:.68rem;
+      background:rgba(15,23,42,.7);
+      color:#ecfdf3;
+      padding:2px 4px;
+      border-radius:8px;
+    }
+    #galleryInfo{
+      margin-top:6px;
+      font-size:.78rem;
+      color:#064e3b;
+      background:#ecfdf3;
+      border-radius:10px;
+      padding:5px 7px;
+      border:1px solid #bbf7d0;
+    }
+
+    textarea{
+      width:100%;
+      min-height:70px;
+      border-radius:10px;
+      border:1px solid #bbf7d0;
+      padding:6px 8px;
+      font-size:.82rem;
+      resize:vertical;
+      font-family:inherit;
+    }
+
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #bbf7d0;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+  <div class="wrapper">
+    <header>
+      <div class="logo-left">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🌎</span>
+          <span>Biodiversidad y mapas de nuestro territorio</span>
+        </h1>
+        <div class="title-meta">
+          Campo formativo: <strong>Ética, Naturaleza y Sociedades</strong><br>
+          Contenido: <strong>Valoración de la biodiversidad en la localidad, entidad, México y el mundo; valores y acciones sustentables.</strong><br>
+          PDA: <strong>Compara e interpreta representaciones cartográficas de la biodiversidad de México, su entidad y localidad, reconociendo su distribución y los elementos que la hacen posible (suelo, clima, altitud, latitud, continentalidad, entre otros).</strong><br>
+          <span class="phase-label"><span class="icon">🍃</span> Fase 5 · Ética, Naturaleza y Sociedades</span>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Territorio y biodiversidad</span>
+          <span class="chip">Mapas y lectura crítica</span>
+          <span class="chip">Acciones sustentables</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <section class="left-column">
+        <!-- Propósito -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎯</span>
+              <span>Propósito de la ODA</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Al finalizar esta ODA, las y los estudiantes serán capaces de:
+            <ul class="objective-list">
+              <li><strong>Leer y comparar mapas</strong> de biodiversidad de su localidad, entidad, México y el mundo.</li>
+              <li><strong>Reconocer factores</strong> físicos que posibilitan la biodiversidad: clima, suelo, altitud, latitud y cercanía al mar.</li>
+              <li><strong>Valorar la biodiversidad</strong> como parte de su vida cotidiana y proponer <strong>acciones sustentables</strong> para cuidarla.</li>
+            </ul>
+            <div class="tags-row">
+              <span class="tag-pill">Mapas y escalas</span>
+              <span class="tag-pill">Clima y relieve</span>
+              <span class="tag-pill">Cuidado del ambiente</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulos y actividades -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧭</span>
+              <span>Ruta de trabajo</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="modules-layout">
+              <!-- Menú de módulos -->
+              <nav class="modules-nav">
+                <button class="module-button active" data-module="mapas">
+                  <div class="module-badge">1</div>
+                  <div>
+                    <div class="module-text-main">Explora los mapas de biodiversidad</div>
+                    <div class="module-text-sub">Localidad · Entidad · México · Mundo</div>
+                  </div>
+                </button>
+                <button class="module-button" data-module="factores">
+                  <div class="module-badge">2</div>
+                  <div>
+                    <div class="module-text-main">Factores que hacen posible la vida</div>
+                    <div class="module-text-sub">Clima · Suelo · Altitud · Latitud</div>
+                  </div>
+                </button>
+                <button class="module-button" data-module="acciones">
+                  <div class="module-badge">3</div>
+                  <div>
+                    <div class="module-text-main">Acciones sustentables</div>
+                    <div class="module-text-sub">Lo que hacemos en el día a día</div>
+                  </div>
+                </button>
+                <button class="module-button" data-module="evalua">
+                  <div class="module-badge">4</div>
+                  <div>
+                    <div class="module-text-main">Evalúate</div>
+                    <div class="module-text-sub">Síntesis y reflexión</div>
+                  </div>
+                </button>
+              </nav>
+
+              <!-- Paneles -->
+              <div class="modules-panels">
+                <!-- Módulo 1 -->
+                <div class="module-panel active" id="panel-mapas">
+                  <h2 style="margin:0 0 4px;font-size:.96rem;color:#166534;">Módulo 1. Explora los mapas de biodiversidad</h2>
+                  <p>Usa el mapa dinámico y elige la escala que quieras observar. Después, responde las preguntas.</p>
+
+                  <div class="map-container">
+                    <div class="map-toolbar">
+                      <span>Escala a observar:</span>
+                      <select id="mapScale">
+                        <option value="localidad">Mi localidad</option>
+                        <option value="entidad">Mi entidad federativa</option>
+                        <option value="mexico" selected>México</option>
+                        <option value="mundo">El mundo</option>
+                      </select>
+                      <span style="font-size:.75rem;">(Mapa de referencia – requiere conexión a internet)</span>
+                    </div>
+                    <iframe
+                      class="map-frame"
+                      id="mapFrame"
+                      src="https://www.openstreetmap.org/export/embed.html?bbox=-120.0,13.0,-86.0,33.0&layer=mapnik"
+                      title="Mapa de referencia de México">
+                    </iframe>
+                    <div class="map-caption">
+                      <div id="mapCaption">
+                        Estás observando una vista general de <strong>México</strong>. Identifica zonas con selvas, bosques, costas y desiertos. Piensa: ¿en qué lugares podría haber mayor biodiversidad?
+                      </div>
+                      <div class="map-links">
+                        <a href="https://www.biodiversidad.gob.mx/media/1/ecosistemas/files/EcosistemasMx_extensionDistribucion.pdf" target="_blank" rel="noopener noreferrer">
+                          <span>📄</span>Ver mapa de ecosistemas (PDF)
+                        </a>
+                        <a href="https://www.biodiversidad.gob.mx/ecosistemas/ecosismex" target="_blank" rel="noopener noreferrer">
+                          <span>🌐</span>Portal Ecosistemas de México
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="mini-grid">
+                    <div class="mini-card">
+                      <strong>Tips para leer el mapa</strong><br>
+                      • Observa los colores (verde, café, azul).<br>
+                      • Fíjate si hay montañas, mares o zonas planas.<br>
+                      • Recuerda: donde hay agua, clima adecuado y suelos ricos, suele haber más biodiversidad.
+                    </div>
+                    <div class="mini-card">
+                      <strong>Escalas</strong><br>
+                      • <em>Localidad:</em> tu comunidad y alrededores.<br>
+                      • <em>Entidad:</em> tu estado.<br>
+                      • <em>Nacional:</em> todo México.<br>
+                      • <em>Mundial:</em> los continentes y océanos.
+                    </div>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>1. ¿En qué escala crees que puedes observar con mayor detalle los elementos de tu vida diaria?</h3>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="map1" value="a"> En el mapa del mundo.</label></li>
+                      <li><label><input type="radio" name="map1" value="b"> En el mapa de mi localidad.</label></li>
+                      <li><label><input type="radio" name="map1" value="c"> En el mapa de México.</label></li>
+                    </ul>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>2. Si observas muchas montañas y bosques en una zona de tu entidad, probablemente ahí la biodiversidad es…</h3>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="map2" value="a"> Baja, porque casi no hay agua ni vida.</label></li>
+                      <li><label><input type="radio" name="map2" value="b"> Media, solo hay unos cuantos organismos.</label></li>
+                      <li><label><input type="radio" name="map2" value="c"> Alta, porque hay diferentes climas y tipos de vegetación.</label></li>
+                    </ul>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>3. ¿Cuál de las siguientes opciones representa mejor un área de alta biodiversidad en México?</h3>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="map3" value="a"> Una región desértica sin vegetación ni fauna.</label></li>
+                      <li><label><input type="radio" name="map3" value="b"> Una zona costera con manglares, arrecifes y selva cercana.</label></li>
+                      <li><label><input type="radio" name="map3" value="c"> Un gran estacionamiento pavimentado en la ciudad.</label></li>
+                    </ul>
+                  </div>
+
+                  <div class="btn-row">
+                    <button class="btn btn-primary" id="btnCheckMapas">🔎 Comprobar respuestas</button>
+                  </div>
+                  <div id="statusMapas" class="status status-info">
+                    <span>💡</span>
+                    <div>Explora el mapa con diferentes escalas y responde las preguntas. Luego haz clic en <strong>“Comprobar respuestas”</strong>.</div>
+                  </div>
+                </div>
+
+                <!-- Módulo 2 -->
+                <div class="module-panel" id="panel-factores">
+                  <h2 style="margin:0 0 4px;font-size:.96rem;color:#166534;">Módulo 2. Factores que hacen posible la biodiversidad</h2>
+                  <p>Relaciona cada región con el factor que más influye en su biodiversidad. Piensa en <strong>clima, suelo, altitud, latitud y cercanía al mar</strong>.</p>
+
+                  <div class="mini-grid">
+                    <div class="mini-card">
+                      <strong>Ejemplo 1</strong><br>
+                      Selvas húmedas del sureste de México.<br>
+                      <em>Factores:</em> clima cálido húmedo, lluvias abundantes, suelos profundos.
+                    </div>
+                    <div class="mini-card">
+                      <strong>Ejemplo 2</strong><br>
+                      Zonas áridas del norte.<br>
+                      <em>Factores:</em> poca lluvia, temperaturas extremas, suelos secos.
+                    </div>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>A) Relaciona región y factor</h3>
+                    <div class="factor-row">
+                      <div><strong>1. Costa del Pacífico</strong><br><small>Cercanía al océano y manglares.</small></div>
+                      <div>
+                        <select id="fac1">
+                          <option value="">Elige un factor…</option>
+                          <option value="clima_humedo">Clima cálido y humedad alta</option>
+                          <option value="altitud_alta">Altitud muy elevada</option>
+                          <option value="suelo_congelado">Suelo congelado casi todo el año</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="factor-row">
+                      <div><strong>2. Bosques de coníferas en zonas altas</strong><br><small>Montañas frías.</small></div>
+                      <div>
+                        <select id="fac2">
+                          <option value="">Elige un factor…</option>
+                          <option value="clima_templado">Clima templado con lluvias moderadas</option>
+                          <option value="altitud">Altitud y bajas temperaturas</option>
+                          <option value="costa">Cercanía al mar</option>
+                        </select>
+                      </div>
+                    </div>
+                    <div class="factor-row">
+                      <div><strong>3. Selvas del sureste</strong><br><small>Alta densidad de especies.</small></div>
+                      <div>
+                        <select id="fac3">
+                          <option value="">Elige un factor…</option>
+                          <option value="lluvias">Lluvias abundantes y clima cálido</option>
+                          <option value="desierto">Clima muy seco y frío</option>
+                          <option value="suelo_pobre">Suelos muy pobres y sin agua</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>B) Verdadero o falso</h3>
+                    <p style="margin:0 0 4px;font-size:.82rem;">Marca si la afirmación es verdadera (V) o falsa (F).</p>
+                    <div style="font-size:.82rem;">
+                      <label><input type="checkbox" id="vf1"> V/F – La altitud y la latitud influyen en la temperatura y por eso en los tipos de seres vivos que habitan una región.</label><br>
+                      <label><input type="checkbox" id="vf2"> V/F – La biodiversidad solo depende de las decisiones humanas y no del clima o el suelo.</label>
+                    </div>
+                  </div>
+
+                  <div class="btn-row">
+                    <button class="btn btn-primary" id="btnCheckFactores">🔎 Comprobar respuestas</button>
+                    <button class="btn btn-secondary" id="btnResetFactores">🧹 Limpiar</button>
+                  </div>
+                  <div id="statusFactores" class="status status-info">
+                    <span>🌱</span>
+                    <div>Relaciona primero y luego haz clic en <strong>“Comprobar respuestas”</strong>. Observa qué factores favorecen la biodiversidad.</div>
+                  </div>
+                </div>
+
+                <!-- Módulo 3 -->
+                <div class="module-panel" id="panel-acciones">
+                  <h2 style="margin:0 0 4px;font-size:.96rem;color:#166534;">Módulo 3. Acciones sustentables</h2>
+                  <p>Lee cada situación y marca si corresponde a una <strong>acción sustentable</strong> o <strong>no sustentable</strong> para cuidar la biodiversidad.</p>
+
+                  <div class="actions-grid">
+                    <div class="action-card">
+                      <div class="action-title">A) En la comunidad</div>
+                      <div>El grupo organiza una jornada para limpiar un arroyo cercano, separando residuos reciclables y orgánicos.</div>
+                      <div class="action-options">
+                        <label><input type="radio" name="act1" value="s"> Sustentable</label>
+                        <label><input type="radio" name="act1" value="n"> No sustentable</label>
+                      </div>
+                    </div>
+                    <div class="action-card">
+                      <div class="action-title">B) En la casa</div>
+                      <div>Se dejan las luces encendidas y los aparatos conectados todo el día aunque no se usen.</div>
+                      <div class="action-options">
+                        <label><input type="radio" name="act2" value="s"> Sustentable</label>
+                        <label><input type="radio" name="act2" value="n"> No sustentable</label>
+                      </div>
+                    </div>
+                    <div class="action-card">
+                      <div class="action-title">C) En la escuela</div>
+                      <div>Se construye un pequeño jardín con plantas nativas para atraer polinizadores como abejas y mariposas.</div>
+                      <div class="action-options">
+                        <label><input type="radio" name="act3" value="s"> Sustentable</label>
+                        <label><input type="radio" name="act3" value="n"> No sustentable</label>
+                      </div>
+                    </div>
+                    <div class="action-card">
+                      <div class="action-title">D) En el entorno natural</div>
+                      <div>Al visitar un bosque, algunas personas arrancan plantas y escriben sus nombres en la corteza de los árboles.</div>
+                      <div class="action-options">
+                        <label><input type="radio" name="act4" value="s"> Sustentable</label>
+                        <label><input type="radio" name="act4" value="n"> No sustentable</label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>Reflexión breve</h3>
+                    <p style="margin:0 0 4px;">Escribe una acción sustentable que podrías realizar en tu localidad para cuidar la biodiversidad (por ejemplo, cuidar un parque, reducir basura, sembrar plantas nativas).</p>
+                    <textarea id="txtReflexion" placeholder="Escribe aquí tu propuesta de acción sustentable..."></textarea>
+                  </div>
+
+                  <div class="btn-row">
+                    <button class="btn btn-primary" id="btnCheckAcciones">🔎 Comprobar respuestas</button>
+                  </div>
+                  <div id="statusAcciones" class="status status-info">
+                    <span>🍀</span>
+                    <div>Marca cada situación y comparte tu idea de acción sustentable. Luego haz clic en <strong>“Comprobar respuestas”</strong>.</div>
+                  </div>
+                </div>
+
+                <!-- Módulo 4 -->
+                <div class="module-panel" id="panel-evalua">
+                  <h2 style="margin:0 0 4px;font-size:.96rem;color:#166534;">Módulo 4. Evalúate</h2>
+                  <p>Responde el siguiente cuestionario para revisar qué tanto comprendiste sobre biodiversidad, factores físicos y acciones sustentables.</p>
+
+                  <div class="question-block">
+                    <h3>1. La biodiversidad se refiere a…</h3>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ev1" value="a"> La cantidad de agua que hay en los ríos.</label></li>
+                      <li><label><input type="radio" name="ev1" value="b"> La variedad de seres vivos (plantas, animales, hongos, microorganismos) en un lugar.</label></li>
+                      <li><label><input type="radio" name="ev1" value="c"> Solo a las especies de animales grandes.</label></li>
+                    </ul>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>2. ¿Cuál combinación de factores favorece más la biodiversidad?</h3>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ev2" value="a"> Clima extremo, sin agua y sin suelo fértil.</label></li>
+                      <li><label><input type="radio" name="ev2" value="b"> Clima adecuado, agua disponible y suelos ricos en nutrientes.</label></li>
+                      <li><label><input type="radio" name="ev2" value="c"> Solo la altitud, sin importar los demás factores.</label></li>
+                    </ul>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>3. ¿Qué representa mejor una acción sustentable?</h3>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ev3" value="a"> Usar y tirar productos de plástico de un solo uso diariamente.</label></li>
+                      <li><label><input type="radio" name="ev3" value="b"> Reutilizar materiales, ahorrar agua y respetar los espacios naturales.</label></li>
+                      <li><label><input type="radio" name="ev3" value="c"> Encender fogatas en cualquier lugar del bosque.</label></li>
+                    </ul>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>4. Al observar un mapa de biodiversidad de México, ¿qué podrías identificar?</h3>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ev4" value="a"> Zonas donde se concentran ciertas especies y tipos de vegetación.</label></li>
+                      <li><label><input type="radio" name="ev4" value="b"> La cantidad de tareas que deja el maestro.</label></li>
+                      <li><label><input type="radio" name="ev4" value="c"> Solo los nombres de los países.</label></li>
+                    </ul>
+                  </div>
+
+                  <div class="question-block">
+                    <h3>5. ¿Por qué es importante cuidar la biodiversidad de tu localidad?</h3>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ev5" value="a"> Porque solo así podemos construir más edificios.</label></li>
+                      <li><label><input type="radio" name="ev5" value="b"> Porque de ella dependen alimentos, agua, aire limpio y el equilibrio del ambiente.</label></li>
+                      <li><label><input type="radio" name="ev5" value="c"> No es importante, la biodiversidad no afecta nuestra vida.</label></li>
+                    </ul>
+                  </div>
+
+                  <div class="btn-row">
+                    <button class="btn btn-primary" id="btnCheckEvalua">📝 Revisar respuestas</button>
+                    <button class="btn btn-secondary" id="btnResetEvalua">↩️ Empezar de nuevo</button>
+                  </div>
+                  <div id="statusEvalua" class="status status-info">
+                    <span>📊</span>
+                    <div>Contesta las cinco preguntas y luego haz clic en <strong>“Revisar respuestas”</strong> para conocer tus resultados.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <section class="right-column">
+        <!-- Datos del alumno -->
+        <div class="card student-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🎓</span>
+              <span>Datos del alumno y controles</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir resultados</button>
+              <button class="btn btn-outline" id="btnPrintActivity">📄 Imprimir actividad</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progreso -->
+        <div class="card progress-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📈</span>
+              <span>Semáforo de progreso</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="progress-list">
+              <li><span>Módulo 1 · Mapas</span><span id="progMapas" class="pill pill-pending">Pendiente</span></li>
+              <li><span>Módulo 2 · Factores físicos</span><span id="progFactores" class="pill pill-pending">Pendiente</span></li>
+              <li><span>Módulo 3 · Acciones</span><span id="progAcciones" class="pill pill-pending">Pendiente</span></li>
+              <li><span>Módulo 4 · Evalúate</span><span id="progEvalua" class="pill pill-pending">Pendiente</span></li>
+            </ul>
+            <p style="margin-top:6px;font-size:.78rem;color:#6b7280;">
+              Cuando alcances al menos el <strong>70%</strong> en un módulo, se marcará como completado en verde.
+            </p>
+          </div>
+        </div>
+
+        <!-- Avatar -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🏫</span>
+              <span>Avatar guía – Instrucciones</span>
+            </div>
+          </div>
+          <div class="card-body avatar-card">
+            <div class="avatar-circle" aria-hidden="true">
+              <!-- Aquí solo dejas tu archivo avatar_guia.png en la misma carpeta -->
+              <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, soy el maestro Martín Reta.</strong> Te acompañaré a explorar la biodiversidad.
+              <ol class="avatar-steps">
+                <li><span class="badge-step">1</span> Observa los <strong>mapas</strong> en diferentes escalas y responde las preguntas.</li>
+                <li><span class="badge-step">2</span> Relaciona los <strong>factores físicos</strong> que permiten la vida en distintos lugares.</li>
+                <li><span class="badge-step">3</span> Identifica <strong>acciones sustentables</strong> en tu casa, escuela y comunidad.</li>
+                <li><span class="badge-step">4</span> Responde el cuestionario final y revisa tus <strong>fortalezas</strong> y <strong>áreas de oportunidad</strong>.</li>
+              </ol>
+              <div class="audio-row">
+                <button class="btn btn-primary" id="btnPlayVoice">🔊 Escuchar instrucciones</button>
+                <small style="font-size:.78rem;color:#6b7280;">
+                  Si tu navegador lo permite, escucharás estas instrucciones en voz alta (voz masculina).
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Galería -->
+        <div class="card info-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🖼️</span>
+              <span>Galería de biodiversidad</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p style="margin-bottom:4px;">
+              Haz clic en cada ecosistema para conocer más. Puedes sustituir estas imágenes por fotografías de tu localidad, entidad o país.
+            </p>
+            <div class="gallery-grid">
+              <div class="gallery-item" data-eco="bosque">
+                <div class="gallery-placeholder">🌳</div>
+                <div class="gallery-caption">Bosque templado</div>
+              </div>
+              <div class="gallery-item" data-eco="selva">
+                <div class="gallery-placeholder">🌴</div>
+                <div class="gallery-caption">Selva húmeda</div>
+              </div>
+              <div class="gallery-item" data-eco="desierto">
+                <div class="gallery-placeholder">🏜️</div>
+                <div class="gallery-caption">Zona árida</div>
+              </div>
+              <div class="gallery-item" data-eco="costa">
+                <div class="gallery-placeholder">🌊</div>
+                <div class="gallery-caption">Ecosistema costero</div>
+              </div>
+            </div>
+            <div id="galleryInfo">
+              Haz clic en un ecosistema para ver por qué es importante para la biodiversidad.
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        © 2025. Elaborado por <strong>Mtro. Martín Reta</strong> – Escuela Primaria “Gral. Lázaro Cárdenas”.
+      </div>
+      <div class="project">
+        Proyecto “Biodiversidad en nuestro territorio” · ODA: Biodiversidad y mapas.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Navegación de módulos
+    const moduleButtons = document.querySelectorAll(".module-button");
+    const panels = {
+      mapas: document.getElementById("panel-mapas"),
+      factores: document.getElementById("panel-factores"),
+      acciones: document.getElementById("panel-acciones"),
+      evalua: document.getElementById("panel-evalua")
+    };
+    moduleButtons.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const mod = btn.dataset.module;
+        moduleButtons.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        Object.keys(panels).forEach(k=>panels[k].classList.remove("active"));
+        panels[mod].classList.add("active");
+      });
+    });
+
+    // Progreso
+    const progMapas = document.getElementById("progMapas");
+    const progFactores = document.getElementById("progFactores");
+    const progAcciones = document.getElementById("progAcciones");
+    const progEvalua = document.getElementById("progEvalua");
+    function actualizarPill(el, percent){
+      if(percent>=70){
+        el.textContent = "Completado ("+percent+"%)";
+        el.className = "pill pill-done";
+      }else{
+        el.textContent = "Pendiente ("+percent+"%)";
+        el.className = "pill pill-pending";
+      }
+    }
+
+    // Mapas: cambio de escala
+    const mapFrame = document.getElementById("mapFrame");
+    const mapCaptionEl = document.getElementById("mapCaption");
+    document.getElementById("mapScale").addEventListener("change",e=>{
+      const v = e.target.value;
+      if(v==="mexico"){
+        mapFrame.src = "https://www.openstreetmap.org/export/embed.html?bbox=-120.0,13.0,-86.0,33.0&layer=mapnik";
+        mapCaptionEl.innerHTML = "Estás observando una vista general de <strong>México</strong>. Identifica zonas con selvas, bosques, costas y desiertos.";
+      }else if(v==="mundo"){
+        mapFrame.src = "https://www.openstreetmap.org/export/embed.html?bbox=-180,-60,180,80&layer=mapnik";
+        mapCaptionEl.innerHTML = "Estás observando un mapa del <strong>mundo</strong>. Observa cómo cambian los continentes, océanos y zonas polares.";
+      }else if(v==="entidad"){
+        mapFrame.src = "https://www.openstreetmap.org/export/embed.html?bbox=-109.0,14.0,-86.0,33.0&layer=mapnik";
+        mapCaptionEl.innerHTML = "Estás observando una región similar a una <strong>entidad federativa</strong>. Imagina dónde estaría tu estado y qué ecosistemas tiene.";
+      }else{
+        mapFrame.src = "https://www.openstreetmap.org/export/embed.html?bbox=-101.0,24.0,-100.0,26.0&layer=mapnik";
+        mapCaptionEl.innerHTML = "Estás observando una escala aproximada de <strong>localidad</strong>. Piensa en tu comunidad, sus parques, ríos, plazas y áreas naturales.";
+      }
+    });
+
+    // Estado de resultados
+    let lastMapasScore = null;
+    let lastFactoresScore = null;
+    let lastAccionesScore = null;
+    let lastEvaluaScore = null;
+
+    // Módulo 1: Mapas
+    const statusMapas = document.getElementById("statusMapas");
+    document.getElementById("btnCheckMapas").addEventListener("click",()=>{
+      const a1 = document.querySelector('input[name="map1"]:checked');
+      const a2 = document.querySelector('input[name="map2"]:checked');
+      const a3 = document.querySelector('input[name="map3"]:checked');
+      let total=3,correct=0,unanswered=0,messages=[];
+      if(!a1) unanswered++; else if(a1.value==="b"){correct++;messages.push("Pregunta 1: correcto, la escala de localidad muestra con mayor detalle tu vida diaria.");}
+      else messages.push("Pregunta 1: recuerda que en mapas más cercanos (localidad) se ven mejor los detalles cotidianos.");
+      if(!a2) unanswered++; else if(a2.value==="c"){correct++;messages.push("Pregunta 2: correcto, montañas y bosques suelen relacionarse con alta biodiversidad.");}
+      else messages.push("Pregunta 2: revisa cómo el relieve y la vegetación favorecen la presencia de muchas especies.");
+      if(!a3) unanswered++; else if(a3.value==="b"){correct++;messages.push("Pregunta 3: correcto, las zonas costeras con manglares, arrecifes y selvas suelen ser áreas de alta biodiversidad.");}
+      else messages.push("Pregunta 3: los lugares pavimentados o sin vegetación no concentran tanta biodiversidad.");
+      if(unanswered>0){
+        statusMapas.className="status status-info";
+        statusMapas.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> pregunta(s) por responder.</div>";
+        return;
+      }
+      const percent = Math.round(correct/total*100);
+      lastMapasScore = {correct,total,percent};
+      if(correct===total){
+        statusMapas.className="status status-success";
+        statusMapas.innerHTML="<span>🌎</span><div>¡Excelente! Acertaste las "+total+" preguntas ("+percent+"%).<br>"+messages.join("<br>")+"</div>";
+      }else{
+        statusMapas.className="status status-error";
+        statusMapas.innerHTML="<span>🗺️</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> preguntas ("+percent+"%). Lee de nuevo el mapa y reflexiona en los elementos físicos.<br>"+messages.join("<br>")+"</div>";
+      }
+      actualizarPill(progMapas, percent);
+    });
+
+    // Módulo 2: Factores
+    const statusFactores = document.getElementById("statusFactores");
+    const fac1 = document.getElementById("fac1");
+    const fac2 = document.getElementById("fac2");
+    const fac3 = document.getElementById("fac3");
+    const vf1 = document.getElementById("vf1");
+    const vf2 = document.getElementById("vf2");
+
+    document.getElementById("btnCheckFactores").addEventListener("click",()=>{
+      let total=5,correct=0,unanswered=0,messages=[];
+      if(!fac1.value) unanswered++; else if(fac1.value==="clima_humedo"){correct++;messages.push("Costa del Pacífico: correcto, el clima cálido y la humedad favorecen manglares y vida marina.");}
+      else messages.push("Costa del Pacífico: piensa en el papel de la humedad y el clima cálido cerca del mar.");
+      if(!fac2.value) unanswered++; else if(fac2.value==="altitud"){correct++;messages.push("Bosques de coníferas: correcto, la altitud y el frío son factores clave.");}
+      else messages.push("Bosques de coníferas: recuerda que se encuentran en zonas altas y frías.");
+      if(!fac3.value) unanswered++; else if(fac3.value==="lluvias"){correct++;messages.push("Selvas del sureste: correcto, las lluvias abundantes y el clima cálido fomentan la alta biodiversidad.");}
+      else messages.push("Selvas del sureste: revisa la relación entre lluvias, calor y vegetación.");
+      if(vf1.checked){correct++;messages.push("Afirmación 1: correcto, altitud y latitud influyen en temperatura y biodiversidad.");}
+      else messages.push("Afirmación 1: recuerda que altitud y latitud afectan la temperatura y el tipo de vida.");
+      if(!vf2.checked){correct++;messages.push("Afirmación 2: correcto, la biodiversidad no depende solo de las decisiones humanas, también del clima y el suelo.");}
+      else messages.push("Afirmación 2: además de las acciones humanas, el clima y el suelo influyen mucho en la biodiversidad.");
+      if(unanswered>0){
+        statusFactores.className="status status-info";
+        statusFactores.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> campo(s) por completar.</div>";
+        return;
+      }
+      const percent = Math.round(correct/total*100);
+      lastFactoresScore = {correct,total,percent};
+      if(percent>=70){
+        statusFactores.className="status status-success";
+        statusFactores.innerHTML="<span>🌱</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> aspectos ("+percent+"%). ¡Buen análisis de los factores físicos!<br>"+messages.join("<br>")+"</div>";
+      }else{
+        statusFactores.className="status status-error";
+        statusFactores.innerHTML="<span>🌦️</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> aspectos ("+percent+"%). Revisa cómo el clima, suelo y altitud afectan la vida en cada región.<br>"+messages.join("<br>")+"</div>";
+      }
+      actualizarPill(progFactores, percent);
+    });
+
+    document.getElementById("btnResetFactores").addEventListener("click",()=>{
+      fac1.value = "";
+      fac2.value = "";
+      fac3.value = "";
+      vf1.checked = false;
+      vf2.checked = false;
+      lastFactoresScore = null;
+      statusFactores.className="status status-info";
+      statusFactores.innerHTML="<span>🌱</span><div>Relaciona primero y luego haz clic en <strong>“Comprobar respuestas”</strong>. Observa qué factores favorecen la biodiversidad.</div>";
+      progFactores.textContent="Pendiente";
+      progFactores.className="pill pill-pending";
+    });
+
+    // Módulo 3: Acciones
+    const statusAcciones = document.getElementById("statusAcciones");
+    document.getElementById("btnCheckAcciones").addEventListener("click",()=>{
+      const a1 = document.querySelector('input[name="act1"]:checked');
+      const a2 = document.querySelector('input[name="act2"]:checked');
+      const a3 = document.querySelector('input[name="act3"]:checked');
+      const a4 = document.querySelector('input[name="act4"]:checked');
+      let total=4,correct=0,unanswered=0,messages=[];
+      if(!a1) unanswered++; else if(a1.value==="s"){correct++;messages.push("Acción A: correcto, limpiar un arroyo y separar residuos es una acción sustentable.");}
+      else messages.push("Acción A: piensa si la acción ayuda o daña al ecosistema.");
+      if(!a2) unanswered++; else if(a2.value==="n"){correct++;messages.push("Acción B: correcto, dejar luces y aparatos encendidos no es sustentable.");}
+      else messages.push("Acción B: el uso excesivo de energía afecta al ambiente.");
+      if(!a3) unanswered++; else if(a3.value==="s"){correct++;messages.push("Acción C: correcto, un jardín con plantas nativas favorece la biodiversidad.");}
+      else messages.push("Acción C: recuerda que las plantas nativas son importantes para la fauna local.");
+      if(!a4) unanswered++; else if(a4.value==="n"){correct++;messages.push("Acción D: correcto, arrancar plantas y dañar árboles no es sustentable.");}
+      else messages.push("Acción D: dañar la vegetación afecta negativamente al ecosistema.");
+      if(unanswered>0){
+        statusAcciones.className="status status-info";
+        statusAcciones.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> situación(es) por marcar.</div>";
+        return;
+      }
+      const percent = Math.round(correct/total*100);
+      lastAccionesScore = {correct,total,percent};
+      const reflexion = document.getElementById("txtReflexion").value.trim();
+      let extra = reflexion ? "<br><br><strong>Tu propuesta de acción sustentable:</strong> "+reflexion : "";
+      if(percent>=75){
+        statusAcciones.className="status status-success";
+        statusAcciones.innerHTML="<span>🍀</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> acciones ("+percent+"%). ¡Vas por buen camino en el cuidado de la biodiversidad!"+extra+"</div>";
+      }else{
+        statusAcciones.className="status status-error";
+        statusAcciones.innerHTML="<span>♻️</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> acciones ("+percent+"%). Puedes reflexionar de nuevo qué acciones ayudan realmente al ambiente."+extra+"</div>";
+      }
+      actualizarPill(progAcciones, percent);
+    });
+
+    // Módulo 4: Evalúate
+    const statusEvalua = document.getElementById("statusEvalua");
+    const correctEval = { ev1:"b", ev2:"b", ev3:"b", ev4:"a", ev5:"b" };
+    document.getElementById("btnCheckEvalua").addEventListener("click",()=>{
+      let total=5,correct=0,unanswered=0,messages=[];
+      Object.keys(correctEval).forEach(q=>{
+        const ans=document.querySelector('input[name="'+q+'"]:checked');
+        if(!ans){unanswered++;return;}
+        if(ans.value===correctEval[q]){
+          correct++;
+          messages.push("Pregunta "+q.replace("ev","")+": respuesta correcta.");
+        }else{
+          messages.push("Pregunta "+q.replace("ev","")+": respuesta incorrecta, revisa de nuevo la idea central.");
+        }
+      });
+      if(unanswered>0){
+        statusEvalua.className="status status-info";
+        statusEvalua.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> pregunta(s) por responder.</div>";
+        return;
+      }
+      const percent = Math.round(correct/total*100);
+      lastEvaluaScore = {correct,total,percent};
+      if(percent>=75){
+        statusEvalua.className="status status-success";
+        statusEvalua.innerHTML="<span>✅</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> preguntas ("+percent+"%). ¡Tienes buenas bases sobre biodiversidad y acciones sustentables!<br>"+messages.join("<br>")+"</div>";
+      }else{
+        statusEvalua.className="status status-error";
+        statusEvalua.innerHTML="<span>📘</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> preguntas ("+percent+"%). Puedes repasar los módulos anteriores y volver a intentarlo.<br>"+messages.join("<br>")+"</div>";
+      }
+      actualizarPill(progEvalua, percent);
+    });
+
+    document.getElementById("btnResetEvalua").addEventListener("click",()=>{
+      Object.keys(correctEval).forEach(q=>{
+        document.querySelectorAll('input[name="'+q+'"]').forEach(r=>r.checked=false);
+      });
+      lastEvaluaScore = null;
+      statusEvalua.className="status status-info";
+      statusEvalua.innerHTML="<span>📊</span><div>Contesta las cinco preguntas y luego haz clic en <strong>“Revisar respuestas”</strong> para conocer tus resultados.</div>";
+      progEvalua.textContent="Pendiente";
+      progEvalua.className="pill pill-pending";
+    });
+
+    // Audio instrucciones
+    const btnPlayVoice=document.getElementById("btnPlayVoice");
+    const instructionsText="Hola, soy el maestro Martin Reta. Primero explora los mapas en diferentes escalas. Despues analiza los factores fisicos que permiten la biodiversidad. Luego identifica acciones sustentables en tu casa, escuela y comunidad. Al final responde el cuestionario para conocer tus fortalezas y areas de oportunidad.";
+    function speakInstructions(){
+      if(!('speechSynthesis' in window)){
+        alert("Tu navegador no permite la lectura en voz alta. Puedes leer las instrucciones directamente en pantalla.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(instructionsText);
+      u.lang="es-MX";
+      const voices=window.speechSynthesis.getVoices();
+      let chosen=null;
+      if(voices && voices.length){
+        chosen = voices.find(v=>v.lang.startsWith("es") && /Hombre|Male|Miguel|Diego|Jorge|Antonio|Carlos/i.test(v.name))
+               || voices.find(v=>v.lang.startsWith("es"))
+               || voices[0];
+      }
+      if(chosen){u.voice=chosen;}
+      window.speechSynthesis.speak(u);
+    }
+    btnPlayVoice.addEventListener("click",()=>{
+      const voices=window.speechSynthesis.getVoices();
+      if(!voices || !voices.length){
+        window.speechSynthesis.onvoiceschanged=speakInstructions;
+        window.speechSynthesis.getVoices();
+      }else{
+        speakInstructions();
+      }
+    });
+
+    // Imprimir resultados: fortalezas (azul) y áreas de oportunidad (rojo)
+    document.getElementById("btnPrintResults").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      if(!lastMapasScore && !lastFactoresScore && !lastAccionesScore && !lastEvaluaScore){
+        alert("Primero realiza al menos un módulo para poder imprimir resultados.");
+        return;
+      }
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Resultados del estudiante – Biodiversidad y mapas</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;background:#f1f5f9;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:14px;margin-bottom:6px;} p{margin:4px 0;} .small{font-size:12px;color:#4b5563;} .block{background:#ffffff;border-radius:12px;padding:8px 10px;margin-top:8px;border:1px solid #e5e7eb;} .label{font-weight:600;} .fortaleza{color:#1d4ed8;} .fortaleza-bg{background:#dbeafe;} .oportunidad{color:#b91c1c;} .oportunidad-bg{background:#fee2e2;} .badge{display:inline-block;padding:2px 6px;border-radius:999px;font-size:11px;margin-left:6px;} .badge-azul{background:#dbeafe;color:#1d4ed8;} .badge-rojo{background:#fee2e2;color:#b91c1c;} </style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Resultados del estudiante – Biodiversidad y mapas</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Compara e interpreta representaciones cartográficas de la biodiversidad de México, su entidad y localidad, reconociendo su distribución y los elementos que la hacen posible.</p>");
+
+      function bloque(nombre, data){
+        if(!data) return "";
+        const percent = data.percent;
+        const esFortaleza = percent>=75;
+        const claseLinea = esFortaleza ? "fortaleza" : "oportunidad";
+        const claseFondo = esFortaleza ? "fortaleza-bg" : "oportunidad-bg";
+        const texto = esFortaleza ? "Fortaleza" : "Área de oportunidad";
+        const badgeClase = esFortaleza ? "badge-azul" : "badge-rojo";
+        return "<div class='block "+claseFondo+"'><div class='label "+claseLinea+"'>"+nombre+"<span class='badge "+badgeClase+"'>"+texto+"</span></div><p>Puntaje: <strong>"+data.correct+" de "+data.total+" ("+percent+"%)</strong></p></div>";
+      }
+
+      w.document.write("<h2>Resumen por módulo</h2>");
+      w.document.write(bloque("Módulo 1 · Mapas de biodiversidad", lastMapasScore));
+      w.document.write(bloque("Módulo 2 · Factores físicos", lastFactoresScore));
+      w.document.write(bloque("Módulo 3 · Acciones sustentables", lastAccionesScore));
+      w.document.write(bloque("Módulo 4 · Evalúate", lastEvaluaScore));
+
+      w.document.write("<h2>Observaciones del docente</h2>");
+      w.document.write("<p class='small'>En <span class='fortaleza'>azul</span> se señalan las fortalezas del estudiante, y en <span class='oportunidad'>rojo</span> las áreas de oportunidad.</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+
+    // Imprimir actividad
+    document.getElementById("btnPrintActivity").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Actividad para imprimir – Biodiversidad y mapas</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:14px;margin-bottom:6px;} p{margin:6px 0;} ol,ul{padding-left:18px;} li{margin-bottom:6px;} .small{font-size:12px;color:#4b5563;} .line{margin-bottom:6px;} </style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Actividad para imprimir – Biodiversidad y mapas</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p class='small'><strong>Campo formativo:</strong> Ética, Naturaleza y Sociedades</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Compara e interpreta representaciones cartográficas de la biodiversidad de México, su entidad y localidad.</p>");
+
+      w.document.write("<h2>Parte A. Mapas y biodiversidad</h2>");
+      w.document.write("<p>1. Describe lo que observas en un mapa de tu localidad (ríos, parques, áreas naturales, calles principales):</p>");
+      w.document.write("<p class='line'>________________________________________________________________________________</p>");
+      w.document.write("<p class='line'>________________________________________________________________________________</p>");
+      w.document.write("<p>2. Marca con una X la escala donde puedes ver más detalles de tu vida diaria:</p>");
+      w.document.write("<ul><li>[  ] Localidad</li><li>[  ] Entidad</li><li>[  ] México</li><li>[  ] Mundo</li></ul>");
+
+      w.document.write("<h2>Parte B. Factores físicos</h2>");
+      w.document.write("<p>3. Relaciona cada región con el factor que más influye en su biodiversidad.</p>");
+      w.document.write("<p>a) Costa con manglares y arrecifes ____________________________</p>");
+      w.document.write("<p>b) Montañas frías con bosques de coníferas ____________________</p>");
+      w.document.write("<p>c) Selvas húmedas con gran variedad de especies ________________</p>");
+
+      w.document.write("<h2>Parte C. Acciones sustentables</h2>");
+      w.document.write("<p>4. Escribe dos acciones sustentables que puedas realizar en tu localidad:</p>");
+      w.document.write("<p class='line'>a) _______________________________________________________________________</p>");
+      w.document.write("<p class='line'>b) _______________________________________________________________________</p>");
+
+      w.document.write("<h2>Parte D. Reflexión final</h2>");
+      w.document.write("<p>5. Explica con tus palabras por qué es importante cuidar la biodiversidad de tu comunidad:</p>");
+      w.document.write("<p class='line'>________________________________________________________________________________</p>");
+      w.document.write("<p class='line'>________________________________________________________________________________</p>");
+      w.document.write("<p class='line'>________________________________________________________________________________</p>");
+
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+
+    // Galería interactiva
+    const galleryItems = document.querySelectorAll(".gallery-item");
+    const galleryInfo = document.getElementById("galleryInfo");
+    const ecoInfo = {
+      "Bosque templado":"En los bosques templados hay pinos, encinos y muchos animales como aves y mamíferos. Son importantes para captar agua y regular el clima.",
+      "Selva húmeda":"Las selvas húmedas concentran una enorme variedad de especies. La tala y los incendios ponen en riesgo su biodiversidad.",
+      "Zona árida":"En los desiertos y zonas áridas también hay biodiversidad: cactus, reptiles, aves y mamíferos adaptados a poca agua.",
+      "Ecosistema costero":"En las costas hay manglares, dunas, arrecifes y muchas especies marinas. Son clave para protegernos de huracanes y oleaje."
+    };
+    galleryItems.forEach(item=>{
+      item.addEventListener("click",()=>{
+        galleryItems.forEach(i=>i.classList.remove("selected"));
+        item.classList.add("selected");
+        const caption = item.querySelector(".gallery-caption").textContent.trim();
+        const text = ecoInfo[caption] || "Este ecosistema forma parte de la biodiversidad de México.";
+        galleryInfo.innerHTML = "<strong>"+caption+":</strong> "+text;
+      });
+    });
+  </script>
+</body>
+</html>

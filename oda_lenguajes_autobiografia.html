@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Narración de sucesos autobiográficos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#dc2626;
+      --primary-soft:#fee2e2;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --card:#ffffff;
+      --shadow:0 14px 35px rgba(127,29,29,.18);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top left,#fee2e2 0,#fef2f2 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:10% 18%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:18px;
+      bottom:12px;
+      height:90px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1120px;
+      margin:20px;
+      background:linear-gradient(145deg,#fff7f7 0,#ffffff 55%,#fef2f2 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:18px 20px 22px;
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto 1.5fr 1fr;
+      gap:14px;
+      align-items:center;
+      border-bottom:1px solid #f3f4f6;
+      padding-bottom:10px;
+    }
+    @media(max-width:880px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+    }
+    .logo-left img{
+      max-height:64px;
+      width:auto;
+      display:block;
+    }
+    @media(max-width:880px){
+      .logo-left{
+        justify-content:center;
+        display:flex;
+      }
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.25rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-block h1 .icon{
+      font-size:1.5rem;
+    }
+    .title-meta{
+      margin-top:4px;
+      font-size:.85rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-block;
+      margin-top:3px;
+      font-size:.82rem;
+      font-weight:600;
+      color:#b91c1c;
+    }
+    .chips{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .chip{
+      border-radius:999px;
+      padding:2px 10px;
+      font-size:.78rem;
+      border:1px solid #fecaca;
+      background:#fef2f2;
+      color:#b91c1c;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#dc2626;
+    }
+    .author-block{
+      font-size:.78rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:880px){
+      .author-block{
+        text-align:center;
+      }
+    }
+    .author-block strong{
+      display:block;
+      font-size:.86rem;
+      color:#111827;
+    }
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,1.7fr) minmax(0,1.3fr);
+      gap:14px;
+      margin-top:6px;
+    }
+    @media(max-width:900px){
+      main{grid-template-columns:1fr;}
+    }
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:12px 14px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:6px;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .card-title{
+      font-size:.95rem;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card-title .icon{
+      font-size:1.15rem;
+    }
+    .pill{
+      font-size:.78rem;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+      color:#991b1b;
+      border:1px solid #fecaca;
+    }
+    .card-body{
+      font-size:.88rem;
+      color:var(--muted);
+    }
+    .left-panel,.right-panel{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .objective-list{
+      margin:4px 0 0;
+      padding-left:18px;
+    }
+    .objective-list li{
+      margin-bottom:3px;
+    }
+    .timeline{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      margin-top:6px;
+    }
+    .step{
+      flex:1 1 140px;
+      border-radius:16px;
+      padding:7px 8px;
+      background:#fef2f2;
+      border:1px dashed #fecaca;
+      font-size:.8rem;
+      color:#7f1d1d;
+      position:relative;
+      overflow:hidden;
+    }
+    .step-badge{
+      position:absolute;
+      top:6px;
+      right:8px;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:#dc2626;
+      color:#fff;
+      font-size:.72rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 0 0 2px #fee2e2;
+    }
+    .step-title{
+      font-weight:600;
+      margin-bottom:2px;
+      color:#991b1b;
+    }
+    .student-card{
+      background:linear-gradient(135deg,#fee2e2 0,#ffffff 45%,#fff7f7 100%);
+      border-radius:18px;
+      border:1px solid #fecaca;
+    }
+    .student-row{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+      font-size:.85rem;
+      color:#4b5563;
+    }
+    .student-row label{
+      font-weight:600;
+    }
+    .student-row input{
+      flex:1 1 200px;
+      min-width:160px;
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid #fecaca;
+      font-size:.85rem;
+    }
+    .btn-row{
+      margin-top:8px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.83rem;
+      padding:6px 11px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+    .btn-secondary{
+      background:#f3f4f6;
+      color:#111827;
+    }
+    .btn-outline{
+      background:#fff;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+    .avatar-card{
+      display:grid;
+      grid-template-columns:auto 1fr;
+      gap:10px;
+      align-items:center;
+    }
+    @media(max-width:480px){
+      .avatar-card{grid-template-columns:1fr;}
+    }
+    .avatar-circle{
+      width:130px;
+      display:flex;
+      align-items:flex-end;
+      justify-content:center;
+    }
+    .avatar-circle img{
+      width:130px;
+      height:auto;
+      object-fit:contain;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.86rem;
+      color:#111827;
+    }
+    .avatar-text strong{
+      color:#b91c1c;
+    }
+    .avatar-steps{
+      margin-top:4px;
+      font-size:.82rem;
+      color:#4b5563;
+      padding-left:18px;
+    }
+    .badge-step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:#dc2626;
+      color:#fff;
+      font-size:.72rem;
+      margin-right:4px;
+    }
+    .audio-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+    }
+    .tabs{
+      display:flex;
+      gap:6px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+    .tab-button{
+      flex:1 1 120px;
+      border-radius:999px;
+      border:1px solid #fecaca;
+      background:#fff1f2;
+      padding:5px 10px;
+      font-size:.83rem;
+      font-weight:600;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:6px;
+      cursor:pointer;
+      color:#b91c1c;
+    }
+    .tab-button.active{
+      background:var(--primary);
+      border-color:var(--primary);
+      color:#fff;
+      box-shadow:0 8px 16px rgba(220,38,38,.3);
+    }
+    .tab-panel{
+      display:none;
+      margin-top:8px;
+      font-size:.86rem;
+    }
+    .tab-panel.active{display:block;}
+    .example-box{
+      border-radius:14px;
+      padding:8px 9px;
+      background:#fef2f2;
+      border:1px solid #fecaca;
+      font-size:.84rem;
+      color:#7f1d1d;
+    }
+    .example-label{
+      font-size:.78rem;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      color:#b91c1c;
+      margin-bottom:2px;
+    }
+    .highlight{
+      font-weight:600;
+      color:#b91c1c;
+    }
+    .sentence-list{
+      margin:6px 0 0;
+      padding-left:18px;
+    }
+    .sentence-list li{
+      margin-bottom:4px;
+    }
+    textarea{
+      width:100%;
+      min-height:140px;
+      resize:vertical;
+      border-radius:14px;
+      border:1px solid #e5e7eb;
+      padding:8px 9px;
+      font-family:inherit;
+      font-size:.86rem;
+    }
+    .status{
+      margin-top:6px;
+      font-size:.82rem;
+      border-radius:12px;
+      padding:6px 8px;
+      display:flex;
+      align-items:flex-start;
+      gap:6px;
+    }
+    .status-info{
+      background:#fef2f2;
+      color:#7f1d1d;
+      border:1px solid #fecaca;
+    }
+    .status-success{
+      background:#ecfdf3;
+      color:#166534;
+      border:1px solid #bbf7d0;
+    }
+    .status-error{
+      background:#fef2f2;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+    .checklist{
+      margin-top:4px;
+      font-size:.84rem;
+    }
+    .checklist label{
+      display:flex;
+      align-items:flex-start;
+      gap:4px;
+      margin-bottom:3px;
+      cursor:pointer;
+    }
+    .checklist input[type="checkbox"]{
+      margin-top:2px;
+    }
+    .mini-quiz{
+      list-style:none;
+      padding:0;
+      margin:6px 0 0;
+      font-size:.84rem;
+    }
+    .mini-quiz li{
+      margin-bottom:6px;
+      padding:5px 7px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+    }
+    .mini-quiz-options label{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+      font-size:.83rem;
+      color:#4b5563;
+    }
+    footer{
+      margin-top:4px;
+      padding-top:8px;
+      border-top:1px solid #e5e7eb;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+
+  <div class="wrapper">
+    <header>
+      <div class="logo-left">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">✍️</span>
+          <span>Narración de sucesos autobiográficos</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Narración de sucesos autobiográficos.</strong><br>
+          PDA: <strong>Escribe la narración de los hechos autobiográficos, haciendo uso de comas, puntos y seguido, puntos y aparte y dos puntos, para dar claridad y orden a las ideas.</strong><br>
+          <span class="phase-label">Actividad para Fase 5 – Educación Primaria</span>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Campo formativo: Lenguajes</span>
+          <span class="chip">Proyecto: <strong>Mi historia, mi voz, mi camino</strong></span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <section class="left-panel">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎯</span>
+              <span>Propósito de la ODA</span>
+            </div>
+            <span class="pill">Lenguajes · Fase 5</span>
+          </div>
+          <div class="card-body">
+            Al finalizar esta actividad digital, las y los estudiantes serán capaces de <strong>escribir un breve texto autobiográfico</strong> en el que narren sucesos significativos de su vida, utilizando <strong>comas, puntos y seguido, puntos y aparte y dos puntos</strong> para dar claridad y orden a sus ideas.
+            <ul class="objective-list">
+              <li>Reconocer la <strong>estructura básica</strong> de un texto autobiográfico (inicio, desarrollo y cierre).</li>
+              <li>Usar de manera intencional <strong>signos de puntuación</strong> para separar ideas y organizar la narración.</li>
+              <li>Relatar experiencias personales con <strong>coherencia temporal</strong> (antes, durante, después).</li>
+            </ul>
+
+            <div class="timeline">
+              <div class="step">
+                <div class="step-badge">1</div>
+                <div class="step-title">Observo</div>
+                Leo un ejemplo de autobiografía corta y reviso cómo usa la puntuación.
+              </div>
+              <div class="step">
+                <div class="step-badge">2</div>
+                <div class="step-title">Corrijo</div>
+                Ordeno y puntúo oraciones desordenadas o sin signos.
+              </div>
+              <div class="step">
+                <div class="step-badge">3</div>
+                <div class="step-title">Escribo</div>
+                Redacto mi propio texto autobiográfico.
+              </div>
+              <div class="step">
+                <div class="step-badge">4</div>
+                <div class="step-title">Reviso</div>
+                Me autoevalúo con una lista de cotejo rápida.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card student-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📄</span>
+              <span>Explora, escribe y revisa tu autobiografía</span>
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir resultados</button>
+              <button class="btn btn-outline" id="btnPrintActivity">📄 Imprimir actividad para resolver</button>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+
+            <div class="tabs">
+              <button class="tab-button active" data-tab="ejemplo"><span class="icon">📖</span><span>1. Observa el ejemplo</span></button>
+              <button class="tab-button" data-tab="corrige"><span class="icon">🧱</span><span>2. Ordena y puntúa</span></button>
+              <button class="tab-button" data-tab="escribe"><span class="icon">✍️</span><span>3. Escribe tu autobiografía</span></button>
+              <button class="tab-button" data-tab="evalua"><span class="icon">✅</span><span>4. Evalúate rápido</span></button>
+            </div>
+
+            <div class="tab-panel active" id="panel-ejemplo">
+              <div class="example-box">
+                <div class="example-label">Ejemplo de fragmento autobiográfico</div>
+                <p>
+                  Me llamo <span class="highlight">Sofía</span> y nací un día lluvioso de septiembre. <strong>Cuando tenía ocho años:</strong> ocurrió algo que nunca voy a olvidar: participé por primera vez en la escolta de la escuela.
+                </p>
+                <p>
+                  Esa mañana estaba muy nerviosa, <strong>mi mamá me peinó</strong> con dos trenzas apretadas, preparó mi uniforme y me dijo: <strong>“Confío en ti, hazlo con calma”.</strong> Yo sentía mariposas en el estómago; sin embargo, al escuchar el himno nacional respiré profundo, di el primer paso y poco a poco el miedo se convirtió en orgullo.
+                </p>
+                <p>
+                  Al final de la ceremonia, la directora se acercó y me dijo: <strong>“Sofía, lo hiciste muy bien, se nota que te preparaste”.</strong> Ese día entendí que los momentos importantes de mi vida se construyen con esfuerzo, paciencia y apoyo de mi familia.
+                </p>
+              </div>
+              <ul class="sentence-list">
+                <li>Observa cómo se usan los <strong>puntos y seguido</strong> para separar ideas dentro de un mismo momento.</li>
+                <li>Identifica los <strong>puntos y aparte</strong> cuando cambia la parte de la historia.</li>
+                <li>Reconoce los <strong>dos puntos</strong> antes de presentar algo que se dice o se enumera.</li>
+              </ul>
+            </div>
+
+            <div class="tab-panel" id="panel-corrige">
+              <p>Las siguientes oraciones forman parte de un texto autobiográfico, pero <strong>les faltan signos de puntuación</strong>. Reescríbelas correctamente en tu cuaderno o en tu libreta, usando comas, puntos y seguido, puntos y aparte y dos puntos.</p>
+              <ol class="sentence-list">
+                <li>cuando era pequeño vivía con mis abuelos ellos me enseñaron a levantarme temprano y ayudar en la casa</li>
+                <li>recuerdo tres cosas muy importantes de mi infancia jugar futbol en el patio cuidar a los animales y acompañar a mi abuelo a la labor</li>
+                <li>el día que entré a quinto grado me sentía nervioso conocí nuevos compañeros la maestra nos dio la bienvenida y dijo mañana comenzaremos un proyecto sobre nuestras historias</li>
+              </ol>
+              <div class="status status-info">
+                <span>💡</span>
+                <div>Después de corregir, revisa si cada oración tiene al menos un <strong>punto</strong>, si usaste <strong>comas</strong> al enumerar y si los <strong>dos puntos</strong> aparecen antes de una lista o frase que se presenta.</div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="panel-escribe">
+              <p>Ahora redacta un <strong>texto autobiográfico corto</strong> (entre 1 y 3 párrafos) sobre un momento importante de tu vida: tu primer día en la escuela, un viaje, un partido, una presentación, una celebración familiar, etc.</p>
+              <textarea id="studentText" placeholder="Escribe aquí tu texto autobiográfico. Procura usar comas, puntos y seguido, puntos y aparte y dos puntos para organizar tus ideas."></textarea>
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckText">🔎 Revisar aspectos básicos</button>
+                <button class="btn btn-secondary" id="btnClearText">🧹 Borrar texto</button>
+              </div>
+              <div id="statusText" class="status status-info">
+                <span>✍️</span>
+                <div>Escribe tu texto y luego haz clic en <strong>“Revisar aspectos básicos”</strong> para ver una orientación rápida sobre la longitud y el uso de signos.</div>
+              </div>
+            </div>
+
+            <div class="tab-panel" id="panel-evalua">
+              <p>Marca si consideras que ya cumpliste con cada aspecto del texto autobiográfico.</p>
+              <div class="checklist">
+                <label><input type="checkbox" id="chkEstructura"> Mi texto tiene <strong>inicio, desarrollo y cierre</strong> claros.</label>
+                <label><input type="checkbox" id="chkComas"> Usé <strong>comas</strong> para separar ideas o elementos de una lista.</label>
+                <label><input type="checkbox" id="chkPuntosSeguido"> Utilicé <strong>puntos y seguido</strong> para separar ideas relacionadas dentro de un mismo momento.</label>
+                <label><input type="checkbox" id="chkPuntosAparte"> Incluí al menos un <strong>punto y aparte</strong> cuando cambié de momento o escena.</label>
+                <label><input type="checkbox" id="chkDosPuntos"> Usé <strong>dos puntos</strong> al introducir una enumeración o un diálogo.</label>
+                <label><input type="checkbox" id="chkTiempoVerbal"> Mantengo el <strong>mismo tiempo verbal</strong> (principalmente pasado) en la mayor parte del texto.</label>
+              </div>
+
+              <p style="margin-top:8px;">Responde también este mini cuestionario:</p>
+              <ul class="mini-quiz">
+                <li>
+                  <p><strong>1.</strong> ¿Para qué sirven los puntos y aparte en un texto autobiográfico?</p>
+                  <div class="mini-quiz-options">
+                    <label><input type="radio" name="mq1" value="a"> Para que el texto se vea más largo.</label>
+                    <label><input type="radio" name="mq1" value="b"> Para separar momentos o escenas diferentes de mi historia.</label>
+                    <label><input type="radio" name="mq1" value="c"> Para marcar que alguien está hablando en voz alta.</label>
+                  </div>
+                </li>
+                <li>
+                  <p><strong>2.</strong> ¿En qué caso es más útil usar dos puntos en tu autobiografía?</p>
+                  <div class="mini-quiz-options">
+                    <label><input type="radio" name="mq2" value="a"> Cuando quiero descansar de escribir.</label>
+                    <label><input type="radio" name="mq2" value="b"> Antes de empezar cualquier nuevo párrafo.</label>
+                    <label><input type="radio" name="mq2" value="c"> Antes de una lista o una frase que voy a presentar, por ejemplo, algo que alguien dijo.</label>
+                  </div>
+                </li>
+              </ul>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckEval">📝 Ver mi autoevaluación</button>
+                <button class="btn btn-secondary" id="btnResetEval">↩️ Reiniciar</button>
+              </div>
+              <div id="statusEval" class="status status-info">
+                <span>💬</span>
+                <div>Marca las casillas y responde las preguntas. Luego haz clic en <strong>“Ver mi autoevaluación”</strong>.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="right-panel">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🏫</span>
+              <span>Avatar guía – Instrucciones</span>
+            </div>
+          </div>
+          <div class="card-body avatar-card">
+            <div class="avatar-circle" aria-hidden="true">
+              <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, soy el maestro Martín Reta.</strong> Te acompañaré para que escribas una autobiografía clara y ordenada, usando correctamente los signos de puntuación.
+              <ol class="avatar-steps">
+                <li><span class="badge-step">1</span> En <strong>“Observa el ejemplo”</strong> lee un texto autobiográfico corto y observa cómo se usan los puntos, comas y dos puntos.</li>
+                <li><span class="badge-step">2</span> En <strong>“Ordena y puntúa”</strong> corrige oraciones relacionadas con recuerdos de la infancia.</li>
+                <li><span class="badge-step">3</span> En <strong>“Escribe tu autobiografía”</strong> redacta un texto sobre un momento importante de tu vida.</li>
+                <li><span class="badge-step">4</span> En <strong>“Evalúate rápido”</strong> marca si cumpliste con los aspectos clave de la escritura.</li>
+              </ol>
+              <div class="audio-row">
+                <button class="btn btn-primary" id="btnPlayVoice">🔊 Escuchar instrucciones</button>
+                <small style="font-size:.78rem;color:#6b7280;">
+                  Si tu navegador lo permite, al hacer clic escucharás estas instrucciones en voz alta.
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card info-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🔗</span>
+              <span>Vinculación con el proyecto autobiográfico</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p>
+              Esta ODA forma parte del proyecto <strong>“Mi historia, mi voz, mi camino”</strong>. Puede articularse con actividades como:
+            </p>
+            <ul class="objective-list">
+              <li>Elaboración de un <strong>libro colectivo</strong> de autobiografías del grupo.</li>
+              <li>Grabación en audio de las narraciones para una <strong>cabina de radio escolar</strong>.</li>
+              <li>Presentación de fragmentos en una <strong>asamblea escolar o familiar</strong>.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        © 2025. Elaborado por <strong>Mtro. Martín Reta</strong> – Escuela Primaria “Gral. Lázaro Cárdenas”.
+      </div>
+      <div class="project">
+        Proyecto “Mi historia, mi voz, mi camino” · ODA: Narración de sucesos autobiográficos.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Tabs
+    const tabButtons = document.querySelectorAll(".tab-button");
+    const panels = {
+      ejemplo: document.getElementById("panel-ejemplo"),
+      corrige: document.getElementById("panel-corrige"),
+      escribe: document.getElementById("panel-escribe"),
+      evalua: document.getElementById("panel-evalua")
+    };
+    tabButtons.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const t=btn.dataset.tab;
+        tabButtons.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        Object.keys(panels).forEach(k=>panels[k].classList.remove("active"));
+        panels[t].classList.add("active");
+      });
+    });
+
+    // Audio instrucciones
+    const btnPlayVoice = document.getElementById("btnPlayVoice");
+    const instructionsText = "Hola, soy el maestro Martin Reta. Primero, lee el ejemplo de autobiografia y observa como se usan los signos de puntuacion. Despues, corrige las oraciones propuestas. Luego, escribe tu propio texto autobiografico sobre un momento importante de tu vida. Al final, revisa tu trabajo con la autoevaluacion rapida.";
+    function speakInstructions(){
+      if(!('speechSynthesis' in window)){
+        alert("Tu navegador no permite la lectura en voz alta. Puedes leer las instrucciones directamente en pantalla.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(instructionsText);
+      u.lang = "es-MX";
+      const voices = window.speechSynthesis.getVoices();
+      let chosen = null;
+      if(voices && voices.length){
+        chosen = voices.find(v=>v.lang.startsWith("es") && /Hombre|Male|Miguel|Diego|Jorge|Antonio|Carlos/i.test(v.name))
+               || voices.find(v=>v.lang.startsWith("es"))
+               || voices[0];
+      }
+      if(chosen){u.voice = chosen;}
+      window.speechSynthesis.speak(u);
+    }
+    btnPlayVoice.addEventListener("click",()=>{
+      const voices = window.speechSynthesis.getVoices();
+      if(!voices || voices.length===0){
+        window.speechSynthesis.onvoiceschanged = speakInstructions;
+        window.speechSynthesis.getVoices();
+      }else{
+        speakInstructions();
+      }
+    });
+
+    // Revisión básica del texto
+    const studentText = document.getElementById("studentText");
+    const statusText = document.getElementById("statusText");
+    document.getElementById("btnCheckText").addEventListener("click",()=>{
+      const text = studentText.value.trim();
+      if(!text){
+        statusText.className = "status status-error";
+        statusText.innerHTML = "<span>⚠️</span><div>Aún no has escrito tu texto. Escribe tu autobiografia y vuelve a intentar.</div>";
+        return;
+      }
+      const length = text.split(/\s+/).length;
+      const hasComma = /,/.test(text);
+      const hasDot = /\./.test(text);
+      const hasColon = /:/.test(text);
+      let messages = [];
+      messages.push("Tu texto tiene aproximadamente <strong>"+length+"</strong> palabras.");
+      if(hasComma){
+        messages.push("✅ Se detectaron <strong>comas</strong> en tu texto.");
+      }else{
+        messages.push("🔍 No se detectaron comas. Revisa si puedes usarlas para separar ideas o elementos de una lista.");
+      }
+      if(hasDot){
+        messages.push("✅ Se detectaron <strong>puntos</strong>. Revisa si hay puntos y seguido y puntos y aparte.");
+      }else{
+        messages.push("🔍 No se detectaron puntos. Es importante usarlos para cerrar oraciones.");
+      }
+      if(hasColon){
+        messages.push("✅ Se detectaron <strong>dos puntos</strong>. Úsalos para introducir listas o diálogos.");
+      }else{
+        messages.push("ℹ️ No se detectaron dos puntos. Puedes usarlos, por ejemplo, antes de escribir algo que alguien dijo.");
+      }
+      statusText.className = "status status-success";
+      statusText.innerHTML = "<span>✅</span><div>"+messages.join("<br>")+"</div>";
+    });
+    document.getElementById("btnClearText").addEventListener("click",()=>{
+      studentText.value = "";
+      statusText.className = "status status-info";
+      statusText.innerHTML = "<span>✍️</span><div>Escribe tu texto y luego haz clic en <strong>“Revisar aspectos básicos”</strong> para ver una orientación rápida sobre la longitud y el uso de signos.</div>";
+    });
+
+    // Autoevaluación
+    const statusEval = document.getElementById("statusEval");
+    const correctMiniQuiz = { mq1:"b", mq2:"c" };
+    let lastEvalSummary = null;
+
+    document.getElementById("btnCheckEval").addEventListener("click",()=>{
+      const checks = {
+        estructura: document.getElementById("chkEstructura").checked,
+        comas: document.getElementById("chkComas").checked,
+        ps: document.getElementById("chkPuntosSeguido").checked,
+        pa: document.getElementById("chkPuntosAparte").checked,
+        dosp: document.getElementById("chkDosPuntos").checked,
+        tiempo: document.getElementById("chkTiempoVerbal").checked
+      };
+      let marcados = Object.values(checks).filter(v=>v).length;
+
+      let quizCorrect = 0;
+      ["mq1","mq2"].forEach(q=>{
+        const radios = document.querySelectorAll('input[name="'+q+'"]');
+        let sel = null;
+        radios.forEach(r=>{ if(r.checked) sel = r.value; });
+        if(sel === correctMiniQuiz[q]) quizCorrect++;
+      });
+
+      if(marcados === 0 && quizCorrect === 0){
+        statusEval.className = "status status-info";
+        statusEval.innerHTML = "<span>ℹ️</span><div>Todavía no has marcado aspectos ni respondido el mini cuestionario. Intenta completar al menos algunos puntos.</div>";
+        return;
+      }
+
+      let mensajes = [];
+      mensajes.push("Aspectos marcados en la lista de cotejo: <strong>"+marcados+" de 6</strong>.");
+      if(checks.estructura){
+        mensajes.push("✅ Tu texto tiene inicio, desarrollo y cierre.");
+      }else{
+        mensajes.push("🔍 Revisa si tu texto presenta claramente el momento en que inicia la historia, lo que sucede y cómo termina.");
+      }
+      if(checks.comas){
+        mensajes.push("✅ Indicaste que usaste comas para separar ideas o elementos.");
+      }else{
+        mensajes.push("🔍 Puedes revisar si hay listas o ideas largas que necesiten comas.");
+      }
+      if(checks.ps){
+        mensajes.push("✅ Mencionas que usas puntos y seguido para separar ideas dentro del mismo momento.");
+      }else{
+        mensajes.push("🔍 Intenta separar oraciones largas en varias más cortas con puntos y seguido.");
+      }
+      if(checks.pa){
+        mensajes.push("✅ Indicaste que usas puntos y aparte para cambiar de momento o escena.");
+      }else{
+        mensajes.push("🔍 Quizá puedas marcar un nuevo párrafo cuando cambies de día, lugar o situación.");
+      }
+      if(checks.dosp){
+        mensajes.push("✅ Señalas que usas dos puntos para presentar una lista o un diálogo.");
+      }else{
+        mensajes.push("ℹ️ Recuerda que los dos puntos se usan, por ejemplo, antes de escribir lo que alguien dijo.");
+      }
+      if(checks.tiempo){
+        mensajes.push("✅ Dices que mantienes el mismo tiempo verbal (principalmente pasado) en la mayor parte del texto.");
+      }else{
+        mensajes.push("🔍 Revisa si cambias innecesariamente entre pasado y presente.");
+      }
+
+      mensajes.push("Respuestas correctas en el mini cuestionario: <strong>"+quizCorrect+" de 2</strong>.");
+      if(quizCorrect === 2){
+        mensajes.push("🌟 Comprendes bien el uso de puntos y aparte y de los dos puntos.");
+      }else if(quizCorrect === 1){
+        mensajes.push("📚 Vas por buen camino, pero conviene repasar el uso de estos signos.");
+      }else{
+        mensajes.push("✏️ Es recomendable volver a leer la explicación y comentar tus dudas con el docente.");
+      }
+
+      lastEvalSummary = {
+        marcados,
+        quizCorrect,
+        mensajes
+      };
+
+      statusEval.className = "status status-success";
+      statusEval.innerHTML = "<span>✅</span><div>"+mensajes.join("<br>")+"</div>";
+    });
+
+    document.getElementById("btnResetEval").addEventListener("click",()=>{
+      ["chkEstructura","chkComas","chkPuntosSeguido","chkPuntosAparte","chkDosPuntos","chkTiempoVerbal"].forEach(id=>{
+        document.getElementById(id).checked = false;
+      });
+      ["mq1","mq2"].forEach(q=>{
+        document.querySelectorAll('input[name="'+q+'"]').forEach(r=>r.checked=false);
+      });
+      lastEvalSummary = null;
+      statusEval.className = "status status-info";
+      statusEval.innerHTML = "<span>💬</span><div>Marca las casillas y responde las preguntas. Luego haz clic en <strong>“Ver mi autoevaluación”</strong>.</div>";
+    });
+
+    // Imprimir resultados
+    document.getElementById("btnPrintResults").addEventListener("click",()=>{
+      const studentName = document.getElementById("studentName").value.trim();
+      const text = studentText.value.trim();
+      if(!lastEvalSummary && !text){
+        alert("Primero realiza tu texto y la autoevaluación para poder imprimir resultados.");
+        return;
+      }
+      const w = window.open("","_blank");
+      w.document.write("<html><head><title>Resultados del estudiante – Autobiografía</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:4px 0;} ul{padding-left:18px;} li{margin-bottom:3px;} .small{font-size:12px;color:#4b5563;} .blue{color:#1d4ed8;} .red{color:#b91c1c;} pre{white-space:pre-wrap;font-size:12px;border:1px solid #e5e7eb;border-radius:8px;padding:8px;background:#f9fafb;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Resultados del estudiante – Narración de sucesos autobiográficos</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta</p>");
+      w.document.write("<p><strong>Proyecto:</strong> Mi historia, mi voz, mi camino</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Escribe la narración de los hechos autobiográficos, haciendo uso de comas, puntos y seguido, puntos y aparte y dos puntos.</p>");
+
+      if(text){
+        const length = text.split(/\\s+/).length;
+        w.document.write("<h2>Texto del estudiante</h2>");
+        w.document.write("<p class='small'>Extensión aproximada: "+length+" palabras.</p>");
+        w.document.write("<pre>"+text.replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</pre>");
+      }
+
+      if(lastEvalSummary){
+        w.document.write("<h2>Autoevaluación</h2>");
+        w.document.write("<p>Aspectos marcados en lista de cotejo: <span class='blue'>"+lastEvalSummary.marcados+" de 6</span></p>");
+        w.document.write("<p>Mini cuestionario: <span class='blue'>"+lastEvalSummary.quizCorrect+" de 2</span> respuestas correctas.</p>");
+        if(lastEvalSummary.mensajes && lastEvalSummary.mensajes.length){
+          w.document.write("<ul>");
+          lastEvalSummary.mensajes.forEach(msg=>{
+            const color = /✅|🌟/.test(msg) ? "blue" : (/🔍|✏️|ℹ️/.test(msg) ? "red" : ""); 
+            if(color==="blue"){
+              w.document.write("<li class='blue'>"+msg+"</li>");
+            }else if(color==="red"){
+              w.document.write("<li class='red'>"+msg+"</li>");
+            }else{
+              w.document.write("<li>"+msg+"</li>");
+            }
+          });
+          w.document.write("</ul>");
+        }
+      }
+
+      w.document.write('<p class="small">Observaciones del docente:</p>');
+      w.document.write('<p class="small">______________________________________________</p>');
+      w.document.write('<p class="small">______________________________________________</p>');
+      w.document.write('<p class="small">______________________________________________</p>');
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+
+    // Imprimir actividad para resolver
+    document.getElementById("btnPrintActivity").addEventListener("click",()=>{
+      const studentName = document.getElementById("studentName").value.trim();
+      const w = window.open("","_blank");
+      w.document.write("<html><head><title>Actividad para imprimir – Narración de sucesos autobiográficos</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:6px 0;} ol{padding-left:18px;} li{margin-bottom:6px;} .small{font-size:12px;color:#4b5563;} textarea{width:100%;min-height:100px;border:1px solid #e5e7eb;border-radius:6px;margin-top:4px;} .vf-item{margin-bottom:6px;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Actividad para imprimir – Narración de sucesos autobiográficos</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta &nbsp;&nbsp;&nbsp; <strong>Proyecto:</strong> Mi historia, mi voz, mi camino</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Escribe la narración de los hechos autobiográficos, haciendo uso de comas, puntos y seguido, puntos y aparte y dos puntos.</p>");
+
+      w.document.write("<h2>Parte A. Observa el ejemplo</h2>");
+      w.document.write("<p>Lee el siguiente fragmento autobiográfico y subraya en tu cuaderno:</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>Un ejemplo de <strong>punto y seguido</strong>.</li>");
+      w.document.write("<li>Un ejemplo de <strong>punto y aparte</strong>.</li>");
+      w.document.write("<li>Un ejemplo de <strong>dos puntos</strong>.</li>");
+      w.document.write("</ol>");
+      w.document.write("<p class='small'>Ejemplo:</p>");
+      w.document.write("<p class='small'>Me llamo Sofía y nací un día lluvioso de septiembre. Cuando tenía ocho años: ocurrió algo que nunca voy a olvidar: participé por primera vez en la escolta de la escuela. Esa mañana estaba muy nerviosa, mi mamá me peinó con dos trenzas apretadas, preparó mi uniforme y me dijo: “Confío en ti, hazlo con calma”.</p>");
+
+      w.document.write("<h2>Parte B. Ordena y puntúa</h2>");
+      w.document.write("<p>Reescribe correctamente las siguientes oraciones en tu cuaderno, usando comas, puntos y seguido, puntos y aparte y dos puntos.</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>cuando era pequeño vivía con mis abuelos ellos me enseñaron a levantarme temprano y ayudar en la casa</li>");
+      w.document.write("<li>recuerdo tres cosas muy importantes de mi infancia jugar futbol en el patio cuidar a los animales y acompañar a mi abuelo a la labor</li>");
+      w.document.write("<li>el día que entré a quinto grado me sentía nervioso conocí nuevos compañeros la maestra nos dio la bienvenida y dijo mañana comenzaremos un proyecto sobre nuestras historias</li>");
+      w.document.write("</ol>");
+
+      w.document.write("<h2>Parte C. Escribe tu autobiografía</h2>");
+      w.document.write("<p>Escribe un texto autobiográfico sobre un momento importante de tu vida (entre 1 y 3 párrafos). No olvides usar comas, puntos y seguido, puntos y aparte y dos puntos.</p>");
+      for(let i=0;i<5;i++){
+        w.document.write("<p class='vf-item'>________________________________________________________________________________</p>");
+      }
+
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+  </script>
+</body>
+</html>
