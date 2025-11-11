@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Juego de Memoria del Sistema Solar</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --bg-dark:#020617;
+      --primary:#0f172a;
+      --accent:#4f46e5;
+      --accent-2:#0ea5e9;
+      --card:#ffffff;
+      --border:#e2e8f0;
+      --muted:#64748b;
+      --success:#16a34a;
+      --danger:#b91c1c;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#0f172a 0,var(--bg-dark) 40%,var(--bg-dark) 100%);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+      color:#0b1120;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:12% 18%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1100px;
+      background:radial-gradient(circle at top left,#e0f2fe 0,#ffffff 35%,#e5e7eb 130%);
+      border-radius:28px;
+      box-shadow:0 18px 40px rgba(15,23,42,.32);
+      border:1px solid #1d4ed8;
+      padding:16px;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:10px;
+      align-items:center;
+      border-bottom:1px solid #c7d2fe;
+      padding-bottom:8px;
+    }
+    header img{max-height:58px;width:auto;}
+    @media(max-width:900px){
+      header{grid-template-columns:1fr; text-align:center;}
+      header .logos{justify-content:center;}
+    }
+    .logos{display:flex;flex-direction:column;gap:6px;align-items:flex-start;}
+    @media(max-width:900px){.logos{align-items:center;}}
+    .title-main{
+      font-size:1.2rem;
+      margin:0;
+      color:#111827;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-main span.icon{font-size:1.5rem;}
+    .subtitle{
+      margin:2px 0 0;
+      font-size:.84rem;
+      color:#4b5563;
+    }
+    .subtitle strong{color:#1d4ed8;}
+    .tagline{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:4px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#e0f2fe;
+      font-size:.78rem;
+      color:#1d4ed8;
+      font-weight:600;
+    }
+    .author{
+      font-size:.8rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:900px){.author{text-align:center;}}
+    .author strong{display:block;color:#111827;font-size:.86rem;}
+
+    main{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media(max-width:960px){
+      main{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:10px 11px;
+      margin-bottom:8px;
+    }
+    .card-title{
+      font-weight:600;
+      font-size:.9rem;
+      margin-bottom:4px;
+      color:#111827;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card-title .icon{font-size:1.1rem;}
+    .card-body{font-size:.86rem;color:var(--muted);}
+
+    .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      font-size:.82rem;
+      margin-bottom:6px;
+    }
+    .student-row label{
+      font-weight:600;
+      color:#111827;
+    }
+    .student-row input{
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      padding:4px 8px;
+      font-size:.83rem;
+    }
+
+    /* Juego */
+    .game-wrapper{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .game-stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      font-size:.8rem;
+      color:#111827;
+    }
+    .pill{
+      border-radius:999px;
+      padding:3px 8px;
+      background:#e0f2fe;
+      border:1px solid #bfdbfe;
+    }
+    .pill span.label{font-weight:600;color:#1d4ed8;}
+
+    .game-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(70px,1fr));
+      gap:8px;
+      margin-top:6px;
+    }
+    @media(max-width:640px){
+      .game-grid{grid-template-columns:repeat(3,minmax(70px,1fr));}
+    }
+    .game-card{
+      position:relative;
+      background:#0f172a;
+      border-radius:14px;
+      height:96px;
+      cursor:pointer;
+      box-shadow:0 8px 18px rgba(15,23,42,.4);
+      transform-style:preserve-3d;
+      transition:transform .4s ease,box-shadow .2s ease;
+    }
+    .game-card-inner{
+      position:absolute;
+      inset:0;
+      border-radius:14px;
+      transform-style:preserve-3d;
+      transition:inherit;
+    }
+    .game-card-face{
+      position:absolute;
+      inset:0;
+      backface-visibility:hidden;
+      border-radius:14px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:6px;
+      text-align:center;
+    }
+    .game-card-front{
+      background:radial-gradient(circle at 20% 20%,#facc15,#0f172a 70%);
+      color:#f9fafb;
+      font-size:.9rem;
+      font-weight:600;
+    }
+    .game-card-back{
+      background:#e0f2fe;
+      color:#0f172a;
+      transform:rotateY(180deg);
+      font-size:.78rem;
+      padding:8px;
+    }
+    .game-card.flipped .game-card-inner{
+      transform:rotateY(180deg);
+    }
+    .game-card.matched{
+      box-shadow:0 0 0 2px #22c55e inset;
+      cursor:default;
+    }
+    .game-card.matched .game-card-front{
+      opacity:0.2;
+    }
+
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-primary{background:#4f46e5;color:#eef2ff;}
+    .btn-secondary{background:#e5e7eb;color:#111827;}
+    .btn-outline{background:#fff;color:#4f46e5;border:1px solid #c7d2fe;}
+
+    .status{
+      margin-top:6px;
+      font-size:.8rem;
+      border-radius:10px;
+      padding:6px 8px;
+    }
+    .status-info{background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;}
+    .status-success{background:#dcfce7;color:#15803d;border:1px solid #86efac;}
+    .status-error{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;}
+
+    /* Avatar */
+    .avatar-card{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      text-align:center;
+    }
+    .avatar-circle{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 20%,#facc15,#eab308 35%,#0f172a 90%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border:3px solid #fef3c7;
+    }
+    .avatar-circle img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+    .avatar-text{
+      font-size:.84rem;
+      color:#111827;
+    }
+    .avatar-text strong{color:#4f46e5;}
+    ul.steps{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.8rem;
+      color:#4b5563;
+      text-align:left;
+    }
+    .steps li{margin-bottom:2px;}
+    .badge-step{
+      display:inline-flex;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      align-items:center;
+      justify-content:center;
+      background:#4f46e5;
+      color:#fff;
+      font-size:.72rem;
+      margin-right:4px;
+    }
+
+    footer{
+      margin-top:10px;
+      padding-top:6px;
+      border-top:1px solid #cbd5f5;
+      font-size:.78rem;
+      color:#6b7280;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="logos">
+        <img src="sep_logo.png" alt="SEP">
+        <img src="escudo_escuela.png" alt="Escuela">
+      </div>
+      <div>
+        <h1 class="title-main"><span class="icon">🎮</span><span>Juego de Memoria del Sistema Solar</span></h1>
+        <p class="subtitle">
+          Campo formativo: <strong>Saberes y Pensamiento Científico · Fase 5</strong><br>
+          Contenido: <em>Sistema Solar y Universo: características de sus componentes.</em>
+        </p>
+        <div class="tagline">5.º grado · Memorama planetario</div>
+      </div>
+      <div class="author">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- Columna izquierda: Juego -->
+      <section>
+        <div class="card">
+          <div class="card-title"><span class="icon">🧑‍🎓</span>Datos del alumno</div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="student-row">
+              <label for="group">Grado y grupo:</label>
+              <input type="text" id="group" placeholder="Ej. 5° A">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">🪐</span>Propósito del juego</div>
+          <div class="card-body">
+            El alumno relaciona <strong>planetas</strong> con algunas de sus
+            <strong>características principales</strong> (posición, tamaño o rasgos distintivos),
+            fortaleciendo la memoria y el conocimiento del Sistema Solar.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">🎴</span>Memorama planetario</div>
+          <div class="card-body">
+            <div class="game-wrapper">
+              <p style="margin:0 0 4px;">Encuentra las parejas: cada planeta se empareja con una frase que lo describe.</p>
+
+              <div class="game-stats">
+                <div class="pill"><span class="label">Movimientos:</span> <span id="moves">0</span></div>
+                <div class="pill"><span class="label">Parejas encontradas:</span> <span id="matches">0</span>/6</div>
+                <div class="pill"><span class="label">Tiempo:</span> <span id="time">00:00</span></div>
+              </div>
+
+              <div id="gameGrid" class="game-grid" aria-label="Memorama del Sistema Solar"></div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnRestart">🔁 Reiniciar juego</button>
+                <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir hoja de resultados</button>
+              </div>
+
+              <div id="gameStatus" class="status status-info">
+                💡 Da clic en dos cartas para voltearlas. Si representan al mismo planeta (nombre y descripción), se quedarán descubiertas.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna derecha: Avatar e instrucciones -->
+      <aside>
+        <div class="card">
+          <div class="card-title"><span class="icon">🛰️</span>Tu guía espacial</div>
+          <div class="card-body">
+            <div class="avatar-card">
+              <div class="avatar-circle">
+                <img src="avatar_guia.png" alt="Avatar guía">
+              </div>
+              <div class="avatar-text">
+                <strong>Hola explorador,</strong> este es un reto de memoria del Sistema Solar.
+                Relaciona cada planeta con la pista correcta y trata de lograrlo con
+                <strong>pocos movimientos</strong> y en <strong>poco tiempo</strong>.
+              </div>
+              <ul class="steps">
+                <li><span class="badge-step">1</span>Escribe tu nombre y grupo.</li>
+                <li><span class="badge-step">2</span>Da clic en una carta y luego en otra para formar parejas.</li>
+                <li><span class="badge-step">3</span>Cuando termines, revisa tus resultados y, si se pide, imprímelos.</li>
+              </ul>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnListen">🔊 Escuchar instrucciones</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">📌</span>Procesos de desarrollo de aprendizaje (PDA)</div>
+          <div class="card-body" style="font-size:.8rem;">
+            Este juego se vincula con el PDA de 5.º grado:
+            <em>“Indaga, describe y representa con modelos las características de forma, ubicación,
+            tamaño y otros rasgos de los componentes del Sistema Solar”.</em>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      ODA de juego · Sistema Solar y Universo · Saberes y Pensamiento Científico – Fase 5
+    </footer>
+  </div>
+
+  <script>
+    // Datos de las parejas: mismo id, textos distintos (nombre y pista)
+    const planetPairs = [
+      {
+        id: "mercurio",
+        a: "Mercurio",
+        b: "Planeta más cercano al Sol."
+      },
+      {
+        id: "venus",
+        a: "Venus",
+        b: "El planeta más caliente; atmósfera muy densa."
+      },
+      {
+        id: "tierra",
+        a: "Tierra",
+        b: "Nuestro planeta, único con vida conocida."
+      },
+      {
+        id: "marte",
+        a: "Marte",
+        b: "Llamado “planeta rojo” por su color."
+      },
+      {
+        id: "jupiter",
+        a: "Júpiter",
+        b: "El planeta más grande del Sistema Solar."
+      },
+      {
+        id: "saturno",
+        a: "Saturno",
+        b: "Famoso por sus anillos visibles."
+      }
+    ];
+
+    const gameGrid = document.getElementById("gameGrid");
+    const movesSpan = document.getElementById("moves");
+    const matchesSpan = document.getElementById("matches");
+    const timeSpan = document.getElementById("time");
+    const statusDiv = document.getElementById("gameStatus");
+
+    let cards = [];
+    let firstCard = null;
+    let secondCard = null;
+    let lockBoard = false;
+    let moves = 0;
+    let matches = 0;
+    let startTime = null;
+    let timerInterval = null;
+    let lastResults = null;
+
+    function shuffle(array){
+      for(let i=array.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [array[i],array[j]]=[array[j],array[i]];
+      }
+      return array;
+    }
+
+    function createCards(){
+      const temp = [];
+      planetPairs.forEach(p=>{
+        temp.push({id:p.id,text:p.a});
+        temp.push({id:p.id,text:p.b});
+      });
+      cards = shuffle(temp);
+      gameGrid.innerHTML = "";
+      cards.forEach((cardData,index)=>{
+        const card = document.createElement("button");
+        card.type = "button";
+        card.className = "game-card";
+        card.setAttribute("data-id", cardData.id);
+        card.setAttribute("data-index", index);
+        card.setAttribute("aria-label","Carta de memorama");
+        card.innerHTML = `
+          <div class="game-card-inner">
+            <div class="game-card-face game-card-front">
+              ?
+            </div>
+            <div class="game-card-face game-card-back">
+              ${cardData.text}
+            </div>
+          </div>
+        `;
+        card.addEventListener("click", ()=> handleCardClick(card));
+        gameGrid.appendChild(card);
+      });
+    }
+
+    function startTimer(){
+      if(startTime) return;
+      startTime = Date.now();
+      timerInterval = setInterval(()=>{
+        const diff = Math.floor((Date.now()-startTime)/1000);
+        const mins = String(Math.floor(diff/60)).padStart(2,"0");
+        const secs = String(diff%60).padStart(2,"0");
+        timeSpan.textContent = `${mins}:${secs}`;
+      },1000);
+    }
+
+    function stopTimer(){
+      if(timerInterval){
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function handleCardClick(card){
+      if(lockBoard || card.classList.contains("flipped") || card.classList.contains("matched")) return;
+
+      startTimer();
+      card.classList.add("flipped");
+
+      if(!firstCard){
+        firstCard = card;
+        return;
+      }
+      secondCard = card;
+      moves++;
+      movesSpan.textContent = moves;
+      checkForMatch();
+    }
+
+    function checkForMatch(){
+      const id1 = firstCard.getAttribute("data-id");
+      const id2 = secondCard.getAttribute("data-id");
+      if(id1 === id2){
+        disableCards();
+      }else{
+        unflipCards();
+      }
+    }
+
+    function disableCards(){
+      firstCard.classList.add("matched");
+      secondCard.classList.add("matched");
+      resetTurn();
+      matches++;
+      matchesSpan.textContent = matches;
+      if(matches === planetPairs.length){
+        endGame();
+      }
+    }
+
+    function unflipCards(){
+      lockBoard = true;
+      setTimeout(()=>{
+        firstCard.classList.remove("flipped");
+        secondCard.classList.remove("flipped");
+        resetTurn();
+      }, 800);
+    }
+
+    function resetTurn(){
+      [firstCard,secondCard] = [null,null];
+      lockBoard = false;
+    }
+
+    function endGame(){
+      stopTimer();
+      // calcular tiempo total en segundos
+      const totalSeconds = startTime ? Math.floor((Date.now()-startTime)/1000) : 0;
+      const mins = String(Math.floor(totalSeconds/60)).padStart(2,"0");
+      const secs = String(totalSeconds%60).padStart(2,"0");
+
+      statusDiv.className = "status status-success";
+      statusDiv.innerHTML = `✅ ¡Has completado el memorama!<br>
+        Movimientos: <strong>${moves}</strong> · Tiempo: <strong>${mins}:${secs}</strong> minutos.`;
+
+      lastResults = {
+        moves,
+        matches,
+        totalPairs: planetPairs.length,
+        seconds: totalSeconds,
+        finishedAt: new Date().toLocaleString("es-MX")
+      };
+    }
+
+    function resetGame(){
+      stopTimer();
+      startTime = null;
+      timeSpan.textContent = "00:00";
+      moves = 0;
+      matches = 0;
+      movesSpan.textContent = "0";
+      matchesSpan.textContent = "0";
+      statusDiv.className = "status status-info";
+      statusDiv.innerHTML = "💡 Da clic en dos cartas para voltearlas. Si representan al mismo planeta (nombre y descripción), se quedarán descubiertas.";
+      lastResults = null;
+      createCards();
+    }
+
+    document.getElementById("btnRestart").addEventListener("click", resetGame);
+
+    // Imprimir hoja de resultados
+    document.getElementById("btnPrintResults").addEventListener("click", ()=>{
+      if(!lastResults){
+        alert("Primero completa el juego para poder imprimir la hoja de resultados.");
+        return;
+      }
+      const studentName = (document.getElementById("studentName").value || "___________________").trim() || "___________________";
+      const group = (document.getElementById("group").value || "________").trim() || "________";
+
+      const mins = String(Math.floor(lastResults.seconds/60)).padStart(2,"0");
+      const secs = String(lastResults.seconds%60).padStart(2,"0");
+
+      const win = window.open("","_blank");
+      win.document.write(`<!DOCTYPE html>
+      <html lang="es">
+      <head>
+        <meta charset="UTF-8">
+        <title>Resultados – Memorama del Sistema Solar</title>
+        <style>
+          body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px;color:#111827;}
+          h1{font-size:1.2rem;margin:0 0 6px;}
+          h2{font-size:1rem;margin:10px 0 4px;}
+          table{border-collapse:collapse;width:100%;margin-top:8px;font-size:.9rem;}
+          th,td{border:1px solid #d1d5db;padding:6px 8px;text-align:left;}
+          th{background:#e5e7eb;}
+          .box{border:1px solid #d1d5db;border-radius:6px;min-height:70px;margin-top:4px;}
+          .small{font-size:.82rem;color:#4b5563;}
+        </style>
+      </head>
+      <body>
+        <h1>Hoja de resultados – Juego de Memoria del Sistema Solar</h1>
+        <p><strong>Alumno(a):</strong> ${studentName} &nbsp;&nbsp; <strong>Grado y grupo:</strong> ${group}</p>
+        <p class="small"><strong>Fecha:</strong> ${lastResults.finishedAt}</p>
+
+        <h2>Procesos de desarrollo de aprendizaje (PDA)</h2>
+        <p class="small">
+          Indaga, describe y representa con modelos las características de los componentes del Sistema Solar:
+          Sol, planetas, satélites y asteroides.
+        </p>
+
+        <h2>Resultados del juego</h2>
+        <table>
+          <tr><th>Indicador</th><th>Valor</th></tr>
+          <tr><td>Parejas totales</td><td>${lastResults.totalPairs}</td></tr>
+          <tr><td>Parejas encontradas</td><td>${lastResults.matches}</td></tr>
+          <tr><td>Movimientos realizados</td><td>${lastResults.moves}</td></tr>
+          <tr><td>Tiempo empleado</td><td>${mins}:${secs} minutos</td></tr>
+        </table>
+
+        <h2>Observaciones del docente</h2>
+        <div class="box"></div>
+
+        <h2>Compromisos de mejora del alumno(a)</h2>
+        <div class="box"></div>
+
+        <p style="margin-top:18px;font-size:.86rem;">
+          Firma del alumno(a): _____________________________ &nbsp;&nbsp;
+          Firma del docente: _____________________________
+        </p>
+      </body>
+      </html>`);
+      win.document.close();
+      win.print();
+    });
+
+    // Instrucciones con voz
+    document.getElementById("btnListen").addEventListener("click", ()=>{
+      const text = "Hola explorador. En este juego debes encontrar las parejas del Sistema Solar. Cada planeta se relaciona con una pista que lo describe. Da clic en dos cartas para voltearlas. Si son pareja, se quedarán descubiertas. Intenta terminar con el menor número de movimientos y en el menor tiempo posible.";
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no soporta la lectura de voz. Puedes leer las instrucciones en pantalla.");
+        return;
+      }
+      const synth = window.speechSynthesis;
+      synth.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "es-MX";
+      const voices = synth.getVoices().filter(v=>v.lang && v.lang.startsWith("es"));
+      if(voices.length>0) utter.voice = voices[0];
+      synth.speak(utter);
+    });
+
+    // Inicializar juego al cargar
+    resetGame();
+  </script>
+</body>
+</html>

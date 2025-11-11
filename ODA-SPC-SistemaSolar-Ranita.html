@@ -1,0 +1,879 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Juego de la ranita del Sistema Solar (Saberes y Pensamiento Científico)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --bg-dark:#020617;
+      --primary:#0f172a;
+      --accent:#22c55e;
+      --accent-2:#0ea5e9;
+      --card:#ffffff;
+      --border:#e2e8f0;
+      --muted:#64748b;
+      --success:#16a34a;
+      --danger:#b91c1c;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#0f172a 0,var(--bg-dark) 40%,var(--bg-dark) 100%);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+      color:#0b1120;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:12% 18%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1100px;
+      background:radial-gradient(circle at top left,#e0f2fe 0,#ffffff 35%,#e5e7eb 130%);
+      border-radius:28px;
+      box-shadow:0 18px 40px rgba(15,23,42,.32);
+      border:1px solid #1d4ed8;
+      padding:16px;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:10px;
+      align-items:center;
+      border-bottom:1px solid #c7d2fe;
+      padding-bottom:8px;
+    }
+    header img{max-height:58px;width:auto;}
+    @media(max-width:900px){
+      header{grid-template-columns:1fr;text-align:center;}
+      .logos{align-items:center;}
+      .author{text-align:center;}
+    }
+    .logos{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      align-items:flex-start;
+    }
+    .title-main{
+      font-size:1.2rem;
+      margin:0;
+      color:#111827;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-main span.icon{font-size:1.5rem;}
+    .subtitle{
+      margin:2px 0 0;
+      font-size:.84rem;
+      color:#4b5563;
+    }
+    .subtitle strong{color:#1d4ed8;}
+    .tagline{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:4px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#e0f2fe;
+      font-size:.78rem;
+      color:#1d4ed8;
+      font-weight:600;
+    }
+    .author{
+      font-size:.8rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    .author strong{display:block;color:#111827;font-size:.86rem;}
+
+    main{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media(max-width:960px){
+      main{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:10px 11px;
+      margin-bottom:8px;
+    }
+    .card-title{
+      font-weight:600;
+      font-size:.9rem;
+      margin-bottom:4px;
+      color:#111827;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card-title .icon{font-size:1.1rem;}
+    .card-body{font-size:.86rem;color:var(--muted);}
+
+    .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      font-size:.82rem;
+      margin-bottom:6px;
+    }
+    .student-row label{
+      font-weight:600;
+      color:#111827;
+    }
+    .student-row input{
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      padding:4px 8px;
+      font-size:.83rem;
+    }
+
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-primary{background:#22c55e;color:#052e16;}
+    .btn-secondary{background:#e5e7eb;color:#111827;}
+    .btn-outline{background:#fff;color:#4f46e5;border:1px solid #c7d2fe;}
+
+    .status{
+      margin-top:6px;
+      font-size:.8rem;
+      border-radius:10px;
+      padding:6px 8px;
+    }
+    .status-info{background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;}
+    .status-success{background:#dcfce7;color:#15803d;border:1px solid #86efac;}
+    .status-error{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;}
+
+    .pill{
+      border-radius:999px;
+      padding:3px 8px;
+      background:#e0f2fe;
+      border:1px solid #bfdbfe;
+      font-size:.8rem;
+      color:#1f2937;
+    }
+    .pill span.label{font-weight:600;color:#1d4ed8;}
+
+    .game-stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:4px;
+    }
+
+    /* Estanque y ranita */
+    .pond{
+      margin-top:6px;
+      background:radial-gradient(circle at 30% 20%,#38bdf8,#0ea5e9 40%,#0369a1 100%);
+      border-radius:20px;
+      padding:18px 12px 20px;
+      position:relative;
+      overflow:hidden;
+      border:2px solid #0f172a;
+      box-shadow:inset 0 0 18px rgba(15,23,42,.55);
+    }
+    .lily-row{
+      display:flex;
+      justify-content:space-between;
+      gap:8px;
+      position:relative;
+      z-index:1;
+    }
+    .lily{
+      flex:1;
+      position:relative;
+      height:72px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 20%,#bbf7d0,#22c55e 55%,#15803d 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.78rem;
+      color:#052e16;
+      box-shadow:0 6px 14px rgba(22,163,74,.6);
+    }
+    .lily.start{
+      background:radial-gradient(circle at 30% 20%,#bfdbfe,#60a5fa 55%,#1d4ed8 100%);
+      color:#0b1120;
+      font-weight:600;
+    }
+    .lily.goal{
+      background:radial-gradient(circle at 30% 20%,#facc15,#eab308 55%,#a16207 100%);
+      color:#78350f;
+      font-weight:700;
+    }
+
+    .frog{
+      position:absolute;
+      width:56px;
+      height:56px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 25%,#fefce8,#bbf7d0 45%,#16a34a 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:2.4rem;
+      box-shadow:0 10px 20px rgba(0,0,0,.55);
+      border:2px solid #14532d;
+      transition:transform .4s ease-out;
+      pointer-events:none;
+      z-index:2;
+    }
+    .pond.shake{
+      animation:shake .4s ease;
+    }
+    @keyframes shake{
+      0%{transform:translateX(0);}
+      25%{transform:translateX(-6px);}
+      50%{transform:translateX(6px);}
+      75%{transform:translateX(-3px);}
+      100%{transform:translateX(0);}
+    }
+
+    /* Hojitas de respuesta */
+    .answers-wrapper{
+      margin-top:10px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .question-text{
+      background:#eff6ff;
+      border-radius:12px;
+      padding:6px 8px;
+      font-size:.86rem;
+      color:#1f2937;
+      border:1px solid #bfdbfe;
+    }
+    .answer-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      justify-content:center;
+    }
+    .answer-leaf{
+      flex:1;
+      min-width:110px;
+      max-width:180px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 20%,#bbf7d0,#4ade80 60%,#16a34a 100%);
+      border:2px solid #15803d;
+      color:#052e16;
+      padding:6px 10px;
+      font-size:.82rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      text-align:center;
+      cursor:pointer;
+      box-shadow:0 6px 14px rgba(22,163,74,.5);
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease;
+    }
+    .answer-leaf:hover{
+      transform:translateY(-2px);
+      box-shadow:0 10px 18px rgba(22,163,74,.6);
+      filter:brightness(1.05);
+    }
+    .answer-leaf.wrong{
+      background:radial-gradient(circle at 30% 20%,#fecaca,#f97373 60%,#b91c1c 100%);
+      border-color:#7f1d1d;
+      color:#450a0a;
+    }
+    .answer-leaf.correct{
+      background:radial-gradient(circle at 30% 20%,#bbf7d0,#4ade80 60%,#16a34a 100%);
+      border-color:#15803d;
+      filter:brightness(1.1);
+    }
+
+    /* Avatar */
+    .avatar-card{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      text-align:center;
+    }
+    .avatar-circle{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 20%,#facc15,#eab308 35%,#0f172a 90%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border:3px solid #fef3c7;
+    }
+    .avatar-circle img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+    .avatar-text{
+      font-size:.84rem;
+      color:#111827;
+    }
+    .avatar-text strong{color:#4f46e5;}
+    ul.steps{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.8rem;
+      color:#4b5563;
+      text-align:left;
+    }
+    .steps li{margin-bottom:2px;}
+    .badge-step{
+      display:inline-flex;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      align-items:center;
+      justify-content:center;
+      background:#22c55e;
+      color:#052e16;
+      font-size:.72rem;
+      margin-right:4px;
+      font-weight:700;
+    }
+
+    footer{
+      margin-top:10px;
+      padding-top:6px;
+      border-top:1px solid #cbd5f5;
+      font-size:.78rem;
+      color:#6b7280;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="logos">
+        <img src="sep_logo.png" alt="SEP">
+        <img src="escudo_escuela.png" alt="Escuela">
+      </div>
+      <div>
+        <h1 class="title-main"><span class="icon">🐸</span><span>Juego de la ranita del Sistema Solar</span></h1>
+        <p class="subtitle">
+          Campo formativo: <strong>Saberes y Pensamiento Científico · Fase 5</strong><br>
+          Contenido: <em>Sistema Solar y Universo: características de sus componentes y aportaciones científicas y tecnológicas.</em>
+        </p>
+        <div class="tagline">5.º grado · Quiz interactivo de comprensión</div>
+      </div>
+      <div class="author">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- Columna izquierda: juego -->
+      <section>
+        <div class="card">
+          <div class="card-title"><span class="icon">🧑‍🎓</span>Datos del alumno</div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="student-row">
+              <label for="group">Grado y grupo:</label>
+              <input type="text" id="group" placeholder="Ej. 5° A">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">🎯</span>Propósito de esta ODA</div>
+          <div class="card-body">
+            Mediante un <strong>juego interactivo</strong>, el alumno responde preguntas sobre los componentes
+            del Sistema Solar, sus características y algunos aportes científicos (telescopio, astrónomos y
+            movimientos de la Tierra), apoyando la comprensión de los contenidos del campo
+            <strong>Saberes y Pensamiento Científico</strong>.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">🐸</span>Ranita exploradora del Sistema Solar</div>
+          <div class="card-body">
+            <p style="margin-top:0;margin-bottom:4px;">
+              Lee la pregunta que aparece sobre la ranita y haz clic en la hoja con la respuesta correcta.
+              Cada acierto hace que la ranita avance; si te equivocas, ¡se cae al agua y tendrás que empezar
+              desde el inicio!
+            </p>
+
+            <div class="game-stats">
+              <div class="pill"><span class="label">Pregunta:</span> <span id="questionNumber">1</span>/<span id="questionTotal">0</span></div>
+              <div class="pill"><span class="label">Aciertos:</span> <span id="correctCount">0</span></div>
+              <div class="pill"><span class="label">Intentos:</span> <span id="attemptCount">0</span></div>
+              <div class="pill"><span class="label">Tiempo:</span> <span id="time">00:00</span></div>
+            </div>
+
+            <div class="pond" id="pond">
+              <div class="lily-row" id="lilyRow">
+                <!-- Se generan desde JS -->
+              </div>
+              <div class="frog" id="frog">🐸</div>
+            </div>
+
+            <div class="answers-wrapper">
+              <div class="question-text" id="questionText"></div>
+              <div class="answer-row">
+                <button class="answer-leaf" data-index="0" id="answer0"></button>
+                <button class="answer-leaf" data-index="1" id="answer1"></button>
+                <button class="answer-leaf" data-index="2" id="answer2"></button>
+              </div>
+            </div>
+
+            <div class="btn-row">
+              <button class="btn btn-primary" id="btnRestart">🔁 Reiniciar juego</button>
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir hoja de resultados</button>
+            </div>
+
+            <div id="gameStatus" class="status status-info">
+              💡 Contesta correctamente para que la ranita llegue a la <strong>meta</strong>.
+              Si respondes mal, la ranita se caerá al agua y tendrás que volver a empezar.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna derecha: avatar, PDA, voz -->
+      <aside>
+        <div class="card">
+          <div class="card-title"><span class="icon">🛰️</span>Tu guía espacial</div>
+          <div class="card-body">
+            <div class="avatar-card">
+              <div class="avatar-circle">
+                <img src="avatar_guia.png" alt="Avatar guía">
+              </div>
+              <div class="avatar-text">
+                <strong>Hola explorador del Sistema Solar,</strong> acompaña a esta pequeña ranita a saltar de
+                hoja en hoja. Para ayudarla, deberás elegir la <strong>respuesta correcta</strong> en cada
+                pregunta sobre planetas, movimientos de la Tierra y aportes científicos.
+              </div>
+              <ul class="steps">
+                <li><span class="badge-step">1</span>Escribe tu nombre y grupo.</li>
+                <li><span class="badge-step">2</span>Lee con atención la pregunta que está sobre la ranita.</li>
+                <li><span class="badge-step">3</span>Haz clic en la hoja con la respuesta correcta.</li>
+                <li><span class="badge-step">4</span>Si respondes mal, la ranita se cae y empiezas de nuevo; si llegas a la meta, ¡imprime tus resultados!</li>
+              </ul>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnListen">🔊 Escuchar instrucciones</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">📌</span>Procesos de desarrollo de aprendizaje (PDA)</div>
+          <div class="card-body" style="font-size:.8rem;">
+            Este juego se relaciona principalmente con:
+            <ul style="padding-left:16px;margin:4px 0;">
+              <li><strong>PDA 1:</strong> Indaga, describe y representa las características de los componentes del Sistema Solar.</li>
+              <li><strong>PDA 2:</strong> Identifica y explica las características del movimiento de rotación y traslación de los planetas.</li>
+              <li><strong>PDA 3:</strong> Describe y valora aportaciones culturales, científicas y tecnológicas, como el telescopio, para conocer el Sistema Solar.</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      ODA – Juego de la ranita del Sistema Solar · Saberes y Pensamiento Científico · Fase 5
+    </footer>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        text: "¿Qué tipo de astro es el Sol?",
+        options: [
+          "Un planeta del Sistema Solar",
+          "Una estrella",
+          "Un satélite natural"
+        ],
+        correct: 1
+      },
+      {
+        text: "¿Cuántos planetas tiene el Sistema Solar?",
+        options: [
+          "8 planetas",
+          "7 planetas",
+          "9 planetas"
+        ],
+        correct: 0
+      },
+      {
+        text: "¿Cuál es el 'planeta rojo' del Sistema Solar?",
+        options: [
+          "Marte",
+          "Venus",
+          "Júpiter"
+        ],
+        correct: 0
+      },
+      {
+        text: "¿Qué movimiento de la Tierra dura aproximadamente 24 horas?",
+        options: [
+          "Traslación",
+          "Rotación",
+          "Ninguno, dura un año"
+        ],
+        correct: 1
+      },
+      {
+        text: "¿Qué movimiento de la Tierra dura aproximadamente 365 días?",
+        options: [
+          "Rotación",
+          "Traslación",
+          "Eclipse"
+        ],
+        correct: 1
+      },
+      {
+        text: "¿Qué instrumento permitió observar con mayor detalle la Luna y los planetas?",
+        options: [
+          "Microscopio",
+          "Termómetro",
+          "Telescopio"
+        ],
+        correct: 2
+      },
+      {
+        text: "¿Quién observó las lunas de Júpiter usando un telescopio?",
+        options: [
+          "Albert Einstein",
+          "Galileo Galilei",
+          "Isaac Newton"
+        ],
+        correct: 1
+      }
+    ];
+
+    const questionText = document.getElementById("questionText");
+    const answerButtons = [
+      document.getElementById("answer0"),
+      document.getElementById("answer1"),
+      document.getElementById("answer2")
+    ];
+    const questionNumberSpan = document.getElementById("questionNumber");
+    const questionTotalSpan = document.getElementById("questionTotal");
+    const correctCountSpan = document.getElementById("correctCount");
+    const attemptCountSpan = document.getElementById("attemptCount");
+    const timeSpan = document.getElementById("time");
+    const statusDiv = document.getElementById("gameStatus");
+    const pond = document.getElementById("pond");
+    const frog = document.getElementById("frog");
+    const lilyRow = document.getElementById("lilyRow");
+
+    let currentQuestionIndex = 0;
+    let correctCount = 0;
+    let attemptCount = 0;
+    let frogPos = 0;
+    let timerStarted = false;
+    let startTime = null;
+    let timerInterval = null;
+    let lastResults = null;
+
+    function buildLilies(){
+      lilyRow.innerHTML = "";
+      for(let i=0;i<=questions.length;i++){
+        const div = document.createElement("div");
+        div.className = "lily";
+        div.dataset.index = i;
+        if(i===0){
+          div.classList.add("start");
+          div.textContent = "INICIO";
+        }else if(i===questions.length){
+          div.classList.add("goal");
+          div.textContent = "META";
+        }
+        lilyRow.appendChild(div);
+      }
+      frogPos = 0;
+      const startLily = lilyRow.querySelector("[data-index='0']");
+      positionFrogOverLily(startLily);
+    }
+
+    function positionFrogOverLily(lily){
+      if(!lily) return;
+      const pondRect = pond.getBoundingClientRect();
+      const lilyRect = lily.getBoundingClientRect();
+      const centerX = lilyRect.left + lilyRect.width/2 - pondRect.left;
+      const frogSize = 56;
+      const x = centerX - frogSize/2;
+      const y = lilyRect.top - pondRect.top - frogSize/2 + 4; // un poquito encima
+      frog.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    window.addEventListener("resize", ()=>{
+      const currentLily = lilyRow.querySelector(`[data-index='${frogPos}']`);
+      positionFrogOverLily(currentLily);
+    });
+
+    function renderQuestion(){
+      const q = questions[currentQuestionIndex];
+      questionText.textContent = q.text;
+      answerButtons.forEach((btn,idx)=>{
+        btn.textContent = q.options[idx];
+        btn.classList.remove("correct","wrong");
+        btn.disabled = false;
+      });
+      questionNumberSpan.textContent = currentQuestionIndex+1;
+    }
+
+    function startTimer(){
+      if(timerStarted) return;
+      timerStarted = true;
+      startTime = Date.now();
+      timerInterval = setInterval(()=>{
+        const diff = Math.floor((Date.now()-startTime)/1000);
+        const mins = String(Math.floor(diff/60)).padStart(2,"0");
+        const secs = String(diff%60).padStart(2,"0");
+        timeSpan.textContent = `${mins}:${secs}`;
+      },1000);
+    }
+
+    function stopTimer(){
+      if(timerInterval){
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    answerButtons.forEach((btn,idx)=>{
+      btn.addEventListener("click", ()=>{
+        if(!timerStarted) startTimer();
+        handleAnswer(idx,btn);
+      });
+    });
+
+    function handleAnswer(selectedIndex,button){
+      const q = questions[currentQuestionIndex];
+      attemptCount++;
+      attemptCountSpan.textContent = attemptCount;
+
+      answerButtons.forEach(b=>b.disabled = true);
+
+      if(selectedIndex === q.correct){
+        correctCount++;
+        correctCountSpan.textContent = correctCount;
+        button.classList.add("correct");
+        statusDiv.className = "status status-success";
+        statusDiv.innerHTML = "✅ ¡Muy bien! La ranita puede avanzar a la siguiente hoja.";
+
+        frogPos++;
+        const nextLily = lilyRow.querySelector(`[data-index='${frogPos}']`);
+        if(nextLily) positionFrogOverLily(nextLily);
+
+        setTimeout(()=>{
+          if(frogPos === questions.length){
+            endGame();
+          }else{
+            currentQuestionIndex++;
+            renderQuestion();
+            statusDiv.className = "status status-info";
+            statusDiv.innerHTML = "💡 Lee la siguiente pregunta y ayuda a la ranita a seguir avanzando.";
+            answerButtons.forEach(b=>b.disabled=false);
+          }
+        },600);
+
+      }else{
+        button.classList.add("wrong");
+        pond.classList.add("shake");
+        statusDiv.className = "status status-error";
+        statusDiv.innerHTML = "❌ La ranita se ha caído al agua. Tendrás que empezar de nuevo desde el inicio.";
+
+        setTimeout(()=>{
+          pond.classList.remove("shake");
+          resetGame(false);
+        },800);
+      }
+    }
+
+    function getElapsedSeconds(){
+      if(!startTime) return 0;
+      return Math.floor((Date.now()-startTime)/1000);
+    }
+
+    function endGame(){
+      stopTimer();
+      const seconds = getElapsedSeconds();
+      const mins = String(Math.floor(seconds/60)).padStart(2,"0");
+      const secs = String(seconds%60).padStart(2,"0");
+
+      statusDiv.className = "status status-success";
+      statusDiv.innerHTML = `🎉 ¡Felicidades! La ranita llegó a la meta. Aciertos: <strong>${correctCount}</strong> de <strong>${questions.length}</strong>, en <strong>${mins}:${secs}</strong> minutos.`;
+
+      lastResults = {
+        correct: correctCount,
+        total: questions.length,
+        attempts: attemptCount,
+        seconds,
+        finishedAt: new Date().toLocaleString("es-MX")
+      };
+
+      answerButtons.forEach(b=>b.disabled=true);
+    }
+
+    function resetGame(resetTimer=true){
+      currentQuestionIndex = 0;
+      correctCount = 0;
+      correctCountSpan.textContent = "0";
+
+      stopTimer();
+      if(resetTimer){
+        timerStarted = false;
+        startTime = null;
+        timeSpan.textContent = "00:00";
+        attemptCount = 0;
+      }
+      attemptCountSpan.textContent = attemptCount;
+
+      statusDiv.className = "status status-info";
+      statusDiv.innerHTML = "💡 Contesta correctamente para que la ranita llegue a la meta. Si respondes mal, la ranita se caerá al agua y tendrás que volver a empezar.";
+
+      buildLilies();
+      renderQuestion();
+      answerButtons.forEach(b=>{
+        b.disabled=false;
+        b.classList.remove("correct","wrong");
+      });
+
+      lastResults = null;
+    }
+
+    document.getElementById("btnRestart").addEventListener("click", ()=> resetGame(true));
+
+    document.getElementById("btnPrintResults").addEventListener("click", ()=>{
+      if(!lastResults){
+        alert("Primero termina el recorrido de la ranita para poder imprimir la hoja de resultados.");
+        return;
+      }
+      const studentName = (document.getElementById("studentName").value || "___________________").trim() || "___________________";
+      const group = (document.getElementById("group").value || "________").trim() || "________";
+      const mins = String(Math.floor(lastResults.seconds/60)).padStart(2,"0");
+      const secs = String(lastResults.seconds%60).padStart(2,"0");
+
+      const win = window.open("","_blank");
+      win.document.write(`<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Resultados – Ranita del Sistema Solar</title>
+  <style>
+    body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px;color:#111827;}
+    h1{font-size:1.2rem;margin:0 0 6px;}
+    h2{font-size:1rem;margin:10px 0 4px;}
+    table{border-collapse:collapse;width:100%;margin-top:8px;font-size:.9rem;}
+    th,td{border:1px solid #d1d5db;padding:6px 8px;text-align:left;}
+    th{background:#e5e7eb;}
+    .box{border:1px solid #d1d5db;border-radius:6px;min-height:70px;margin-top:4px;}
+    .small{font-size:.82rem;color:#4b5563;}
+    ul{margin-top:4px;}
+  </style>
+</head>
+<body>
+  <h1>Hoja de resultados – Juego de la ranita del Sistema Solar</h1>
+  <p><strong>Alumno(a):</strong> ${studentName} &nbsp;&nbsp; <strong>Grado y grupo:</strong> ${group}</p>
+  <p class="small"><strong>Fecha:</strong> ${lastResults.finishedAt}</p>
+
+  <h2>Procesos de desarrollo de aprendizaje (PDA)</h2>
+  <p class="small">
+    · Indaga, describe y representa las características de los componentes del Sistema Solar (PDA 1).<br>
+    · Identifica y explica los movimientos de rotación y traslación (PDA 2).<br>
+    · Reconoce algunas aportaciones científicas y tecnológicas, como el telescopio (PDA 3).
+  </p>
+
+  <h2>Resultados del juego</h2>
+  <table>
+    <tr><th>Indicador</th><th>Valor</th></tr>
+    <tr><td>Preguntas totales</td><td>${lastResults.total}</td></tr>
+    <tr><td>Respuestas correctas</td><td>${lastResults.correct}</td></tr>
+    <tr><td>Intentos realizados</td><td>${lastResults.attempts}</td></tr>
+    <tr><td>Tiempo empleado</td><td>${mins}:${secs} minutos</td></tr>
+  </table>
+
+  <h2>Preguntas trabajadas</h2>
+  <ul>
+    ${questions.map((q,i)=>`<li>${i+1}. ${q.text}</li>`).join("")}
+  </ul>
+
+  <h2>Observaciones del docente</h2>
+  <div class="box"></div>
+
+  <h2>Compromisos de mejora del alumno(a)</h2>
+  <div class="box"></div>
+
+  <p style="margin-top:18px;font-size:.86rem;">
+    Firma del alumno(a): _____________________________ &nbsp;&nbsp;
+    Firma del docente: _____________________________
+  </p>
+</body>
+</html>`);
+      win.document.close();
+      win.print();
+    });
+
+    document.getElementById("btnListen").addEventListener("click", ()=>{
+      const text = "Hola explorador. En este juego ayudarás a una ranita a cruzar el estanque saltando de hoja en hoja. Para que avance, deberás elegir la respuesta correcta a cada pregunta sobre el Sistema Solar. Si te equivocas, la ranita se caerá al agua y tendrás que empezar desde el inicio. Intenta llegar a la meta con el menor número de intentos y en el menor tiempo posible.";
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no soporta la lectura de voz. Puedes leer las instrucciones en la pantalla.");
+        return;
+      }
+      const synth = window.speechSynthesis;
+      synth.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "es-MX";
+      const voices = synth.getVoices().filter(v=>v.lang && v.lang.startsWith("es"));
+      if(voices.length>0) utter.voice = voices[0];
+      synth.speak(utter);
+    });
+
+    questionTotalSpan.textContent = questions.length;
+    buildLilies();
+    renderQuestion();
+  </script>
+</body>
+</html>
