@@ -1,0 +1,928 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Modelo planetario interactivo (Saberes y Pensamiento Científico)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --bg-dark:#020617;
+      --primary:#0f172a;
+      --accent:#4f46e5;
+      --accent-2:#0ea5e9;
+      --card:#ffffff;
+      --border:#e2e8f0;
+      --muted:#64748b;
+      --success:#16a34a;
+      --danger:#b91c1c;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#0f172a 0,var(--bg-dark) 40%,var(--bg-dark) 100%);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+      color:#0b1120;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:12% 18%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1100px;
+      background:radial-gradient(circle at top left,#e0f2fe 0,#ffffff 35%,#e5e7eb 130%);
+      border-radius:28px;
+      box-shadow:0 18px 40px rgba(15,23,42,.32);
+      border:1px solid #1d4ed8;
+      padding:16px;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto 1fr auto;
+      gap:10px;
+      align-items:center;
+      border-bottom:1px solid #c7d2fe;
+      padding-bottom:8px;
+    }
+    header img{max-height:58px;width:auto;}
+    @media(max-width:900px){
+      header{grid-template-columns:1fr;text-align:center;}
+      .logos{align-items:center;}
+      .author{text-align:center;}
+    }
+    .logos{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      align-items:flex-start;
+    }
+    .title-main{
+      font-size:1.2rem;
+      margin:0;
+      color:#111827;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-main span.icon{font-size:1.5rem;}
+    .subtitle{
+      margin:2px 0 0;
+      font-size:.84rem;
+      color:#4b5563;
+    }
+    .subtitle strong{color:#1d4ed8;}
+    .tagline{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      margin-top:4px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#e0f2fe;
+      font-size:.78rem;
+      color:#1d4ed8;
+      font-weight:600;
+    }
+    .author{
+      font-size:.8rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    .author strong{display:block;color:#111827;font-size:.86rem;}
+
+    main{
+      display:grid;
+      grid-template-columns:2fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media(max-width:960px){
+      main{grid-template-columns:1fr;}
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:10px 11px;
+      margin-bottom:8px;
+    }
+    .card-title{
+      font-weight:600;
+      font-size:.9rem;
+      margin-bottom:4px;
+      color:#111827;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card-title .icon{font-size:1.1rem;}
+    .card-body{font-size:.86rem;color:var(--muted);}
+
+    .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      font-size:.82rem;
+      margin-bottom:6px;
+    }
+    .student-row label{
+      font-weight:600;
+      color:#111827;
+    }
+    .student-row input{
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      padding:4px 8px;
+      font-size:.83rem;
+    }
+
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      font-weight:600;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .btn-primary{background:#4f46e5;color:#eef2ff;}
+    .btn-secondary{background:#e5e7eb;color:#111827;}
+    .btn-outline{background:#fff;color:#4f46e5;border:1px solid #c7d2fe;}
+
+    .status{
+      margin-top:6px;
+      font-size:.8rem;
+      border-radius:10px;
+      padding:6px 8px;
+    }
+    .status-info{background:#eef2ff;color:#4338ca;border:1px solid #c7d2fe;}
+    .status-success{background:#dcfce7;color:#15803d;border:1px solid #86efac;}
+    .status-error{background:#fee2e2;color:#b91c1c;border:1px solid #fecaca;}
+
+    .pill{
+      border-radius:999px;
+      padding:3px 8px;
+      background:#e0f2fe;
+      border:1px solid #bfdbfe;
+      font-size:.8rem;
+      color:#1f2937;
+    }
+    .pill span.label{font-weight:600;color:#1d4ed8;}
+
+    .explore-stats{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin-top:4px;
+    }
+
+    /* Mapa planetario */
+    .space-map{
+      position:relative;
+      width:100%;
+      padding-top:70%; /* relación de aspecto */
+      border-radius:22px;
+      background:radial-gradient(circle at 30% 20%,#38bdf8,#0f172a 48%,#020617 100%);
+      overflow:hidden;
+      box-shadow:inset 0 0 25px rgba(15,23,42,.9);
+      border:2px solid #0f172a;
+    }
+    .orbit{
+      position:absolute;
+      border-radius:50%;
+      border:1px dashed rgba(148,163,184,.6);
+      left:50%;
+      top:50%;
+      transform:translate(-50%,-50%);
+      pointer-events:none;
+    }
+    .orbit.o1{width:22%;height:22%;}
+    .orbit.o2{width:34%;height:34%;}
+    .orbit.o3{width:46%;height:46%;}
+    .orbit.o4{width:60%;height:60%;}
+    .orbit.o5{width:74%;height:74%;}
+    .orbit.o6{width:88%;height:88%;}
+    .orbit.o7{width:102%;height:102%;}
+    .stars{
+      position:absolute;
+      inset:0;
+      background-image:
+        radial-gradient(2px 2px at 10% 20%,rgba(248,250,252,.8),transparent),
+        radial-gradient(1.5px 1.5px at 80% 30%,rgba(248,250,252,.7),transparent),
+        radial-gradient(1.8px 1.8px at 60% 80%,rgba(248,250,252,.9),transparent),
+        radial-gradient(1.5px 1.5px at 20% 70%,rgba(248,250,252,.5),transparent);
+      opacity:.6;
+      pointer-events:none;
+    }
+    .object-dot{
+      position:absolute;
+      transform:translate(-50%,-50%);
+      border-radius:50%;
+      border:2px solid rgba(15,23,42,.7);
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#f9fafb;
+      font-size:1.1rem;
+      box-shadow:0 4px 12px rgba(0,0,0,.6);
+      transition:transform .15s ease,box-shadow .15s ease,filter .15s ease, border-color .15s ease;
+    }
+    .object-dot span.label{
+      position:absolute;
+      top:100%;
+      left:50%;
+      transform:translateX(-50%);
+      font-size:.7rem;
+      margin-top:2px;
+      white-space:nowrap;
+      color:#e5e7eb;
+      text-shadow:0 1px 2px rgba(0,0,0,.8);
+      pointer-events:none;
+    }
+    .object-dot.sun{width:70px;height:70px;background:radial-gradient(circle at 25% 20%,#fde68a,#fbbf24 45%,#f97316 75%,#b45309 100%);}
+    .object-dot.planet-small{width:34px;height:34px;}
+    .object-dot.planet-med{width:40px;height:40px;}
+    .object-dot.planet-big{width:48px;height:48px;}
+    .object-dot.comet{width:34px;height:34px;background:radial-gradient(circle at 30% 20%,#e0f2fe,#60a5fa 55%,#1d4ed8 100%);}
+    .object-dot.belt{width:46px;height:46px;background:radial-gradient(circle,#fed7aa,#f97316 60%,#7c2d12 100%);}
+    .object-dot.satellite{width:34px;height:34px;background:radial-gradient(circle at 30% 20%,#e5e7eb,#9ca3af 55%,#4b5563 100%);}
+    .object-dot:hover{
+      transform:translate(-50%,-50%) scale(1.07);
+      box-shadow:0 7px 16px rgba(15,23,42,.8);
+      filter:brightness(1.05);
+      border-color:#e5e7eb;
+    }
+    .object-dot.active{
+      box-shadow:0 0 0 3px rgba(56,189,248,.9),0 0 18px rgba(56,189,248,.7);
+      border-color:#38bdf8;
+    }
+    .object-dot.visited span.label{
+      color:#bbf7d0;
+    }
+
+    /* Panel de información */
+    .info-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+      margin-bottom:4px;
+    }
+    .info-title{
+      font-weight:700;
+      font-size:.98rem;
+      color:#111827;
+    }
+    .chip-type{
+      border-radius:999px;
+      padding:2px 8px;
+      font-size:.72rem;
+      background:#e0f2fe;
+      color:#1d4ed8;
+      border:1px solid #bfdbfe;
+      font-weight:600;
+    }
+    .info-text{
+      font-size:.84rem;
+      color:#4b5563;
+      margin-bottom:4px;
+    }
+    .info-facts{
+      margin:0;
+      padding-left:18px;
+      font-size:.8rem;
+      color:#4b5563;
+    }
+    .info-facts li{margin-bottom:2px;}
+
+    /* Avatar */
+    .avatar-card{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:8px;
+      text-align:center;
+    }
+    .avatar-circle{
+      width:140px;
+      height:140px;
+      border-radius:50%;
+      background:radial-gradient(circle at 30% 20%,#facc15,#eab308 35%,#0f172a 90%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border:3px solid #fef3c7;
+    }
+    .avatar-circle img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+    }
+    .avatar-text{
+      font-size:.84rem;
+      color:#111827;
+    }
+    .avatar-text strong{color:#4f46e5;}
+    ul.steps{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.8rem;
+      color:#4b5563;
+      text-align:left;
+    }
+    .steps li{margin-bottom:2px;}
+    .badge-step{
+      display:inline-flex;
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      align-items:center;
+      justify-content:center;
+      background:#4f46e5;
+      color:#fff;
+      font-size:.72rem;
+      margin-right:4px;
+    }
+
+    footer{
+      margin-top:10px;
+      padding-top:6px;
+      border-top:1px solid #cbd5f5;
+      font-size:.78rem;
+      color:#6b7280;
+      text-align:center;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <header>
+      <div class="logos">
+        <img src="sep_logo.png" alt="SEP">
+        <img src="escudo_escuela.png" alt="Escuela">
+      </div>
+      <div>
+        <h1 class="title-main"><span class="icon">🪐</span><span>Modelo planetario interactivo</span></h1>
+        <p class="subtitle">
+          Campo formativo: <strong>Saberes y Pensamiento Científico · Fase 5</strong><br>
+          Contenido: <em>Sistema Solar y Universo: características de sus componentes y aportaciones científicas y tecnológicas.</em>
+        </p>
+        <div class="tagline">5.º grado · Exploración guiada del Sistema Solar</div>
+      </div>
+      <div class="author">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- Columna izquierda: mapa + info -->
+      <section>
+        <div class="card">
+          <div class="card-title"><span class="icon">🧑‍🎓</span>Datos del alumno</div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="student-row">
+              <label for="group">Grado y grupo:</label>
+              <input type="text" id="group" placeholder="Ej. 5° A">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">🎯</span>Propósito de esta ODA</div>
+          <div class="card-body">
+            El alumno explora un <strong>modelo interactivo del Sistema Solar</strong> donde identifica
+            <strong>planetas, asteroides, cometas, satélites y naves espaciales</strong>, al hacer clic sobre
+            cada objeto para conocer y <strong>escuchar</strong> información básica sobre sus
+            características y su importancia científica.
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">🪐</span>Mapa del Sistema Solar</div>
+          <div class="card-body">
+            <p style="margin-top:0;margin-bottom:4px;">
+              Haz clic sobre el <strong>Sol, los planetas y otros objetos</strong> para conocerlos. Cada vez
+              que explores un objeto nuevo, se marcará como visitado. Puedes escuchar la información con el
+              botón <strong>“Escuchar esta información”</strong>.
+            </p>
+
+            <div class="space-map" id="spaceMap">
+              <div class="stars"></div>
+              <div class="orbit o1"></div>
+              <div class="orbit o2"></div>
+              <div class="orbit o3"></div>
+              <div class="orbit o4"></div>
+              <div class="orbit o5"></div>
+              <div class="orbit o6"></div>
+              <div class="orbit o7"></div>
+              <!-- Los objetos se insertan desde JavaScript -->
+            </div>
+
+            <div class="explore-stats">
+              <div class="pill"><span class="label">Objetos explorados:</span> <span id="visitedCount">0</span>/<span id="totalObjects">0</span></div>
+              <div class="pill"><span class="label">Tiempo de exploración:</span> <span id="time">00:00</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">📚</span>Ficha informativa del objeto</div>
+          <div class="card-body">
+            <div class="info-header">
+              <div class="info-title" id="infoTitle">Selecciona un objeto del mapa para comenzar.</div>
+              <span class="chip-type" id="infoType">---</span>
+            </div>
+            <p class="info-text" id="infoText">
+              Haz clic en el Sol, en algún planeta, en un cometa, en el cinturón de asteroides o en los satélites
+              para ver aquí la información.
+            </p>
+            <ul class="info-facts" id="infoFacts"></ul>
+
+            <div class="btn-row">
+              <button class="btn btn-secondary" id="btnListenInfo">🔊 Escuchar esta información</button>
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir hoja de exploración</button>
+            </div>
+
+            <div id="infoStatus" class="status status-info">
+              💡 Consejo: intenta explorar <strong>todos</strong> los objetos del mapa. Después imprime tu hoja
+              de exploración y compártela con tu maestra o maestro.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna derecha: avatar + PDA -->
+      <aside>
+        <div class="card">
+          <div class="card-title"><span class="icon">🛰️</span>Tu guía espacial</div>
+          <div class="card-body">
+            <div class="avatar-card">
+              <div class="avatar-circle">
+                <img src="avatar_guia.png" alt="Avatar guía">
+              </div>
+              <div class="avatar-text">
+                <strong>Hola explorador del Sistema Solar,</strong> este modelo te ayudará a conocer
+                mejor los <strong>planetas, satélites, asteroides, cometas y naves espaciales</strong>.
+                Haz clic en cada uno y escucha su descripción.
+              </div>
+              <ul class="steps">
+                <li><span class="badge-step">1</span>Escribe tu nombre y tu grupo.</li>
+                <li><span class="badge-step">2</span>Haz clic en un objeto del mapa (Sol, planeta, cometa, etc.).</li>
+                <li><span class="badge-step">3</span>Lee la información y pulsa <strong>“Escuchar esta información”</strong>.</li>
+                <li><span class="badge-step">4</span>Explora todos los objetos y luego imprime tu hoja de exploración.</li>
+              </ul>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnListenIntro">🔊 Escuchar instrucciones</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title"><span class="icon">📌</span>PDA vinculados</div>
+          <div class="card-body" style="font-size:.8rem;">
+            Este modelo planetario se relaciona con los siguientes <strong>Procesos de Desarrollo de
+            Aprendizaje (PDA) de 5.º</strong>:
+            <ul style="padding-left:16px;margin:4px 0;">
+              <li><strong>PDA 1:</strong> Indaga, describe y representa las características de los componentes del Sistema Solar (Sol, planetas, satélites y asteroides).</li>
+              <li><strong>PDA 2:</strong> Identifica y explica características del movimiento de rotación y traslación de los planetas.</li>
+              <li><strong>PDA 3:</strong> Reconoce aportaciones culturales, científicas y tecnológicas, como el telescopio y las sondas espaciales, para conocer el Sistema Solar.</li>
+            </ul>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <footer>
+      ODA – Modelo planetario interactivo · Saberes y Pensamiento Científico · Fase 5
+    </footer>
+  </div>
+
+  <script>
+    // Objetos del Sistema Solar (posición en porcentaje para el mapa)
+    const spaceObjects = [
+      {
+        id:"sol",
+        name:"Sol",
+        type:"Estrella",
+        x:50,y:50,sizeClass:"sun",
+        emoji:"☀️",
+        description:"El Sol es la estrella más cercana a la Tierra y el centro del Sistema Solar.",
+        facts:[
+          "Emite luz y calor que hacen posible la vida en nuestro planeta.",
+          "Es una esfera de gas muy caliente formada principalmente por hidrógeno y helio.",
+          "Los planetas, cometas y asteroides giran alrededor de él."
+        ]
+      },
+      {
+        id:"mercurio",
+        name:"Mercurio",
+        type:"Planeta rocoso",
+        x:58,y:43,sizeClass:"planet-small",
+        emoji:"🪙",
+        description:"Mercurio es el planeta más cercano al Sol y uno de los más pequeños.",
+        facts:[
+          "Su superficie está llena de cráteres, parecida a la Luna.",
+          "Tiene días muy calientes y noches muy frías.",
+          "Tarda solo 88 días en dar una vuelta completa alrededor del Sol."
+        ]
+      },
+      {
+        id:"venus",
+        name:"Venus",
+        type:"Planeta rocoso",
+        x:63,y:60,sizeClass:"planet-small",
+        emoji:"🟤",
+        description:"Venus es el segundo planeta del Sistema Solar y es muy caliente.",
+        facts:[
+          "Su atmósfera es muy densa y está llena de nubes de ácido sulfúrico.",
+          "A veces se le llama la 'estrella de la mañana' o la 'estrella de la tarde'.",
+          "Gira muy lentamente sobre su propio eje."
+        ]
+      },
+      {
+        id:"tierra",
+        name:"Tierra",
+        type:"Planeta rocoso",
+        x:71,y:44,sizeClass:"planet-med",
+        emoji:"🌎",
+        description:"La Tierra es el planeta donde vivimos y el único conocido con vida.",
+        facts:[
+          "Tiene agua líquida en mares, ríos y lagos.",
+          "Su atmósfera nos protege de radiaciones dañinas del espacio.",
+          "Tiene un satélite natural llamado Luna."
+        ]
+      },
+      {
+        id:"luna",
+        name:"Luna",
+        type:"Satélite natural",
+        x:76,y:38,sizeClass:"planet-small",
+        emoji:"🌙",
+        description:"La Luna es el satélite natural de la Tierra y el astro más cercano a nosotros.",
+        facts:[
+          "La vemos en diferentes fases: llena, creciente, menguante y nueva.",
+          "Su fuerza de gravedad ayuda a formar las mareas en los océanos.",
+          "Ha sido visitada por astronautas y sondas espaciales."
+        ]
+      },
+      {
+        id:"marte",
+        name:"Marte",
+        type:"Planeta rocoso",
+        x:80,y:58,sizeClass:"planet-small",
+        emoji:"🔴",
+        description:"Marte es conocido como el 'planeta rojo' por el color de su superficie.",
+        facts:[
+          "Tiene volcanes gigantes y enormes cañones.",
+          "Posee dos pequeñas lunas: Fobos y Deimos.",
+          "Varias sondas y robots lo exploran para buscar señales de vida pasada."
+        ]
+      },
+      {
+        id:"cinturon",
+        name:"Cinturón de asteroides",
+        type:"Asteroides",
+        x:33,y:59,sizeClass:"belt",
+        emoji:"☄️",
+        description:"El cinturón de asteroides es una región llena de rocas que orbitan entre Marte y Júpiter.",
+        facts:[
+          "Está formado por miles de asteroides de distintos tamaños.",
+          "Se cree que son restos de material que no llegó a formar un planeta.",
+          "Algunos asteroides son estudiados por sondas espaciales."
+        ]
+      },
+      {
+        id:"jupiter",
+        name:"Júpiter",
+        type:"Planeta gigante gaseoso",
+        x:25,y:40,sizeClass:"planet-big",
+        emoji:"🟠",
+        description:"Júpiter es el planeta más grande del Sistema Solar.",
+        facts:[
+          "Está formado principalmente por gases como hidrógeno y helio.",
+          "Tiene una gran mancha roja que es una enorme tormenta.",
+          "Cuenta con muchas lunas, como Ío, Europa, Ganímedes y Calisto."
+        ]
+      },
+      {
+        id:"saturno",
+        name:"Saturno",
+        type:"Planeta gigante gaseoso",
+        x:20,y:68,sizeClass:"planet-big",
+        emoji:"🪐",
+        description:"Saturno es famoso por sus grandes anillos formados por hielo y roca.",
+        facts:[
+          "Es el segundo planeta más grande del Sistema Solar.",
+          "Sus anillos están formados por millones de pequeñas partículas.",
+          "Tiene decenas de lunas, entre ellas Titán, que tiene atmósfera."
+        ]
+      },
+      {
+        id:"urano",
+        name:"Urano",
+        type:"Planeta gigante helado",
+        x:14,y:46,sizeClass:"planet-med",
+        emoji:"🔵",
+        description:"Urano es un planeta gigante helado que gira casi acostado sobre su lado.",
+        facts:[
+          "Tiene un color azul verdoso por el gas metano en su atmósfera.",
+          "Cuenta con anillos muy delgados y varias lunas.",
+          "Tarda 84 años terrestres en dar una vuelta alrededor del Sol."
+        ]
+      },
+      {
+        id:"neptuno",
+        name:"Neptuno",
+        type:"Planeta gigante helado",
+        x:8,y:63,sizeClass:"planet-med",
+        emoji:"🔵",
+        description:"Neptuno es el planeta más lejano del Sol en nuestro Sistema Solar.",
+        facts:[
+          "Tiene vientos muy fuertes, algunos de los más rápidos conocidos.",
+          "Su color azul intenso también se debe al metano.",
+          "Fue descubierto gracias a cálculos matemáticos antes de verlo con telescopios."
+        ]
+      },
+      {
+        id:"cometa",
+        name:"Cometa",
+        type:"Cometa",
+        x:41,y:28,sizeClass:"comet",
+        emoji:"☄️",
+        description:"Los cometas son cuerpos de hielo y polvo que, al acercarse al Sol, forman una cola brillante.",
+        facts:[
+          "Se mueven en órbitas muy alargadas alrededor del Sol.",
+          "Su cola siempre apunta en dirección opuesta al Sol.",
+          "Algunos cometas famosos son el Halley y el Hale-Bopp."
+        ]
+      },
+      {
+        id:"sat_artificial",
+        name:"Satélite artificial",
+        type:"Tecnología espacial",
+        x:60,y:26,sizeClass:"satellite",
+        emoji:"🛰️",
+        description:"Los satélites artificiales son aparatos construidos por el ser humano que orbitan la Tierra u otros cuerpos.",
+        facts:[
+          "Sirven para comunicaciones, observación del clima y navegación (GPS).",
+          "Se lanzan al espacio mediante cohetes.",
+          "Algunos satélites observan también el Sol y otros planetas."
+        ]
+      },
+      {
+        id:"sonda",
+        name:"Sonda espacial",
+        type:"Tecnología espacial",
+        x:35,y:82,sizeClass:"satellite",
+        emoji:"🚀",
+        description:"Las sondas espaciales son naves sin tripulación que exploran planetas, lunas, cometas y otros objetos.",
+        facts:[
+          "Llevan instrumentos para tomar fotos y medir datos a grandes distancias.",
+          "Han visitado planetas como Marte, Júpiter y Saturno.",
+          "Ayudan a conocer el Sistema Solar sin poner en riesgo la vida humana."
+        ]
+      }
+    ];
+
+    const spaceMap = document.getElementById("spaceMap");
+    const infoTitle = document.getElementById("infoTitle");
+    const infoType = document.getElementById("infoType");
+    const infoText = document.getElementById("infoText");
+    const infoFacts = document.getElementById("infoFacts");
+    const infoStatus = document.getElementById("infoStatus");
+    const visitedCountSpan = document.getElementById("visitedCount");
+    const totalObjectsSpan = document.getElementById("totalObjects");
+    const timeSpan = document.getElementById("time");
+
+    let currentObject = null;
+    let visitedIds = new Set();
+    let timerStarted = false;
+    let startTime = null;
+    let timerInterval = null;
+
+    function buildSpaceMap(){
+      totalObjectsSpan.textContent = spaceObjects.length;
+      spaceObjects.forEach(obj=>{
+        const btn = document.createElement("button");
+        btn.className = `object-dot ${obj.sizeClass || "planet-small"}`;
+        btn.dataset.id = obj.id;
+        btn.style.left = obj.x + "%";
+        btn.style.top = obj.y + "%";
+        btn.innerHTML = obj.emoji + `<span class="label">${obj.name}</span>`;
+        btn.addEventListener("click", ()=>selectObject(obj.id));
+        spaceMap.appendChild(btn);
+      });
+    }
+
+    function selectObject(id){
+      const obj = spaceObjects.find(o=>o.id===id);
+      if(!obj) return;
+      currentObject = obj;
+
+      // Iniciar temporizador al primer clic
+      if(!timerStarted){
+        startTimer();
+      }
+
+      // Actualizar selección visual
+      document.querySelectorAll(".object-dot").forEach(el=>{
+        el.classList.toggle("active", el.dataset.id === id);
+      });
+
+      // Marcar como visitado
+      if(!visitedIds.has(id)){
+        visitedIds.add(id);
+        const btn = document.querySelector(`.object-dot[data-id='${id}']`);
+        if(btn) btn.classList.add("visited");
+        visitedCountSpan.textContent = visitedIds.size;
+      }
+
+      // Rellenar ficha
+      infoTitle.textContent = obj.name;
+      infoType.textContent = obj.type;
+      infoText.textContent = obj.description;
+      infoFacts.innerHTML = obj.facts.map(f=>`<li>${f}</li>`).join("");
+
+      infoStatus.className = "status status-success";
+      infoStatus.innerHTML = "✅ Has explorado este objeto. Usa el botón “Escuchar esta información” si quieres oír la descripción.";
+    }
+
+    function startTimer(){
+      timerStarted = true;
+      startTime = Date.now();
+      timerInterval = setInterval(()=>{
+        const diff = Math.floor((Date.now()-startTime)/1000);
+        const mins = String(Math.floor(diff/60)).padStart(2,"0");
+        const secs = String(diff%60).padStart(2,"0");
+        timeSpan.textContent = `${mins}:${secs}`;
+      },1000);
+    }
+    function stopTimer(){
+      if(timerInterval){
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+    function getElapsedSeconds(){
+      if(!startTime) return 0;
+      return Math.floor((Date.now()-startTime)/1000);
+    }
+
+    // Escuchar información del objeto actual
+    document.getElementById("btnListenInfo").addEventListener("click", ()=>{
+      if(!currentObject){
+        alert("Primero selecciona algún objeto del mapa (por ejemplo el Sol o un planeta).");
+        return;
+      }
+      const text = `${currentObject.name}. Tipo: ${currentObject.type}. ${currentObject.description} ${currentObject.facts.join(" ")} `;
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no soporta la lectura de voz. Puedes leer la información en la ficha.");
+        return;
+      }
+      const synth = window.speechSynthesis;
+      synth.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "es-MX";
+      const voices = synth.getVoices().filter(v=>v.lang && v.lang.startsWith("es"));
+      if(voices.length>0) utter.voice = voices[0];
+      synth.speak(utter);
+    });
+
+    // Botón de voz del avatar
+    document.getElementById("btnListenIntro").addEventListener("click", ()=>{
+      const text = "Hola explorador. En este modelo planetario verás el Sol, los planetas, la Luna, asteroides, cometas y naves espaciales. Haz clic en cada objeto para leer una explicación sencilla y, si quieres, escucha la información usando el botón de voz. Intenta explorar todos los objetos y luego imprime tu hoja de exploración.";
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no soporta la lectura de voz. Puedes leer las instrucciones en la pantalla.");
+        return;
+      }
+      const synth = window.speechSynthesis;
+      synth.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "es-MX";
+      const voices = synth.getVoices().filter(v=>v.lang && v.lang.startsWith("es"));
+      if(voices.length>0) utter.voice = voices[0];
+      synth.speak(utter);
+    });
+
+    // Imprimir hoja de exploración
+    document.getElementById("btnPrintResults").addEventListener("click", ()=>{
+      if(visitedIds.size === 0){
+        alert("Primero explora al menos un objeto del Sistema Solar antes de imprimir tus resultados.");
+        return;
+      }
+      stopTimer();
+      const seconds = getElapsedSeconds();
+      const mins = String(Math.floor(seconds/60)).padStart(2,"0");
+      const secs = String(seconds%60).padStart(2,"0");
+
+      const studentName = (document.getElementById("studentName").value || "___________________").trim() || "___________________";
+      const group = (document.getElementById("group").value || "________").trim() || "________";
+
+      const exploredObjects = spaceObjects.filter(o=>visitedIds.has(o.id));
+
+      const win = window.open("","_blank");
+      win.document.write(`<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Hoja de exploración – Modelo planetario</title>
+  <style>
+    body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px;color:#111827;}
+    h1{font-size:1.2rem;margin:0 0 6px;}
+    h2{font-size:1rem;margin:10px 0 4px;}
+    table{border-collapse:collapse;width:100%;margin-top:8px;font-size:.9rem;}
+    th,td{border:1px solid #d1d5db;padding:6px 8px;text-align:left;vertical-align:top;}
+    th{background:#e5e7eb;}
+    .box{border:1px solid #d1d5db;border-radius:6px;min-height:70px;margin-top:4px;}
+    .small{font-size:.82rem;color:#4b5563;}
+    ul{margin-top:4px;}
+  </style>
+</head>
+<body>
+  <h1>Hoja de exploración – Modelo planetario interactivo</h1>
+  <p><strong>Alumno(a):</strong> ${studentName} &nbsp;&nbsp; <strong>Grado y grupo:</strong> ${group}</p>
+  <p class="small"><strong>Fecha:</strong> ${new Date().toLocaleString("es-MX")}</p>
+
+  <h2>Procesos de desarrollo de aprendizaje (PDA)</h2>
+  <p class="small">
+    · Indaga, describe y representa las características de los componentes del Sistema Solar (PDA 1).<br>
+    · Identifica y explica los movimientos de los planetas y su relación con el Sol (PDA 2).<br>
+    · Reconoce aportaciones científicas y tecnológicas como las sondas y satélites (PDA 3).
+  </p>
+
+  <h2>Resumen de la exploración</h2>
+  <table>
+    <tr><th>Indicador</th><th>Valor</th></tr>
+    <tr><td>Número total de objetos en el modelo</td><td>${spaceObjects.length}</td></tr>
+    <tr><td>Objetos explorados por el alumno(a)</td><td>${visitedIds.size}</td></tr>
+    <tr><td>Tiempo aproximado de exploración</td><td>${mins}:${secs} minutos</td></tr>
+  </table>
+
+  <h2>Objetos explorados</h2>
+  <table>
+    <tr><th>Nombre</th><th>Tipo</th><th>Ideas clave</th></tr>
+    ${exploredObjects.map(o=>`
+      <tr>
+        <td>${o.name}</td>
+        <td>${o.type}</td>
+        <td>
+          <ul>
+            ${o.facts.map(f=>`<li>${f}</li>`).join("")}
+          </ul>
+        </td>
+      </tr>
+    `).join("")}
+  </table>
+
+  <h2>Observaciones del docente</h2>
+  <div class="box"></div>
+
+  <h2>Compromisos de mejora del alumno(a)</h2>
+  <div class="box"></div>
+
+  <p style="margin-top:18px;font-size:.86rem;">
+    Firma del alumno(a): _____________________________ &nbsp;&nbsp;
+    Firma del docente: _____________________________
+  </p>
+</body>
+</html>`);
+      win.document.close();
+      win.print();
+    });
+
+    // Inicializar todo
+    buildSpaceMap();
+  </script>
+</body>
+</html>
