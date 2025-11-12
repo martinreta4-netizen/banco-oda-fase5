@@ -1,0 +1,2441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Sistema Solar y Universo (Saberes y Pensimiento Científico)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#0f172a;
+      --primary-soft:#020617;
+      --accent:#4f46e5;
+      --accent-soft:#e0e7ff;
+      --accent-2:#0ea5e9;
+      --text:#0b1120;
+      --muted:#64748b;
+      --border:#e2e8f0;
+      --card-bg:#ffffff;
+      --danger:#b91c1c;
+      --success:#15803d;
+      --shadow:0 18px 45px rgba(15,23,42,.45);
+    }
+
+    *{
+      box-sizing:border-box;
+    }
+
+    html,body{
+      margin:0;
+      padding:0;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#1d4ed8 0,#020617 55%,#000 100%);
+      color:var(--text);
+      min-height:100vh;
+    }
+
+    body{
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:16px;
+      position:relative;
+    }
+
+    body::before{
+      content:"";
+      position:fixed;
+      inset:0;
+      background:
+        radial-gradient(circle at 10% 0,#4f46e533 0,transparent 45%),
+        radial-gradient(circle at 90% 0,#0ea5e933 0,transparent 45%);
+      opacity:.9;
+      z-index:-1;
+    }
+
+    body::after{
+      content:"";
+      position:fixed;
+      inset:0;
+      background-image:
+        radial-gradient(circle at 20% 80%,#0f172a 0,transparent 55%),
+        radial-gradient(circle at 80% 90%,#020617 0,transparent 55%);
+      opacity:.8;
+      z-index:-2;
+    }
+
+    .school-logo-fixed{
+      position:fixed;
+      bottom:16px;
+      right:16px;
+      width:64px;
+      height:auto;
+      z-index:10;
+      border-radius:999px;
+      border:2px solid #ffffffcc;
+      box-shadow:0 8px 20px rgba(15,23,42,.6);
+      background:#fff;
+      padding:3px;
+    }
+
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1200px;
+      background:radial-gradient(circle at top left,#e0f2fe 0,#ffffff 35%,#e5e7eb 130%);
+      border-radius:28px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #1d4ed8;
+    }
+
+    header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+      padding:8px 10px 10px;
+      border-radius:20px;
+      background:linear-gradient(90deg,#0b1120,#1e293b);
+      color:#eef2ff;
+      position:relative;
+      overflow:hidden;
+    }
+
+    header::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 0 0,rgba(56,189,248,.18) 0,transparent 55%),
+        radial-gradient(circle at 100% 0,rgba(129,140,248,.3) 0,transparent 55%);
+      opacity:.6;
+      pointer-events:none;
+    }
+
+    .logo-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      z-index:1;
+    }
+
+    .logo-left img{
+      height:38px;
+      width:auto;
+      border-radius:8px;
+      background:#ffffff;
+      padding:3px 6px;
+      box-shadow:0 6px 14px rgba(15,23,42,.5);
+    }
+
+    .title-block{
+      z-index:1;
+      flex:1;
+      min-width:0;
+    }
+
+    .title-block h1{
+      margin:0;
+      font-size:1.2rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:#e5e7eb;
+    }
+    .title-block h1 .icon{
+      font-size:1.6rem;
+    }
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:#cbd5f5;
+    }
+    .title-meta strong{color:#7dd3fc;}
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:4px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#bfdbfe;
+    }
+    .phase-label span:first-child{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:#22c55e;
+      box-shadow:0 0 0 4px rgba(34,197,94,.4);
+    }
+
+    .avatar-area{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      z-index:1;
+      min-width:0;
+    }
+
+    .avatar-circle{
+      width:70px;
+      height:70px;
+      border-radius:999px;
+      border:2px solid #93c5fd;
+      padding:2px;
+      background:radial-gradient(circle at 30% 0,#38bdf8 0,#020617 75%);
+      box-shadow:0 10px 24px rgba(15,23,42,.7);
+      flex-shrink:0;
+      overflow:hidden;
+    }
+
+    .avatar-circle img{
+      width:100%;
+      height:100%;
+      object-fit:contain;
+      display:block;
+    }
+
+    .avatar-text{
+      font-size:.8rem;
+      color:#e5e7eb;
+    }
+    .avatar-text strong{
+      color:#fef9c3;
+    }
+
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:6px 10px;
+      font-size:.8rem;
+      font-weight:500;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      font-family:inherit;
+      transition:transform .15s ease,box-shadow .15s ease,background .15s ease,color .15s ease;
+      white-space:nowrap;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#0ea5e9,#4f46e5);
+      color:white;
+      box-shadow:0 8px 18px rgba(56,189,248,.45);
+    }
+    .btn-primary:hover{
+      transform:translateY(-1px);
+      box-shadow:0 12px 26px rgba(37,99,235,.6);
+    }
+    .btn-outline{
+      background:transparent;
+      color:#e5e7eb;
+      border:1px solid rgba(191,219,254,.8);
+    }
+    .btn-outline:hover{
+      background:rgba(15,23,42,.7);
+    }
+
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
+      gap:10px;
+    }
+
+    .left-column,
+    .right-column{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .card{
+      background:rgba(255,255,255,.98);
+      border-radius:20px;
+      border:1px solid rgba(148,163,184,.45);
+      box-shadow:0 10px 25px rgba(15,23,42,.08);
+      padding:10px 12px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .card::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:
+        radial-gradient(circle at 0 0,rgba(191,219,254,.4) 0,transparent 55%),
+        radial-gradient(circle at 100% 100%,rgba(186,230,253,.4) 0,transparent 55%);
+      opacity:.5;
+      pointer-events:none;
+    }
+
+    .card-header{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin-bottom:6px;
+      position:relative;
+      z-index:1;
+    }
+
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+      color:#0f172a;
+    }
+
+    .card-title .icon{
+      width:24px;
+      height:24px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      background:radial-gradient(circle at 30% 0,#38bdf8 0,#1d4ed8 90%);
+      color:white;
+      font-size:1rem;
+      box-shadow:0 4px 10px rgba(37,99,235,.6);
+    }
+
+    .card-body{
+      position:relative;
+      z-index:1;
+      font-size:.86rem;
+      color:#111827;
+    }
+
+    .objective-list{
+      margin:7px 0;
+      padding-left:16px;
+    }
+    .objective-list li{
+      margin-bottom:4px;
+    }
+
+    .timeline{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      margin-top:4px;
+      padding-left:6px;
+      border-left:2px solid rgba(59,130,246,.5);
+    }
+
+    .timeline-item{
+      padding-left:8px;
+      position:relative;
+    }
+    .timeline-item::before{
+      content:"";
+      position:absolute;
+      left:-9px;
+      top:4px;
+      width:10px;
+      height:10px;
+      border-radius:999px;
+      background:#2563eb;
+      box-shadow:0 0 0 4px rgba(37,99,235,.3);
+    }
+
+    .timeline-label{
+      font-size:.78rem;
+      font-weight:700;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#1d4ed8;
+    }
+
+    .module-list{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:6px;
+      margin-top:4px;
+    }
+
+    .module-button{
+      position:relative;
+      border-radius:14px;
+      border:1px solid rgba(129,140,248,.7);
+      padding:7px 8px;
+      background:radial-gradient(circle at top,#eff6ff 0,#e0f2fe 40%,#ffffff 100%);
+      cursor:pointer;
+      display:flex;
+      align-items:flex-start;
+      gap:6px;
+      text-align:left;
+      transition:transform .12s ease,box-shadow .12s ease,border .12s ease,background .12s ease;
+      font-size:.78rem;
+      color:#111827;
+    }
+
+    .module-button:hover{
+      transform:translateY(-1px);
+      box-shadow:0 10px 18px rgba(37,99,235,.35);
+      border-color:#2563eb;
+      background:radial-gradient(circle at top,#dbeafe 0,#e0f2fe 50%,#ffffff 100%);
+    }
+
+    .module-button.active{
+      border-color:#1d4ed8;
+      box-shadow:0 10px 22px rgba(30,64,175,.5);
+      background:radial-gradient(circle at top,#dbeafe 0,#e0f2fe 45%,#eef2ff 100%);
+    }
+
+    .module-badge{
+      width:20px;
+      height:20px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#4f46e5,#0ea5e9);
+      color:#eef2ff;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.7rem;
+      font-weight:700;
+      flex-shrink:0;
+      margin-top:2px;
+    }
+
+    .module-text-main{
+      font-weight:600;
+      font-size:.88rem;
+    }
+    .module-text-sub{
+      font-size:.76rem;
+      color:#4b5563;
+    }
+    .module-pda{
+      margin-top:4px;
+      font-size:.74rem;
+      color:#1e3a8a;
+    }
+    .module-pda span{
+      font-weight:600;
+    }
+
+    .student-info-card{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .student-row{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.82rem;
+    }
+    .student-row label{
+      width:90px;
+      color:#1f2937;
+      font-weight:500;
+    }
+    .student-row input{
+      flex:1;
+      border-radius:999px;
+      border:1px solid #bfdbfe;
+      padding:5px 8px;
+      font-size:.8rem;
+      outline:none;
+      background:#eff6ff;
+    }
+    .student-row input:focus{
+      border-color:#2563eb;
+      box-shadow:0 0 0 1px rgba(37,99,235,.55);
+      background:#ffffff;
+    }
+
+    .module-panel{
+      display:none;
+      margin-top:4px;
+    }
+    .module-panel.active{
+      display:block;
+    }
+
+    .activity-block{
+      margin-bottom:10px;
+      padding:8px 9px;
+      border-radius:14px;
+      background:rgba(239,246,255,.9);
+      border:1px solid rgba(191,219,254,.9);
+    }
+
+    .activity-title{
+      font-weight:600;
+      font-size:.86rem;
+      margin-bottom:4px;
+      color:#1d4ed8;
+      display:flex;
+      align-items:center;
+      gap:4px;
+    }
+    .activity-hint{
+      font-size:.78rem;
+      color:#4b5563;
+      margin-bottom:5px;
+    }
+
+    .question{
+      margin:5px 0;
+      font-size:.84rem;
+    }
+
+    .question strong{
+      color:#111827;
+    }
+
+    .options-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+      gap:4px;
+      margin-top:4px;
+    }
+
+    .option-card{
+      border-radius:12px;
+      border:1px solid #bfdbfe;
+      padding:5px 6px;
+      font-size:.8rem;
+      background:#ffffff;
+      display:flex;
+      align-items:flex-start;
+      gap:5px;
+    }
+    .option-card input[type="radio"]{
+      margin-top:2px;
+    }
+
+    .true-false-row{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:8px;
+      margin:4px 0;
+      border-radius:10px;
+      background:#ffffff;
+      padding:4px 6px;
+      border:1px solid #dbeafe;
+      font-size:.8rem;
+    }
+    .true-false-row span{
+      flex:1;
+    }
+
+    select{
+      border-radius:999px;
+      border:1px solid #bfdbfe;
+      padding:4px 6px;
+      font-size:.8rem;
+      background:#ffffff;
+      font-family:inherit;
+    }
+
+    textarea{
+      width:100%;
+      min-height:55px;
+      border-radius:12px;
+      border:1px solid #bfdbfe;
+      padding:5px 6px;
+      font-size:.8rem;
+      resize:vertical;
+      font-family:inherit;
+    }
+    textarea:focus{
+      border-color:#2563eb;
+      box-shadow:0 0 0 1px rgba(37,99,235,.45);
+      background:#ffffff;
+    }
+
+    table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.78rem;
+    }
+    th,td{
+      border:1px solid #bfdbfe;
+      padding:3px 4px;
+      text-align:left;
+    }
+    th{
+      background:#dbeafe;
+      font-weight:600;
+    }
+
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+
+    .status{
+      margin-top:6px;
+      padding:4px 6px;
+      border-radius:999px;
+      font-size:.78rem;
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      background:#eff6ff;
+      color:#1e3a8a;
+      border:1px solid #bfdbfe;
+    }
+
+    .status span.icon{
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.75rem;
+      background:#bfdbfe;
+    }
+
+    .results-area{
+      margin-top:4px;
+      padding:6px 7px;
+      background:#0b1120;
+      color:#e5e7eb;
+      border-radius:14px;
+      font-size:.78rem;
+      border:1px solid #1d4ed8;
+    }
+
+    .results-area h3{
+      margin:0 0 5px;
+      font-size:.86rem;
+      color:#bfdbfe;
+    }
+
+    .results-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+      gap:4px;
+    }
+
+    .result-pill{
+      border-radius:999px;
+      padding:3px 6px;
+      background:#020617;
+      border:1px solid rgba(148,163,184,.6);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:4px;
+    }
+    .result-pill span.label{
+      font-size:.76rem;
+    }
+    .result-pill span.value{
+      font-size:.78rem;
+      font-weight:600;
+      color:#bbf7d0;
+    }
+
+    .result-pill.bad span.value{
+      color:#fecaca;
+    }
+
+    .print-note{
+      margin-top:4px;
+      font-size:.72rem;
+      color:#9ca3af;
+    }
+
+    .helper-text{
+      font-size:.76rem;
+      color:#4b5563;
+      margin-top:4px;
+    }
+
+    .badge-small{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      border-radius:999px;
+      padding:2px 6px;
+      font-size:.7rem;
+      background:#ecfeff;
+      border:1px solid #67e8f9;
+      color:#0e7490;
+    }
+
+    .badge-small span.dot{
+      width:6px;
+      height:6px;
+      border-radius:999px;
+      background:#22c55e;
+    }
+
+    .mini-title{
+      font-size:.78rem;
+      text-transform:uppercase;
+      letter-spacing:.06em;
+      color:#4b5563;
+      margin-bottom:3px;
+    }
+
+    .progress-list{
+      list-style:none;
+      margin:4px 0 0;
+      padding:0;
+    }
+    .progress-list li{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:3px;
+    }
+    .pill{
+      padding:2px 6px;
+      border-radius:999px;
+      font-size:.72rem;
+    }
+    .pill-done{
+      background:#bbf7d0;
+      color:#166534;
+      border:1px solid #22c55e;
+    }
+    .pill-pending{
+      background:#fee2e2;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+
+    .mini-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      gap:4px;
+      font-size:.78rem;
+    }
+
+    .mini-card{
+      background:#eff6ff;
+      border-radius:10px;
+      padding:4px 5px;
+      border:1px solid #bfdbfe;
+    }
+
+    .mini-card h4{
+      margin:0 0 2px;
+      font-size:.8rem;
+      color:#1d4ed8;
+    }
+
+    .mini-card ul{
+      margin:0;
+      padding-left:14px;
+    }
+
+    .mini-card ul li{
+      margin-bottom:2px;
+    }
+
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #cbd5f5;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+
+    /* -------- Portada de la ODA -------- */
+    #odaWrapper{
+      display:none; /* Se muestra hasta que el alumno pulse "Empezar ODA" */
+    }
+
+    .cover-screen{
+      position:fixed;
+      inset:0;
+      z-index:50;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:16px;
+      background:radial-gradient(circle at top,#1d4ed8 0,#020617 60%,#000 100%);
+      color:#e5e7eb;
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    .cover-inner{
+      width:100%;
+      max-width:1100px;
+      background:rgba(15,23,42,.96);
+      border-radius:24px;
+      box-shadow:0 24px 60px rgba(15,23,42,.9);
+      padding:20px 22px;
+      display:grid;
+      grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);
+      gap:20px;
+      border:1px solid rgba(148,163,184,.6);
+    }
+    .cover-left,.cover-right{
+      min-width:0;
+    }
+    .cover-tag{
+      display:inline-flex;
+      align-items:center;
+      padding:4px 10px;
+      border-radius:999px;
+      background:rgba(37,99,235,.2);
+      border:1px solid rgba(129,140,248,.7);
+      font-size:.75rem;
+      text-transform:uppercase;
+      letter-spacing:.05em;
+      margin-bottom:6px;
+    }
+    .cover-title{
+      font-size:1.6rem;
+      margin:4px 0 4px;
+    }
+    .cover-subtitle{
+      font-size:.9rem;
+      color:#cbd5f5;
+      margin-bottom:10px;
+    }
+    .cover-info-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) minmax(0,1fr);
+      gap:12px;
+      margin-bottom:12px;
+      font-size:.88rem;
+    }
+    .cover-info-grid h3{
+      margin:0 0 4px;
+      font-size:.92rem;
+    }
+    .cover-start-btn{
+      margin-top:8px;
+      padding-inline:18px;
+      font-size:.95rem;
+    }
+    .cover-hint{
+      margin-top:4px;
+      font-size:.78rem;
+      color:#9ca3af;
+    }
+    .cover-teacher-title{
+      margin:0 0 6px;
+      font-size:1.1rem;
+    }
+    .cover-right>p{
+      font-size:.86rem;
+      margin:4px 0 6px;
+    }
+    .cover-right .objective-list{
+      font-size:.86rem;
+      margin-top:4px;
+    }
+    .cover-timeline{
+      margin-top:6px;
+    }
+    .cover-meta{
+      margin-top:10px;
+      font-size:.8rem;
+      color:#9ca3af;
+    }
+    .cover-meta p{
+      margin:1px 0;
+    }
+    @media(max-width:900px){
+      .cover-inner{
+        grid-template-columns:minmax(0,1fr);
+      }
+      .cover-info-grid{
+        grid-template-columns:minmax(0,1fr);
+      }
+    }
+
+    @media print{
+      body{
+        background:#ffffff;
+        padding:0;
+      }
+      body::before,body::after,.school-logo-fixed{display:none!important;}
+      .wrapper{
+        box-shadow:none;
+        border:none;
+        border-radius:0;
+      }
+    }
+
+    @media(max-width:900px){
+      body{
+        padding:8px;
+      }
+      .wrapper{
+        padding:10px 10px 12px;
+        border-radius:20px;
+      }
+      header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+      main{
+        grid-template-columns:1fr;
+      }
+      .module-list{
+        grid-template-columns:1fr;
+      }
+    }
+
+    @media(max-width:600px){
+      .logo-left img{
+        height:30px;
+      }
+      .title-block h1{
+        font-size:1.05rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+
+  
+  <div id="coverScreen" class="cover-screen">
+    <div class="cover-inner">
+      <div class="cover-left">
+        <div class="cover-tag">Saberes y Pensamiento Científico · Fase 5</div>
+        <h1 class="cover-title">ODA – Exploramos el Sistema Solar y el Universo</h1>
+        <p class="cover-subtitle">
+          Grado: <strong>5.º de primaria</strong> · Proyecto: <strong>“Nuestro lugar en el Universo”</strong>
+        </p>
+
+        <div class="cover-info-grid">
+          <div>
+            <h3>Contenido</h3>
+            <p>
+              <strong>Sistema Solar y Universo:</strong> características de sus componentes,
+              y aportaciones culturales, científicas y tecnológicas que han favorecido su conocimiento.
+            </p>
+          </div>
+          <div>
+            <h3>Lo que trabajará el alumno</h3>
+            <ul>
+              <li>Identificar componentes del Sistema Solar (Sol, planetas, satélites y asteroides).</li>
+              <li>Comprender rotación y traslación y sus efectos (día/noche, estaciones).</li>
+              <li>Reconocer aportes culturales, científicos y tecnológicos para estudiar el Universo.</li>
+            </ul>
+          </div>
+        </div>
+
+        <button id="btnStartOda" class="btn btn-primary cover-start-btn">
+          🚀 Empezar ODA
+        </button>
+        <p class="cover-hint">
+          Al hacer clic en <strong>“Empezar ODA”</strong> se mostrará la interfaz completa para el alumno.
+        </p>
+      </div>
+
+      <div class="cover-right">
+        <h2 class="cover-teacher-title">Para el maestro</h2>
+        <p>
+          Esta ODA está pensada como un recurso interactivo para quinto grado, con tres módulos
+          y actividades autocorregibles, juegos digitales y hojas imprimibles de apoyo.
+        </p>
+
+        <p>Al finalizar esta ODA, las y los estudiantes serán capaces de:</p>
+        <ul class="objective-list">
+          <li><strong>Identificar y describir</strong> las características principales de los componentes del Sistema Solar:
+            Sol, planetas, satélites y asteroides.</li>
+          <li><strong>Explicar con sus palabras</strong> los movimientos de rotación y traslación de la Tierra y otros planetas,
+            relacionándolos con fenómenos cotidianos (día y noche, estaciones).</li>
+          <li><strong>Reconocer y valorar</strong> algunas aportaciones culturales, científicas y tecnológicas
+            —como el telescopio y las misiones espaciales— que han permitido conocer mejor el Sistema Solar y el Universo.</li>
+        </ul>
+
+        <div class="timeline cover-timeline">
+          <div class="timeline-item">
+            <div class="timeline-label">Módulo 1</div>
+            <div>Conozco los componentes del Sistema Solar y sus características básicas.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-label">Módulo 2</div>
+            <div>Comprendo cómo se mueven los planetas alrededor del Sol.</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-label">Módulo 3</div>
+            <div>Exploro historias y tecnologías que nos han acercado a las estrellas.</div>
+          </div>
+        </div>
+
+        <div class="cover-meta">
+          <p><strong>Campo formativo:</strong> Saberes y Pensamiento Científico</p>
+          <p><strong>Grado:</strong> 5.º · Fase 5</p>
+          <p><strong>Autor:</strong> Mtro. Martín Reta</p>
+          <p><strong>Escuela:</strong> Primaria “Gral. Lázaro Cárdenas”, Ejido Santa María, Pesquería, N.L.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrapper" id="odaWrapper">
+    <header>
+      <div class="logo-left">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+        <img src="escudo_escuela.png" alt="Escuela Primaria">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🪐</span>
+          <span>Exploramos el Sistema Solar y el Universo</span>
+        </h1>
+        <div class="title-meta">
+          Campo formativo: <strong>Saberes y Pensamiento Científico · Fase 5</strong><br>
+          Contenido: Sistema Solar y Universo. Características de sus componentes y aportaciones culturales, científicas y tecnológicas.
+        </div>
+        <div class="phase-label">
+          <span></span>
+          <span>Proyecto de aula · 5.º de primaria · NEM</span>
+        </div>
+      </div>
+      <div class="avatar-area">
+        <div class="avatar-circle">
+          <img src="avatar_guia.png" alt="Guía espacial">
+        </div>
+        <div class="avatar-text">
+          <strong>Hola, explorador/a.</strong><br>
+          Soy tu guía espacial. Juntos recorreremos los módulos, resolveremos actividades y al final podrás imprimir tus resultados.
+          <div style="margin-top:5px;">
+            <button class="btn btn-outline" id="btnListenIntro">🔊 Escuchar instrucciones</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- Columna izquierda -->
+      <section class="left-column">
+
+        <!-- Módulos -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📌</span>
+              <span>Módulos de trabajo de esta ODA</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <p class="helper-text">
+              Elige un módulo para ver las actividades. Puedes avanzar en el orden sugerido o volver a cualquiera para repasar.
+            </p>
+            <div class="module-list">
+              <button class="module-button active" data-module="mod1">
+                <div class="module-badge">1</div>
+                <div>
+                  <div class="module-text-main">¿Quién vive en nuestro Sistema Solar?</div>
+                  <div class="module-text-sub">Sol, planetas, satélites y asteroides</div>
+                  <div class="module-pda">
+                    <span>PDA 5.º:</span> Reconoce las características generales de los astros y cuerpos que integran el Sistema Solar.
+                  </div>
+                </div>
+              </button>
+
+              <button class="module-button" data-module="mod2">
+                <div class="module-badge">2</div>
+                <div>
+                  <div class="module-text-main">Rotación y traslación</div>
+                  <div class="module-text-sub">Movimientos y trayectorias de los planetas</div>
+                  <div class="module-pda">
+                    <span>PDA 5.º:</span> Identifica y explica, con apoyo de recursos gráficos, las características del movimiento de rotación y traslación de los planetas.
+                  </div>
+                </div>
+              </button>
+
+              <button class="module-button" data-module="mod3">
+                <div class="module-badge">3</div>
+                <div>
+                  <div class="module-text-main">Historia y tecnología para mirar el cielo</div>
+                  <div class="module-text-sub">Cultura, ciencia y misiones espaciales</div>
+                  <div class="module-pda">
+                    <span>PDA 5.º:</span> Reconoce aportaciones culturales, científicas y tecnológicas para el conocimiento del Sistema Solar y el Universo.
+                  </div>
+                </div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paneles de módulo -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧩</span>
+              <span>Actividades por módulo</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <!-- Módulo 1 -->
+            <div class="module-panel active" id="panel-mod1">
+              <h2>Módulo 1. ¿Quién vive en nuestro Sistema Solar?</h2>
+              <p class="intro">En este módulo conocerás qué es el Sol, los planetas, los satélites naturales y los asteroides. Observa el siguiente video y luego realiza las actividades.</p>
+
+           <!-- 🎥 Video educativo incrustado legalmente desde YouTube -->
+<div class="card" style="margin-bottom:10px;">
+  <div class="card-header">
+    <div class="card-title">
+      <span class="icon">🎬</span>
+      <span>Video educativo: Exploramos el Sistema Solar</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <p>Reproduce el video para conocer las características de los cuerpos que forman nuestro Sistema Solar.</p>
+    <div style="position:relative;padding-bottom:56.25%;height:0;overflow:hidden;border-radius:12px;">
+      <iframe
+        src="https://www.youtube.com/embed/fln82xudLMc?si=7Ogg50RkCkHW7mEG"
+        title="Video: Exploramos el Sistema Solar"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+        style="position:absolute;top:0;left:0;width:100%;height:100%;border-radius:12px;">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+              <!-- Actividad 1 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 1. Elige la opción correcta</div>
+                <div class="activity-hint">Marca la respuesta que complete correctamente cada oración.</div>
+
+                <div class="question">
+                  1. El <strong>Sol</strong> es:
+                </div>
+                <div class="options-grid">
+                  <label class="option-card">
+                    <input type="radio" name="m1_q1" value="a" data-module="mod1" data-correct="a">
+                    <span>a) Una estrella que proporciona luz y calor a los planetas.</span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="m1_q1" value="b" data-module="mod1">
+                    <span>b) Un planeta rocoso que gira alrededor de la Tierra.</span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="m1_q1" value="c" data-module="mod1">
+                    <span>c) Un satélite natural que refleja la luz.</span>
+                  </label>
+                </div>
+
+                <div class="question">
+                  2. Un <strong>planeta</strong> es:
+                </div>
+                <div class="options-grid">
+                  <label class="option-card">
+                    <input type="radio" name="m1_q2" value="a" data-module="mod1">
+                    <span>a) Un cuerpo que no se mueve en el espacio.</span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="m1_q2" value="b" data-module="mod1" data-correct="b">
+                    <span>b) Un cuerpo que gira alrededor de una estrella siguiendo una órbita.</span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="m1_q2" value="c" data-module="mod1">
+                    <span>c) Una nube de gas que brilla por sí misma.</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Actividad 2 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 2. Verdadero (V) o Falso (F)</div>
+                <div class="activity-hint">Lee con atención y marca si cada afirmación es verdadera o falsa.</div>
+
+                <div class="true-false-row">
+                  <span>3. La Luna es un satélite natural de la Tierra.</span>
+                  <label><input type="radio" name="m1_tf1" value="V" data-module="mod1" data-correct="V"> V</label>
+                  <label><input type="radio" name="m1_tf1" value="F" data-module="mod1"> F</label>
+                </div>
+
+                <div class="true-false-row">
+                  <span>4. Todos los planetas del Sistema Solar emiten luz propia.</span>
+                  <label><input type="radio" name="m1_tf2" value="V" data-module="mod1"> V</label>
+                  <label><input type="radio" name="m1_tf2" value="F" data-module="mod1" data-correct="F"> F</label>
+                </div>
+
+                <div class="true-false-row">
+                  <span>5. Los asteroides son cuerpos rocosos más pequeños que los planetas.</span>
+                  <label><input type="radio" name="m1_tf3" value="V" data-module="mod1" data-correct="V"> V</label>
+                  <label><input type="radio" name="m1_tf3" value="F" data-module="mod1"> F</label>
+                </div>
+              </div>
+
+            <!-- Actividad 3 -->
+<div class="activity-block" id="act3-mod1">
+  <div class="activity-title">Actividad 3. Clasifica los cuerpos del Sistema Solar</div>
+  <div class="activity-hint">Selecciona si cada cuerpo es estrella, planeta, satélite natural o asteroide.</div>
+
+  <!-- 🔄 Botón para reordenar -->
+  <button type="button" class="btn btn-outline" id="reset-act3-mod1" style="margin:6px 0 10px;">
+    🔄 Reordenar cuerpos y opciones
+  </button>
+
+  <table class="table" style="width:100%;">
+    <thead>
+      <tr>
+        <th>Cuerpo celeste</th>
+        <th>Tipo</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Sol</td>
+        <td>
+          <select data-module="mod1" data-correct="estrella">
+            <option value="">Selecciona...</option>
+            <option value="estrella">Estrella</option>
+            <option value="planeta">Planeta</option>
+            <option value="satélite natural">Satélite natural</option>
+            <option value="asteroide">Asteroide</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Marte</td>
+        <td>
+          <select data-module="mod1" data-correct="planeta">
+            <option value="">Selecciona...</option>
+            <option value="estrella">Estrella</option>
+            <option value="planeta">Planeta</option>
+            <option value="satélite natural">Satélite natural</option>
+            <option value="asteroide">Asteroide</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Luna</td>
+        <td>
+          <select data-module="mod1" data-correct="satélite natural">
+            <option value="">Selecciona...</option>
+            <option value="estrella">Estrella</option>
+            <option value="planeta">Planeta</option>
+            <option value="satélite natural">Satélite natural</option>
+            <option value="asteroide">Asteroide</option>
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td>Ceres</td>
+        <td>
+          <select data-module="mod1" data-correct="asteroide">
+            <option value="">Selecciona...</option>
+            <option value="estrella">Estrella</option>
+            <option value="planeta">Planeta</option>
+            <option value="satélite natural">Satélite natural</option>
+            <option value="asteroide">Asteroide</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+              <!-- Actividad 4 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 4. Describe con tus palabras</div>
+                <div class="activity-hint">
+                  Imagina que explicas el Sistema Solar a un niño de primer grado. Escribe una breve descripción de cómo te imaginas el Sistema Solar (tamaño, colores, qué cuerpos lo forman).
+                </div>
+                <textarea placeholder="Escribe aquí tu descripción…" data-module="mod1" data-open="true"></textarea>
+              </div>
+
+              <!-- JUEGOS MÓDULO 1 -->
+              <div class="activity-block">
+                <div class="activity-title">Juegos y exploraciones extra (Módulo 1)</div>
+                <div class="activity-hint">
+                  Usa estos juegos para reforzar lo que aprendiste sobre los habitantes del Sistema Solar.
+                  Se abrirán en una pestaña nueva.
+                </div>
+                <div class="btn-row" style="flex-wrap:wrap;gap:8px;">
+                  <button class="btn btn-secondary" data-open-game="Modelo_planetario.html">
+                    🗺️ Modelo planetario interactivo
+                  </button>
+                  <button class="btn btn-secondary" data-open-game="ODA-SPC-SistemaSolar-Memorama.html">
+                    🧠 Memorama del Sistema Solar
+                  </button>
+                  <button class="btn btn-secondary" data-open-game="ODA-SPC-SistemaSolar-SopaLetras.html">
+                    🔤 Sopa de letras del Sistema Solar
+                  </button>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="check-mod1">🔎 Comprobar respuestas del módulo 1</button>
+                <button class="btn btn-outline" onclick="printResults('mod1')">🖨️ Imprimir hoja de resultados (Módulo 1)</button>
+                <button class="btn btn-outline" onclick="printActivity('mod1')">📄 Imprimir actividad (Módulo 1)</button>
+              </div>
+
+              <div id="status-mod1" class="status">
+                <span class="icon">ℹ️</span>
+                <span>Responde las actividades y luego haz clic en “Comprobar respuestas”.</span>
+              </div>
+            </div>
+
+            <!-- Módulo 2 -->
+            <div class="module-panel" id="panel-mod2">
+              <h2>Módulo 2. Rotación y traslación</h2>
+              <p class="intro">En este módulo comprenderás cómo se mueven los planetas y qué efectos tienen esos movimientos en nuestra vida diaria.</p>
+
+              <!-- Actividad 1 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 1. Relaciona los conceptos</div>
+                <div class="activity-hint">Une cada concepto con la descripción correcta.</div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Concepto</th>
+                      <th>Descripción</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Rotación</td>
+                      <td>
+                        <select data-module="mod2" data-correct="a">
+                          <option value="">Selecciona…</option>
+                          <option value="a">Giro que realiza la Tierra sobre su propio eje.</option>
+                          <option value="b">Movimiento de la Tierra alrededor del Sol.</option>
+                          <option value="c">Movimiento de la Luna alrededor de la Tierra.</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Traslación</td>
+                      <td>
+                        <select data-module="mod2" data-correct="b">
+                          <option value="">Selecciona…</option>
+                          <option value="a">Giro que realiza la Tierra sobre su propio eje.</option>
+                          <option value="b">Movimiento de la Tierra alrededor del Sol.</option>
+                          <option value="c">Movimiento de la Luna alrededor de la Tierra.</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Órbita</td>
+                      <td>
+                        <select data-module="mod2" data-correct="d">
+                          <option value="">Selecciona…</option>
+                          <option value="d">Trayectoria curva que siguen los planetas alrededor del Sol.</option>
+                          <option value="a">Giro que realiza la Tierra sobre su propio eje.</option>
+                          <option value="c">Movimiento de la Luna alrededor de la Tierra.</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Actividad 2 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 2. Verdadero (V) o Falso (F)</div>
+                <div class="activity-hint">Lee las oraciones y marca si son verdaderas o falsas.</div>
+
+                <div class="true-false-row">
+                  <span>1. La rotación de la Tierra provoca el día y la noche.</span>
+                  <label><input type="radio" name="m2_tf1" value="V" data-module="mod2" data-correct="V"> V</label>
+                  <label><input type="radio" name="m2_tf1" value="F" data-module="mod2"> F</label>
+                </div>
+
+                <div class="true-false-row">
+                  <span>2. La traslación de la Tierra dura aproximadamente 365 días.</span>
+                  <label><input type="radio" name="m2_tf2" value="V" data-module="mod2" data-correct="V"> V</label>
+                  <label><input type="radio" name="m2_tf2" value="F" data-module="mod2"> F</label>
+                </div>
+
+                <div class="true-false-row">
+                  <span>3. Todos los planetas tardan lo mismo en dar una vuelta completa alrededor del Sol.</span>
+                  <label><input type="radio" name="m2_tf3" value="V" data-module="mod2"> V</label>
+                  <label><input type="radio" name="m2_tf3" value="F" data-module="mod2" data-correct="F"> F</label>
+                </div>
+              </div>
+
+              <!-- Actividad 3 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 3. Completa el cuadro</div>
+                <div class="activity-hint">Observa la información y completa con la palabra correcta.</div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Planeta</th>
+                      <th>Tipo de movimiento</th>
+                      <th>Consecuencia principal</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Tierra</td>
+                      <td>
+                        <select data-module="mod2" data-correct="rotacion">
+                          <option value="">Selecciona…</option>
+                          <option value="rotacion">Rotación</option>
+                          <option value="traslacion">Traslación</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select data-module="mod2" data-correct="dianoche">
+                          <option value="">Selecciona…</option>
+                          <option value="dianoche">Día y noche</option>
+                          <option value="estaciones">Estaciones del año</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Tierra</td>
+                      <td>
+                        <select data-module="mod2" data-correct="traslacion">
+                          <option value="">Selecciona…</option>
+                          <option value="rotacion">Rotación</option>
+                          <option value="traslacion">Traslación</option>
+                        </select>
+                      </td>
+                      <td>
+                        <select data-module="mod2" data-correct="estaciones">
+                          <option value="">Selecciona…</option>
+                          <option value="dianoche">Día y noche</option>
+                          <option value="estaciones">Estaciones del año</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Actividad 4 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 4. Explica con tus palabras</div>
+                <div class="activity-hint">
+                  Explica con tus palabras por qué no sentimos que la Tierra se esté moviendo, aunque esté girando y trasladándose.
+                </div>
+                <textarea placeholder="Escribe tu explicación aquí…" data-module="mod2" data-open="true"></textarea>
+              </div>
+
+              <!-- JUEGO MÓDULO 2 -->
+              <div class="activity-block">
+                <div class="activity-title">Juego extra: Carrera espacial</div>
+                <div class="activity-hint">
+                  Practica lo aprendido sobre rotación y traslación con el juego de la ranita.
+                </div>
+                <div class="btn-row">
+                  <button class="btn btn-secondary" data-open-game="ODA-SPC-SistemaSolar-Ranita.html">
+                    🐸 Juego de la ranita del Sistema Solar
+                  </button>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="check-mod2">🔎 Comprobar respuestas del módulo 2</button>
+                <button class="btn btn-outline" onclick="printResults('mod2')">🖨️ Imprimir hoja de resultados (Módulo 2)</button>
+                <button class="btn btn-outline" onclick="printActivity('mod2')">📄 Imprimir actividad (Módulo 2)</button>
+              </div>
+
+              <div id="status-mod2" class="status">
+                <span class="icon">ℹ️</span>
+                <span>Responde las actividades y luego haz clic en “Comprobar respuestas”.</span>
+              </div>
+            </div>
+
+            <!-- Módulo 3 -->
+            <div class="module-panel" id="panel-mod3">
+              <h2>Módulo 3. Historia y tecnología para mirar el cielo</h2>
+              <p class="intro">En este módulo conocerás algunas aportaciones culturales, científicas y tecnológicas que han permitido conocer mejor el Sistema Solar y el Universo.</p>
+
+              <!-- Actividad 1 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 1. Línea del tiempo</div>
+                <div class="activity-hint">Ordena cronológicamente los siguientes acontecimientos.</div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Acontecimiento</th>
+                      <th>Orden (1, 2, 3, 4)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Construcción de los primeros telescopios.</td>
+                      <td>
+                        <select data-module="mod3" data-correct="1">
+                          <option value="">Selecciona…</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Desarrollo de cohetes y satélites artificiales.</td>
+                      <td>
+                        <select data-module="mod3" data-correct="2">
+                          <option value="">Selecciona…</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Llegada del ser humano a la Luna.</td>
+                      <td>
+                        <select data-module="mod3" data-correct="3">
+                          <option value="">Selecciona…</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Envío de sondas espaciales a otros planetas.</td>
+                      <td>
+                        <select data-module="mod3" data-correct="4">
+                          <option value="">Selecciona…</option>
+                          <option value="1">1</option>
+                          <option value="2">2</option>
+                          <option value="3">3</option>
+                          <option value="4">4</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Actividad 2 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 2. Relaciona personaje con aportación</div>
+                <div class="activity-hint">Relaciona cada personaje o grupo con su aportación.</div>
+
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Personaje / grupo</th>
+                      <th>Aportación</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Civilizaciones antiguas (maya, griega, etc.)</td>
+                      <td>
+                        <select data-module="mod3" data-correct="b">
+                          <option value="">Selecciona…</option>
+                          <option value="a">Lanzó cohetes y satélites artificiales al espacio.</option>
+                          <option value="b">Observó el cielo y creó calendarios y explicaciones sobre los astros.</option>
+                          <option value="c">Diseñó el primer telescopio espacial.</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Galileo Galilei</td>
+                      <td>
+                        <select data-module="mod3" data-correct="d">
+                          <option value="">Selecciona…</option>
+                          <option value="d">Mejoró el telescopio y observó los satélites de Júpiter.</option>
+                          <option value="a">Lanzó cohetes y satélites artificiales al espacio.</option>
+                          <option value="c">Diseñó el primer telescopio espacial.</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Agencias espaciales (NASA, ESA, etc.)</td>
+                      <td>
+                        <select data-module="mod3" data-correct="a">
+                          <option value="">Selecciona…</option>
+                          <option value="a">Lanzó cohetes y satélites artificiales al espacio.</option>
+                          <option value="b">Observó el cielo y creó calendarios y explicaciones sobre los astros.</option>
+                          <option value="c">Diseñó el primer telescopio espacial.</option>
+                        </select>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Hubble (telescopio espacial)</td>
+                      <td>
+                        <select data-module="mod3" data-correct="c">
+                          <option value="">Selecciona…</option>
+                          <option value="a">Lanzó cohetes y satélites artificiales al espacio.</option>
+                          <option value="b">Observó el cielo y creó calendarios y explicaciones sobre los astros.</option>
+                          <option value="c">Diseñó el primer telescopio espacial.</option>
+                        </select>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <!-- Actividad 3 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 3. Marca la opción correcta</div>
+                <div class="activity-hint">Lee y marca la mejor respuesta.</div>
+
+                <div class="question">
+                  1. ¿Por qué es importante la tecnología para estudiar el Sistema Solar?
+                </div>
+                <div class="options-grid">
+                  <label class="option-card">
+                    <input type="radio" name="m3_q1" value="a" data-module="mod3" data-correct="a">
+                    <span>a) Porque nos permite observar con más detalle los astros y llegar a lugares lejanos.</span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="m3_q1" value="b" data-module="mod3">
+                    <span>b) Porque hace que los planetas se acerquen a la Tierra.</span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="m3_q1" value="c" data-module="mod3">
+                    <span>c) Porque evita que existan noches.</span>
+                  </label>
+                </div>
+
+                <div class="question">
+                  2. ¿Cuál de las siguientes opciones es una misión espacial?
+                </div>
+                <div class="options-grid">
+                  <label class="option-card">
+                    <input type="radio" name="m3_q2" value="a" data-module="mod3">
+                    <span>a) Construir una maqueta del Sistema Solar en la escuela.</span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="m3_q2" value="b" data-module="mod3" data-correct="b">
+                    <span>b) Enviar una sonda para estudiar Marte.</span>
+                  </label>
+                  <label class="option-card">
+                    <input type="radio" name="m3_q2" value="c" data-module="mod3">
+                    <span>c) Dibujar las constelaciones en una cartulina.</span>
+                  </label>
+                </div>
+              </div>
+
+              <!-- Actividad 4 -->
+              <div class="activity-block">
+                <div class="activity-title">Actividad 4. Opino y reflexiono</div>
+                <div class="activity-hint">
+                  Responde con tus ideas: ¿por qué es importante seguir investigando el espacio?
+                </div>
+                <textarea placeholder="Escribe tu opinión aquí…" data-module="mod3" data-open="true"></textarea>
+              </div>
+
+              <!-- JUEGO MÓDULO 3 -->
+              <div class="activity-block">
+                <div class="activity-title">Juego extra: Crucigrama astronómico</div>
+                <div class="activity-hint">
+                  Resuelve el crucigrama para repasar personajes, inventos y aportaciones relacionadas con el Sistema Solar.
+                </div>
+                <div class="btn-row">
+                  <button class="btn btn-secondary" data-open-game="ODA-SPC-SistemaSolar-Crucigrama.html">
+                    ✏️ Crucigrama del Sistema Solar
+                  </button>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="check-mod3">🔎 Comprobar respuestas del módulo 3</button>
+                <button class="btn btn-outline" onclick="printResults('mod3')">🖨️ Imprimir hoja de resultados (Módulo 3)</button>
+                <button class="btn btn-outline" onclick="printActivity('mod3')">📄 Imprimir actividad (Módulo 3)</button>
+              </div>
+
+              <div id="status-mod3" class="status">
+                <span class="icon">ℹ️</span>
+                <span>Responde las actividades y luego haz clic en “Comprobar respuestas”.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Columna derecha -->
+      <section class="right-column">
+        <!-- Datos del alumno -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">👩‍🚀</span>
+              <span>Tus datos</span>
+            </div>
+          </div>
+          <div class="card-body student-info-card">
+            <div class="student-row">
+              <label for="studentName">Nombre:</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre completo">
+            </div>
+            <div class="student-row">
+              <label for="group">Grupo / Grado:</label>
+              <input type="text" id="group" placeholder="Ej. 5° A">
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🛰️</span>
+              <span>Tu guía en esta misión</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="helper-text">
+              <span class="badge-small">
+                <span class="dot"></span>
+                <span>Pasos recomendados</span>
+              </span>
+            </div>
+            <ul class="progress-list">
+              <li>
+                <span>1. Mira el video del Módulo 1.</span>
+                <span class="pill pill-done">Por hacer</span>
+              </li>
+              <li>
+                <span>2. Resuelve las actividades de cada módulo.</span>
+                <span class="pill pill-done">Por hacer</span>
+              </li>
+              <li>
+                <span>3. Haz clic en “Comprobar respuestas”.</span>
+                <span class="pill pill-done">Por hacer</span>
+              </li>
+              <li>
+                <span>4. Imprime tu hoja de resultados y la actividad.</span>
+                <span class="pill pill-done">Por hacer</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Resumen de resultados -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📊</span>
+              <span>Resumen general de tu misión</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="results-area" id="global-results">
+              <h3>Tu progreso por módulo</h3>
+              <div class="results-grid">
+                <div class="result-pill" id="pill-mod1">
+                  <span class="label">Módulo 1</span>
+                  <span class="value">0 %</span>
+                </div>
+                <div class="result-pill" id="pill-mod2">
+                  <span class="label">Módulo 2</span>
+                  <span class="value">0 %</span>
+                </div>
+                <div class="result-pill" id="pill-mod3">
+                  <span class="label">Módulo 3</span>
+                  <span class="value">0 %</span>
+                </div>
+              </div>
+              <p class="print-note">
+                Cada vez que compruebes las respuestas de un módulo, aquí se actualizará tu porcentaje de aciertos.
+              </p>
+            </div>
+
+            <div class="mini-grid" style="margin-top:6px;">
+              <div class="mini-card">
+                <h4>¿Qué estoy evaluando?</h4>
+                <ul>
+                  <li>Comprensión del funcionamiento del Sistema Solar.</li>
+                  <li>Uso de vocabulario científico básico.</li>
+                  <li>Capacidad de explicar con tus palabras lo que observas.</li>
+                </ul>
+              </div>
+              <div class="mini-card">
+                <h4>Recomendaciones</h4>
+                <ul>
+                  <li>Si algo no te sale bien, vuelve al módulo y lee con calma.</li>
+                  <li>Pide apoyo a tu maestro o familia cuando imprimas tus resultados.</li>
+                  <li>Usa los juegos del Sistema Solar para reforzar lo aprendido.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        <strong>Proyecto:</strong> “Nuestro lugar en el Universo”. Campo formativo: Saberes y Pensamiento Científico, Fase 5.
+      </div>
+      <div class="project">
+        © 2025 · Mtro. Martín Reta – ODA Sistema Solar. Uso educativo sin fines de lucro.
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Utilidad: obtener inputs de radio por módulo
+    function getModuleRadios(moduleId){
+      return Array.from(document.querySelectorAll('input[type="radio"][data-module="'+moduleId+'"]'));
+    }
+
+    function getModuleSelects(moduleId){
+      return Array.from(document.querySelectorAll('select[data-module="'+moduleId+'"]'));
+    }
+
+    function getModuleTextareas(moduleId){
+      return Array.from(document.querySelectorAll('textarea[data-module="'+moduleId+'"]'));
+    }
+
+    function checkModule(moduleId){
+      let total = 0;
+      let correct = 0;
+
+      // Radios
+      const radios = getModuleRadios(moduleId);
+      const groups = {};
+      radios.forEach(r => {
+        const name = r.name;
+        if(!groups[name]) groups[name] = [];
+        groups[name].push(r);
+      });
+
+      Object.values(groups).forEach(group => {
+        const hasCorrect = group.some(r => r.dataset.correct);
+        if(!hasCorrect) return;
+        total++;
+        const selected = group.find(r => r.checked);
+        if(selected && selected.dataset.correct){
+          correct++;
+        }
+      });
+
+      // Selects
+      const selects = getModuleSelects(moduleId);
+      selects.forEach(sel => {
+        const expected = sel.dataset.correct;
+        if(!expected) return;
+        total++;
+        if(sel.value === expected){
+          correct++;
+        }
+      });
+
+      // Textos abiertos (no cuentan como correct/incorrect, pero sí se revisa si están llenos)
+      const textareas = getModuleTextareas(moduleId);
+      let openAnswered = 0;
+      textareas.forEach(t => {
+        if(t.value.trim().length >= 5){
+          openAnswered++;
+        }
+      });
+
+      const percent = total>0 ? Math.round((correct/total)*100) : 0;
+
+      const statusEl = document.getElementById("status-"+moduleId);
+      if(statusEl){
+        statusEl.innerHTML = "";
+        const icon = document.createElement("span");
+        icon.className = "icon";
+        icon.textContent = percent>=70 ? "✅" : "⚠️";
+        const text = document.createElement("span");
+        text.innerHTML =
+          "Tu puntaje en este módulo es de <strong>"+percent+"%</strong>. "+
+          (openAnswered>0 ? "Has respondido "+openAnswered+" preguntas abiertas. " : "")+
+          (percent>=70
+            ? "¡Buen trabajo! Puedes repasar solo lo que te faltó."
+            : "Te recomiendo revisar el módulo nuevamente y corregir tus respuestas.");
+
+        statusEl.appendChild(icon);
+        statusEl.appendChild(text);
+      }
+
+      // Actualizar resumen general
+      const pill = document.getElementById("pill-"+moduleId);
+      if(pill){
+        const valueSpan = pill.querySelector(".value");
+        if(valueSpan){
+          valueSpan.textContent = percent+" %";
+        }
+        pill.classList.remove("bad");
+        if(percent<70){
+          pill.classList.add("bad");
+        }
+      }
+
+      return {total,correct,percent};
+    }
+
+    // Manejadores de botones de comprobación
+    document.getElementById("check-mod1").addEventListener("click", () => checkModule("mod1"));
+    document.getElementById("check-mod2").addEventListener("click", () => checkModule("mod2"));
+    document.getElementById("check-mod3").addEventListener("click", () => checkModule("mod3"));
+
+    // Cambio de módulos
+    const moduleButtons = document.querySelectorAll(".module-button");
+    const modulePanels = document.querySelectorAll(".module-panel");
+
+    moduleButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const mod = btn.dataset.module;
+        moduleButtons.forEach(b => b.classList.remove("active"));
+        modulePanels.forEach(p => p.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById("panel-"+mod).classList.add("active");
+      });
+    });
+
+    // 🔹 Versión nueva de printResults: hoja tipo rúbrica
+function printResults(moduleId){
+  const name = document.getElementById("studentName").value || "Sin nombre";
+  const group = document.getElementById("group").value || "Sin grupo";
+  const res = checkModule(moduleId);
+  const percent = res ? res.percent : 0;
+
+  let nivelTexto = "";
+  let nivelRubrica = "";
+  let mensajeLogro = "";
+  let mensajeOportunidad = "";
+
+  if(percent >= 90){
+    nivelTexto = "Logro sobresaliente";
+    nivelRubrica = "alto";
+    mensajeLogro = "Demuestra un dominio muy sólido de los contenidos del módulo. Responde con seguridad y explica con claridad las ideas principales.";
+    mensajeOportunidad = "Puede seguir profundizando en el tema con lecturas y actividades de ampliación, así como apoyar a sus compañeros.";
+  }else if(percent >= 70){
+    nivelTexto = "Logro esperado";
+    nivelRubrica = "medio";
+    mensajeLogro = "Comprende la mayor parte de los contenidos del módulo y es capaz de responder correctamente a la mayoría de las actividades.";
+    mensajeOportunidad = "Conviene reforzar algunos conceptos y revisar con calma las preguntas en las que hubo errores o dudas.";
+  }else if(percent >= 50){
+    nivelTexto = "En proceso";
+    nivelRubrica = "basico";
+    mensajeLogro = "Muestra avances en la comprensión del tema, aunque aún presenta errores frecuentes en las actividades.";
+    mensajeOportunidad = "Requiere repasar el módulo con apoyo del docente o la familia, y volver a intentar las actividades paso a paso.";
+  }else{
+    nivelTexto = "Requiere mayor apoyo";
+    nivelRubrica = "basico";
+    mensajeLogro = "Todavía no logra comprender los contenidos centrales del módulo.";
+    mensajeOportunidad = "Es necesario un acompañamiento más cercano (explicación guiada, ejemplos adicionales, trabajo en pequeño grupo) y volver a realizar las actividades.";
+  }
+
+  const w = window.open("","_blank");
+  w.document.write(`
+    <html>
+    <head>
+      <title>Resultados - ${moduleId.toUpperCase()}</title>
+      <style>
+        body{
+          font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+          padding:18px;
+          color:#111827;
+        }
+        h1{
+          font-size:1.4rem;
+          margin:0 0 4px;
+        }
+        h2{
+          font-size:1.05rem;
+          margin:10px 0 6px;
+        }
+        .meta{
+          font-size:.9rem;
+          color:#4b5563;
+          margin-bottom:10px;
+        }
+        .meta strong{
+          color:#111827;
+        }
+        .badge-mod{
+          display:inline-block;
+          padding:2px 8px;
+          border-radius:999px;
+          background:#eff6ff;
+          border:1px solid #93c5fd;
+          font-size:.8rem;
+          margin-bottom:8px;
+        }
+        .resumen{
+          border-radius:10px;
+          border:1px solid #cbd5f5;
+          background:#eff6ff;
+          padding:8px 10px;
+          font-size:.9rem;
+        }
+        .resumen p{
+          margin:2px 0;
+        }
+        .resumen strong{
+          color:#1d4ed8;
+        }
+        table{
+          border-collapse:collapse;
+          width:100%;
+          margin-top:10px;
+          font-size:.85rem;
+        }
+        th,td{
+          border:1px solid #94a3b8;
+          padding:5px 6px;
+          text-align:left;
+        }
+        th{
+          background:#e5e7eb;
+        }
+        td.center{
+          text-align:center;
+        }
+        .area-texto{
+          border:1px solid #cbd5f5;
+          border-radius:8px;
+          padding:8px;
+          font-size:.85rem;
+          min-height:60px;
+          margin-top:4px;
+        }
+        .small{
+          font-size:.8rem;
+          color:#6b7280;
+          margin-top:4px;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Hoja de resultados – ${moduleId.toUpperCase()}</h1>
+      <div class="meta">
+        <strong>Nombre del estudiante:</strong> ${name}<br>
+        <strong>Grupo / Grado:</strong> ${group}<br>
+        <strong>Porcentaje de aciertos:</strong> ${percent}%<br>
+        <strong>Nivel de logro:</strong> ${nivelTexto}
+      </div>
+
+      <div class="resumen">
+        <p><strong>Logro del estudiante:</strong> ${mensajeLogro}</p>
+        <p><strong>Áreas de oportunidad:</strong> ${mensajeOportunidad}</p>
+      </div>
+
+      <h2>Rúbrica de evaluación del módulo</h2>
+      <span class="badge-mod">Módulo: ${moduleId.toUpperCase()}</span>
+      <table>
+        <thead>
+          <tr>
+            <th>Criterio</th>
+            <th style="width:18%;">Alto</th>
+            <th style="width:18%;">En desarrollo</th>
+            <th style="width:18%;">Inicial</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Comprende los conceptos clave del módulo.</td>
+            <td class="center">${nivelRubrica === "alto" ? "✔" : ""}</td>
+            <td class="center">${nivelRubrica === "medio" ? "✔" : ""}</td>
+            <td class="center">${nivelRubrica === "basico" ? "✔" : ""}</td>
+          </tr>
+          <tr>
+            <td>Aplica lo aprendido al resolver las actividades.</td>
+            <td class="center">${nivelRubrica === "alto" ? "✔" : ""}</td>
+            <td class="center">${nivelRubrica === "medio" ? "✔" : ""}</td>
+            <td class="center">${nivelRubrica === "basico" ? "✔" : ""}</td>
+          </tr>
+          <tr>
+            <td>Explica con sus palabras lo que observa o investiga.</td>
+            <td class="center">${nivelRubrica === "alto" ? "✔" : ""}</td>
+            <td class="center">${nivelRubrica === "medio" ? "✔" : ""}</td>
+            <td class="center">${nivelRubrica === "basico" ? "✔" : ""}</td>
+          </tr>
+          <tr>
+            <td>Muestra actitud de curiosidad y cuidado hacia el conocimiento científico.</td>
+            <td class="center">${nivelRubrica === "alto" ? "✔" : ""}</td>
+            <td class="center">${nivelRubrica === "medio" ? "✔" : ""}</td>
+            <td class="center">${nivelRubrica === "basico" ? "✔" : ""}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Observaciones del docente</h2>
+      <div class="area-texto">
+        <p>(Escribe aquí comentarios específicos sobre el desempeño del estudiante, ejemplos de aciertos y aspectos a reforzar).</p>
+      </div>
+
+      <h2>Compromisos de mejora</h2>
+      <p class="small">Puedes dialogar con el estudiante para definir 1 o 2 acuerdos concretos.</p>
+      <div class="area-texto">
+        <p>1.</p>
+        <p>2.</p>
+      </div>
+
+      <p class="small">
+        Esta hoja puede archivarse en el portafolio de evidencias del estudiante como registro de su avance en el módulo.
+      </p>
+    </body>
+    </html>
+  `);
+  w.document.close();
+  w.print();
+}
+
+// Hoja especial de actividad para portafolio
+function getPrintableActivity(moduleId){
+  if(moduleId === "mod1"){
+    return `
+      <h2>Hoja de actividad para portafolio – Módulo 1</h2>
+      <p><strong>Tema:</strong> Componentes del Sistema Solar (Sol, planetas, satélites y asteroides).</p>
+
+      <h3>Actividad 1. Mapa de ideas del Sistema Solar</h3>
+      <p>En el siguiente espacio, dibuja un mapa de ideas donde:</p>
+      <ul>
+        <li>En el centro escribas <strong>"Sistema Solar"</strong>.</li>
+        <li>Rodees el centro con al menos 4 ramas: <em>Sol, planetas, satélites naturales, asteroides</em>.</li>
+        <li>En cada rama agregues 2 o 3 palabras clave que describan sus características.</li>
+      </ul>
+      <div class="cuadro-grande"></div>
+
+      <h3>Actividad 2. Cuadro comparativo</h3>
+      <p>Completa el cuadro comparando al menos <strong>dos planetas</strong> del Sistema Solar.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Planeta</th>
+            <th>Tamaño aproximado (pequeño / mediano / grande)</th>
+            <th>Distancia relativa al Sol (cerca / media / lejos)</th>
+            <th>Una característica especial</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>_____________________________</td>
+            <td>_____________________________</td>
+            <td>_____________________________</td>
+            <td>_____________________________</td>
+          </tr>
+          <tr>
+            <td>_____________________________</td>
+            <td>_____________________________</td>
+            <td>_____________________________</td>
+            <td>_____________________________</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Actividad 3. Explico con mis propias palabras</h3>
+      <p>Escribe un párrafo donde expliques, con tus palabras, por qué el Sol es tan importante para la vida en la Tierra.</p>
+      <div class="linea"></div>
+      <div class="linea"></div>
+      <div class="linea"></div>
+
+      <h3>Actividad 4. Dibujo científico</h3>
+      <p>Dibuja el Sistema Solar (no hace falta que sea a escala) y nombra al menos 5 planetas. Señala con una flecha dónde está la Tierra.</p>
+      <div class="cuadro-grande"></div>
+    `;
+  }
+
+  if(moduleId === "mod2"){
+    return `
+      <h2>Hoja de actividad para portafolio – Módulo 2</h2>
+      <p><strong>Tema:</strong> Movimientos de rotación y traslación de la Tierra.</p>
+
+      <h3>Actividad 1. Situaciones cotidianas</h3>
+      <p>Lee las situaciones y marca si se relacionan más con la <strong>rotación</strong> o con la <strong>traslación</strong> de la Tierra.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Situación</th>
+            <th>Rotación</th>
+            <th>Traslación</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Amanece y anochece todos los días.</td>
+            <td>__________</td>
+            <td>__________</td>
+          </tr>
+          <tr>
+            <td>Cambian las estaciones del año.</td>
+            <td>__________</td>
+            <td>__________</td>
+          </tr>
+          <tr>
+            <td>La sombra de un poste cambia de posición a lo largo del día.</td>
+            <td>__________</td>
+            <td>__________</td>
+          </tr>
+          <tr>
+            <td>En algunos meses hace más calor y en otros hace más frío.</td>
+            <td>__________</td>
+            <td>__________</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Actividad 2. Explicación paso a paso</h3>
+      <p>Imagina que un niño de primer grado te pregunta: “¿Por qué hay día y noche?”. Explica en 4 o 5 oraciones, paso a paso.</p>
+      <div class="linea"></div>
+      <div class="linea"></div>
+      <div class="linea"></div>
+      <div class="linea"></div>
+
+      <h3>Actividad 3. Línea del tiempo de un año</h3>
+      <p>Dibuja una línea del tiempo del año y marca en ella 4 momentos importantes (por ejemplo: inicio de clases, una fecha especial, vacaciones de invierno, vacaciones de verano). Escribe debajo cómo influye la <strong>traslación</strong> en esos momentos.</p>
+      <div class="cuadro-grande"></div>
+      <div class="linea"></div>
+      <div class="linea"></div>
+
+      <h3>Actividad 4. Pregunta desafiante</h3>
+      <p>Si la Tierra se moviera más rápido en su traslación, ¿crees que el año sería más corto o más largo? Explica tu respuesta.</p>
+      <div class="linea"></div>
+      <div class="linea"></div>
+      <div class="linea"></div>
+    `;
+  }
+
+  if(moduleId === "mod3"){
+    return `
+      <h2>Hoja de actividad para portafolio – Módulo 3</h2>
+      <p><strong>Tema:</strong> Aportaciones culturales, científicas y tecnológicas para conocer el Sistema Solar.</p>
+
+      <h3>Actividad 1. Investigo y organizo</h3>
+      <p>Elige <strong>una</strong> de las opciones:</p>
+      <ul>
+        <li>Una civilización antigua (por ejemplo, maya, azteca, griega).</li>
+        <li>Un científico relacionado con la astronomía (por ejemplo, Galileo, Copérnico, Kepler).</li>
+        <li>Una misión espacial (por ejemplo, Apolo 11, Voyager, Curiosity).</li>
+      </ul>
+      <p>Completa el siguiente cuadro con la información que investigues.</p>
+      <table>
+        <thead>
+          <tr>
+            <th>Nombre de la civilización / científico / misión</th>
+            <th>¿Qué observó o investigó?</th>
+            <th>¿Qué aportó a nuestro conocimiento del Sistema Solar?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>_________________________________________</td>
+            <td>_________________________________________</td>
+            <td>_________________________________________</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Actividad 2. Antes y ahora</h3>
+      <p>Escribe dos diferencias entre cómo se estudiaba el cielo en la antigüedad y cómo se estudia ahora.</p>
+      <p><strong>Antes:</strong></p>
+      <div class="linea"></div>
+      <div class="linea"></div>
+      <p><strong>Ahora:</strong></p>
+      <div class="linea"></div>
+      <div class="linea"></div>
+
+      <h3>Actividad 3. Mi opinión</h3>
+      <p>Escribe un párrafo donde respondas: <em>“¿Por qué crees que es importante seguir invirtiendo en la exploración del espacio?”</em></p>
+      <div class="linea"></div>
+      <div class="linea"></div>
+      <div class="linea"></div>
+      <div class="linea"></div>
+
+      <h3>Actividad 4. Lluvia de ideas visual</h3>
+      <p>En el espacio de abajo, haz un dibujo o esquema donde muestres al menos 3 tecnologías que se usan hoy para estudiar el Universo (telescopios, satélites, sondas, etc.) y escribe su nombre.</p>
+      <div class="cuadro-grande"></div>
+    `;
+  }
+
+  // Por si algo raro, un fallback
+  return `
+    <h2>Hoja de actividad para portafolio</h2>
+    <p>No se encontró una actividad específica para este módulo.</p>
+  `;
+}
+
+    // Función de impresión de actividad
+    // Hoja de actividad especial (portafolio)
+function printActivity(moduleId){
+  const name = document.getElementById("studentName").value || "Sin nombre";
+  const group = document.getElementById("group").value || "Sin grupo";
+
+  const contenido = getPrintableActivity(moduleId);
+
+  const w = window.open("","_blank");
+  w.document.write(`
+    <html>
+    <head>
+      <title>Actividad para imprimir - ${moduleId.toUpperCase()}</title>
+      <style>
+        body{
+          font-family:system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+          padding:18px;
+          color:#111827;
+        }
+        h1{
+          font-size:1.4rem;
+          margin:0 0 6px;
+        }
+        h2{
+          font-size:1.1rem;
+          margin:10px 0 6px;
+        }
+        h3{
+          font-size:1rem;
+          margin:8px 0 4px;
+        }
+        p{
+          font-size:.9rem;
+          margin:4px 0;
+        }
+        ul{
+          font-size:.9rem;
+          margin-top:0;
+        }
+        table{
+          border-collapse:collapse;
+          width:100%;
+          margin-top:6px;
+          font-size:.85rem;
+        }
+        th,td{
+          border:1px solid #94a3b8;
+          padding:4px 6px;
+          text-align:left;
+        }
+        th{
+          background:#e5e7eb;
+        }
+        .meta{
+          font-size:.9rem;
+          color:#4b5563;
+          margin-bottom:10px;
+        }
+        .meta strong{
+          color:#111827;
+        }
+        .linea{
+          border-bottom:1px solid #111827;
+          margin:6px 0 10px;
+          height:16px;
+        }
+        .cuadro-grande{
+          border:1px solid #111827;
+          height:140px;
+          margin:8px 0 12px;
+        }
+      </style>
+    </head>
+    <body>
+      <h1>Actividad para imprimir – ${moduleId.toUpperCase()}</h1>
+      <div class="meta">
+        <strong>Nombre del estudiante:</strong> ${name} _____________________________<br>
+        <strong>Grupo / Grado:</strong> ${group} _________________________________
+      </div>
+
+      ${contenido}
+
+      <p style="font-size:.8rem;color:#6b7280;margin-top:10px;">
+        Esta hoja está diseñada para integrarse al portafolio de evidencias del estudiante.
+      </p>
+    </body>
+    </html>
+  `);
+  w.document.close();
+  w.print();
+}
+
+
+    // Voz de instrucciones
+    function speakIntro(){
+      const text = "Bienvenido explorador. Hoy viajaremos por el Sistema Solar para conocer sus planetas, sus movimientos y algunas de las misiones espaciales más importantes. Escucha con atención las indicaciones y luego realiza las actividades de cada módulo.";
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no soporta la lectura de voz. Puedes leer las instrucciones directamente en la pantalla.");
+        return;
+      }
+      const synth = window.speechSynthesis;
+      synth.cancel();
+      const utter = new SpeechSynthesisUtterance(text);
+      utter.lang = "es-MX";
+
+      const availableVoices = synth.getVoices().filter(v => v.lang && v.lang.startsWith("es"));
+      if(availableVoices.length > 0){
+        // intentamos elegir una voz masculina si existe
+        const male = availableVoices.find(v => /male|hombre|varón/i.test(v.name));
+        utter.voice = male || availableVoices[0];
+      }
+      synth.speak(utter);
+    }
+
+    const btnListen = document.getElementById("btnListenIntro");
+    if(btnListen){
+      btnListen.addEventListener("click", speakIntro);
+    }
+
+    // ---------- Portada: mostrar ODA al pulsar "Empezar" ----------
+    const btnStartOda = document.getElementById("btnStartOda");
+    if(btnStartOda){
+      btnStartOda.addEventListener("click", () => {
+        const cover = document.getElementById("coverScreen");
+        const wrapper = document.getElementById("odaWrapper");
+        if(cover) cover.style.display = "none";
+        if(wrapper) wrapper.style.display = "flex";
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    }
+
+    // ---------- Botones para abrir juegos externos ----------
+    document.querySelectorAll("[data-open-game]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const url = btn.getAttribute("data-open-game");
+        if(url){
+          window.open(url, "_blank");
+        }
+      });
+    });
+
+    // Exponer funciones al ámbito global
+    window.printResults = printResults;
+    window.printActivity = printActivity;
+// 🔁 Mezclar filas y opciones de la Actividad 3 (Módulo 1)
+function resetAct3Mod1(){
+  const tbody = document.querySelector("#act3-mod1 tbody");
+  if(!tbody) return;
+
+  // Mezclar filas de la tabla
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+  for(let i = rows.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [rows[i], rows[j]] = [rows[j], rows[i]];
+  }
+  rows.forEach(r => tbody.appendChild(r));
+
+  // Mezclar opciones dentro de cada select
+  const selects = tbody.querySelectorAll("select");
+  selects.forEach(sel => {
+    const options = Array.from(sel.querySelectorAll("option:not(:first-child)"));
+    const shuffled = options.sort(() => Math.random() - 0.5);
+    sel.innerHTML = '<option value="">Selecciona...</option>';
+    shuffled.forEach(opt => sel.appendChild(opt));
+    sel.value = "";
+  });
+}
+
+// Cuando la página se cargue, activa el botón y mezcla una vez
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("reset-act3-mod1");
+  if(btn) btn.addEventListener("click", resetAct3Mod1);
+  resetAct3Mod1(); // se mezcla una vez al cargar
+});
+
+  </script>
+</body>
+</html>
