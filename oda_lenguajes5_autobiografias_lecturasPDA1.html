@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>ODA – Mi voz, mi historia: leyendo autobiografías</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root{
+  --primary:#b91c1c;
+  --accent:#fb923c;
+  --bg:#fff7ed;
+  --text:#111827;
+  --muted:#6b7280;
+  --border:#fecaca;
+  --shadow:0 8px 25px rgba(185,28,28,.25);
+}
+body{
+  font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+  background:linear-gradient(180deg,#fff7ed 0,#fef2f2 40%,#f9fafb 100%);
+  margin:0;padding:14px;display:flex;justify-content:center;
+}
+.wrapper{
+  max-width:1100px;width:100%;background:white;border-radius:22px;
+  box-shadow:var(--shadow);padding:1rem;position:relative;
+}
+header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:6px;margin-bottom:1rem;}
+header img{height:60px}
+.title h1{color:var(--primary);margin:0;font-size:1.3rem;}
+.title small{color:var(--muted)}
+.avatar{display:flex;align-items:center;gap:.5rem;}
+.avatar img{height:70px}
+button.voice{
+  background:white;color:var(--primary);border:1px solid var(--border);
+  border-radius:999px;padding:.4rem .8rem;cursor:pointer;font-weight:600;
+}
+.main{display:flex;flex-direction:column;gap:1rem;}
+select,textarea,input[type=text]{width:100%;padding:.4rem;border-radius:8px;border:1px solid var(--border);}
+.card{background:#fff7ed;border:1px solid #fee2e2;border-radius:14px;padding:.8rem;}
+.btn{border:none;border-radius:999px;padding:.5rem .9rem;font-weight:600;cursor:pointer;}
+.btn-primary{background:var(--primary);color:white;}
+.btn-secondary{background:white;color:var(--primary);border:1px solid var(--border)}
+.hidden{display:none;}
+footer{border-top:1px solid var(--border);margin-top:1rem;padding-top:.5rem;font-size:.8rem;color:#555;display:flex;justify-content:space-between;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+<header>
+  <img src="sep_logo.png" alt="SEP">
+  <div class="title">
+    <h1>Mi voz, mi historia: leyendo autobiografías</h1>
+    <small>Campo formativo: Lenguajes · Fase 5</small><br>
+    <small>PDA: Lee textos autobiográficos y reflexiona sobre las razones por las que suelen estar narrados en primera persona del singular.</small>
+  </div>
+  <div class="avatar">
+    <img src="avatar_guia.png" alt="Guía">
+    <button class="voice" onclick="speakGuide()">🔊 Escuchar guía</button>
+  </div>
+</header>
+<div class="main">
+  <div class="card">
+    <label for="student">Nombre del alumno:</label>
+    <input type="text" id="student" placeholder="Escribe tu nombre aquí">
+  </div>
+  <div class="card">
+    <h3>Selecciona una autobiografía para leer:</h3>
+    <select id="storySelect" onchange="showStory()">
+      <option value="">-- Elegir --</option>
+      <option value="leer">El día que aprendí a leer</option>
+      <option value="futbol">Mi primer partido de fútbol</option>
+      <option value="abuela">El viaje al pueblo de mi abuela</option>
+    </select>
+    <div id="storyContent" style="margin-top:1rem;white-space:pre-line;"></div>
+  </div>
+  <div class="card">
+    <h3>Actividades de comprensión</h3>
+    <p><strong>1.</strong> ¿Quién narra la historia?</p>
+    <label><input type="radio" name="q1" value="primera"> El propio autor o autora (primera persona)</label><br>
+    <label><input type="radio" name="q1" value="tercera"> Un narrador ajeno (tercera persona)</label>
+    <p><strong>2.</strong> Completa la oración:</p>
+    <input type="text" id="q2" placeholder="Yo ____ cuando era niño(a)...">
+    <p><strong>3.</strong> Verdadero o falso: Las autobiografías siempre usan la primera persona.</p>
+    <label><input type="radio" name="q3" value="v"> Verdadero</label><br>
+    <label><input type="radio" name="q3" value="f"> Falso</label>
+    <p><strong>4.</strong> Reflexiona: ¿Por qué crees que las autobiografías suelen narrarse en primera persona?</p>
+    <textarea id="q4"></textarea>
+    <button class="btn btn-primary" onclick="checkAnswers()">Comprobar respuestas</button>
+  </div>
+  <div id="resultCard" class="card hidden">
+    <h3>Hoja de resultados</h3>
+    <p><strong>Alumno:</strong> <span id="rName"></span></p>
+    <p><strong>Puntaje:</strong> <span id="rScore"></span>/3</p>
+    <p><strong>Comentario del guía:</strong> <span id="rComment"></span></p>
+    <button class="btn btn-secondary" onclick="window.print()">🖨️ Imprimir resultados</button>
+  </div>
+</div>
+<footer>
+  <span>Proyecto: Mi historia, mi voz, mi camino</span>
+  <span>Escuela Primaria “Gral. Lázaro Cárdenas” – Pesquería, N.L.</span>
+</footer>
+<script>
+const stories={
+  leer:`Desde pequeña, las letras me parecían dibujos misteriosos. Una tarde, mi madre me sentó junto a la ventana con un libro viejo. Al principio sólo veía manchas negras, pero poco a poco las sílabas comenzaron a tener sentido. Cuando logré leer mi primera palabra, sentí una emoción enorme. “¡Lo logré!”, grité. Ese día comprendí que leer era abrir una puerta a mil mundos, y que cada historia podía llevarme a un lugar distinto.`,
+  futbol:`Recuerdo el día de mi primer partido. El sol caía fuerte sobre la cancha y mis piernas temblaban. Cuando el silbato sonó, corrí sin pensar. Toqué el balón, lo perdí, volví a intentarlo. No metí ningún gol, pero al final mis amigos me abrazaron. “Jugaste bien”, me dijeron. Ese día entendí que en el fútbol no todo es ganar, sino disfrutar y aprender en equipo.`,
+  abuela:`Cada verano viajábamos al pueblo donde vivía mi abuela. Me encantaba el olor a pan recién hecho y los cuentos que contaba antes de dormir. Una vez, me enseñó a sembrar flores en su jardín. Mientras hundía mis manos en la tierra, me dijo que las raíces nos unen a nuestra historia. Desde entonces, cada vez que veo una flor, recuerdo sus palabras y mi infancia en aquel lugar.`
+};
+function showStory(){
+  const val=document.getElementById('storySelect').value;
+  document.getElementById('storyContent').textContent=stories[val]||'';
+}
+function checkAnswers(){
+  let score=0;
+  if(document.querySelector('input[name=q1]:checked')?.value==='primera')score++;
+  if(document.getElementById('q2').value.trim().length>0)score++;
+  if(document.querySelector('input[name=q3]:checked')?.value==='v')score++;
+  const name=document.getElementById('student').value||'Sin nombre';
+  const r=document.getElementById('resultCard');
+  r.classList.remove('hidden');
+  document.getElementById('rName').textContent=name;
+  document.getElementById('rScore').textContent=score;
+  document.getElementById('rComment').textContent=score>=2?"Excelente, has comprendido cómo la primera persona da vida a las experiencias personales.":"Sigue practicando. Recuerda que la primera persona muestra que quien narra vivió los hechos.";
+  window.scrollTo({top:r.offsetTop,behavior:'smooth'});
+}
+function speakGuide(){
+  const msg=new SpeechSynthesisUtterance('Bienvenido a esta ODA. Hoy leerás distintas autobiografías y descubrirás por qué están narradas en primera persona.');
+  msg.lang='es-MX';msg.rate=1;msg.pitch=1;window.speechSynthesis.speak(msg);
+}
+</script>
+</div>
+</body>
+</html>

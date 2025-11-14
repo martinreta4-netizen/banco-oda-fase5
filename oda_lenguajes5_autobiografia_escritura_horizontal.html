@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Escribo mi autobiografía con buena puntuación</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#b91c1c;
+      --primary-soft:#fef2f2;
+      --accent:#fb923c;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#fecaca;
+      --card:#ffffff;
+      --shadow:0 16px 35px rgba(127,29,29,.18);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#fff7ed 0,#fef2f2 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1180px;
+      background:radial-gradient(circle at top left,#fee2e2 0,#ffffff 45%,#fef2f2 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #fed7d7;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.4fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #fee2e2;
+    }
+    @media(max-width:900px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .header-logos{justify-content:center;}
+    }
+    .header-logos{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .header-logos img{
+      max-height:54px;
+      width:auto;
+      display:block;
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.22rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:#7f1d1d;
+    }
+    .title-block h1 .icon{
+      font-size:1.45rem;
+    }
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:3px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#7f1d1d;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+    }
+    .author-block{
+      font-size:.78rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:900px){
+      .author-block{text-align:center;}
+    }
+    .author-block strong{
+      display:block;
+      font-size:.86rem;
+      color:#111827;
+    }
+    .top-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .student-name{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.82rem;
+      background:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #fecaca;
+    }
+    .student-name label{
+      font-weight:600;
+      color:#374151;
+    }
+    .student-name input{
+      border:none;
+      outline:none;
+      font-size:.9rem;
+      min-width:180px;
+    }
+    .avatar-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:5px 9px;
+      border:1px solid #fecaca;
+    }
+    .avatar-row img{
+      height:56px;
+      width:auto;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#7f1d1d;
+    }
+    .btn-voice{
+      border-radius:999px;
+      border:none;
+      background:#b91c1c;
+      color:#fff;
+      padding:5px 10px;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:0 6px 18px rgba(127,29,29,.4);
+    }
+    .btn-voice span{
+      font-size:1rem;
+    }
+    .ejes-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.75rem;
+    }
+    .chip{
+      border-radius:999px;
+      padding:2px 9px;
+      border:1px solid #fed7d7;
+      background:#fff1f2;
+      color:#b91c1c;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#b91c1c;
+    }
+    .steps-bar{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:6px;
+      border:1px solid #fecaca;
+    }
+    .step-tab{
+      flex:1 1 140px;
+      border-radius:999px;
+      border:1px solid transparent;
+      padding:5px 10px;
+      font-size:.82rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      cursor:pointer;
+      color:#7f1d1d;
+      background:#fff;
+      transition:.2s ease;
+    }
+    .step-left{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .step-circle{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:2px solid #fecaca;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.78rem;
+      font-weight:600;
+      background:#fff5f5;
+    }
+    .step-label-main{
+      font-weight:600;
+    }
+    .step-label-sub{
+      font-size:.74rem;
+      color:#9f1239;
+    }
+    .step-tab.active{
+      background:linear-gradient(90deg,#b91c1c,#f97316);
+      border-color:#b91c1c;
+      color:#fff;
+      box-shadow:0 10px 22px rgba(185,28,28,.45);
+    }
+    .step-tab.active .step-circle{
+      background:#fff;
+      border-color:#fee2e2;
+      color:#b91c1c;
+    }
+    .step-icon-right{
+      font-size:.95rem;
+    }
+    main{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:6px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:10px 11px;
+    }
+    .card h2{
+      margin:0 0 4px;
+      font-size:.98rem;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card h2 .icon{
+      font-size:1.1rem;
+    }
+    .card p{
+      font-size:.86rem;
+      color:#374151;
+      margin:.15rem 0;
+    }
+    .two-col{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(0,1.1fr);
+      gap:10px;
+    }
+    @media(max-width:900px){
+      .two-col{grid-template-columns:1fr;}
+    }
+    .example-box{
+      border-radius:14px;
+      padding:8px 10px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      font-size:.84rem;
+      color:#7c2d12;
+    }
+    .example-label{
+      font-size:.78rem;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      color:#c2410c;
+      margin-bottom:3px;
+    }
+    .list{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.85rem;
+    }
+    .list li{margin-bottom:3px;}
+    textarea,input[type="text"]{
+      width:100%;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:5px 7px;
+      font-family:inherit;
+      font-size:.86rem;
+      resize:vertical;
+    }
+    textarea{min-height:80px;}
+    .mini-title{
+      font-weight:600;
+      font-size:.86rem;
+      color:#7f1d1d;
+      margin-top:4px;
+    }
+    .line-example{
+      padding:4px 6px;
+      border-radius:8px;
+      background:#fef2f2;
+      border:1px dashed #fecaca;
+      font-size:.84rem;
+      margin-bottom:4px;
+    }
+    .vf-row{
+      margin-top:4px;
+      padding:6px 7px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:.84rem;
+    }
+    .vf-row label{margin-right:8px;}
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+    .btn-secondary{
+      background:#f3f4f6;
+      color:#111827;
+    }
+    .btn-outline{
+      background:#fff;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+    .step-panel{display:none;font-size:.86rem;}
+    .step-panel.active{display:block;}
+    .results-card{
+      font-size:.84rem;
+    }
+    .result-good{color:#166534;font-weight:600;}
+    .result-bad{color:#b91c1c;font-weight:600;}
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #fee2e2;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        padding:0;
+      }
+      .school-logo-fixed{position:fixed;right:8px;bottom:8px;height:60px;}
+      .btn-row,.steps-bar,.avatar-row,.ejes-row{display:none!important;}
+      .wrapper{
+        box-shadow:none;
+        border:none;
+        border-radius:0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+  <div class="wrapper">
+    <header>
+      <div class="header-logos">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">✍️</span>
+          <span>ODA – Escribo mi autobiografía con buena puntuación</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Narración de sucesos autobiográficos.</strong><br>
+          PDA: <strong>Escribe la narración de los hechos autobiográficos, haciendo uso de comas, puntos y seguido, puntos y aparte y dos puntos, para dar claridad y orden a las ideas.</strong><br>
+          <span class="phase-label">Lenguajes · Fase 5</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <div class="top-row">
+      <div class="student-name">
+        <label for="studentName">Nombre del alumno(a):</label>
+        <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+      </div>
+      <div class="avatar-row">
+        <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+        <div class="avatar-text">
+          <strong>Hola, soy el maestro Martín.</strong><br>
+          Hoy vamos a escribir un fragmento de tu autobiografía usando bien las comas, los puntos y los párrafos.
+        </div>
+        <button class="btn-voice" type="button" onclick="playGuide()">
+          <span>🔊</span> Escuchar instrucciones
+        </button>
+      </div>
+    </div>
+
+    <div class="ejes-row">
+      <span class="chip"><span class="dot"></span>Inclusión</span>
+      <span class="chip"><span class="dot"></span>Pensamiento crítico</span>
+      <span class="chip"><span class="dot"></span>Lenguajes para la vida</span>
+      <span class="chip"><span class="dot"></span>Interculturalidad crítica</span>
+    </div>
+
+    <div class="steps-bar">
+      <button class="step-tab active" data-step="1" onclick="setStep(1)">
+        <div class="step-left">
+          <div class="step-circle">1</div>
+          <div>
+            <div class="step-label-main">Recuerdo la puntuación</div>
+            <div class="step-label-sub">Comas, puntos y dos puntos</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="2" onclick="setStep(2)">
+        <div class="step-left">
+          <div class="step-circle">2</div>
+          <div>
+            <div class="step-label-main">Corrijo un texto</div>
+            <div class="step-label-sub">Autobiografía sin puntos</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="3" onclick="setStep(3)">
+        <div class="step-left">
+          <div class="step-circle">3</div>
+          <div>
+            <div class="step-label-main">Escribo mi fragmento</div>
+            <div class="step-label-sub">Uso comas y puntos</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="4" onclick="setStep(4)">
+        <div class="step-left">
+          <div class="step-circle">4</div>
+          <div>
+            <div class="step-label-main">Reviso y mejoro</div>
+            <div class="step-label-sub">Hoja de resultados</div>
+          </div>
+        </div>
+        <span class="step-icon-right">✓</span>
+      </button>
+    </div>
+
+    <main>
+      <!-- PASO 1 -->
+      <section class="card step-panel active" id="step-1">
+        <h2><span class="icon">📌</span><span>Paso 1. ¿Para qué sirven comas, puntos y dos puntos?</span></h2>
+        <div class="two-col">
+          <div>
+            <p>Cuando cuentas tu vida, la puntuación es como el ritmo de tu voz. Ayuda a que quien te lee entienda <strong>dónde haces una pausa, dónde termina una idea y dónde comienza otra</strong>.</p>
+            <ul class="list">
+              <li><strong>Coma (,)</strong>: separa elementos dentro de una misma idea.<br>
+                <span class="line-example">Ese día estaba nervioso, emocionado y un poco asustado.</span>
+              </li>
+              <li><strong>Punto y seguido (.)</strong>: termina una oración, pero sigues hablando del mismo tema.<br>
+                <span class="line-example">Entré al salón. Todos me miraban en silencio.</span>
+              </li>
+              <li><strong>Punto y aparte</strong>: termina un párrafo y comienzas otro sobre otra parte del mismo tema.</li>
+              <li><strong>Dos puntos (:)</strong>: anuncian una explicación, una lista o algo que quieres destacar.<br>
+                <span class="line-example">Ese día aprendí tres cosas: confiar en mí, pedir ayuda y no rendirme.</span>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <div class="example-box">
+              <div class="example-label">Actividad 1 · Elijo la mejor puntuación</div>
+              <p>Marca la opción que está <strong>mejor puntuada</strong> para un fragmento autobiográfico.</p>
+              <div class="vf-row">
+                <p><strong>a)</strong> Ese día llegué tarde estaba lloviendo el camión se descompuso.</p>
+                <label><input type="radio" name="p1" value="a"> Elegir</label>
+              </div>
+              <div class="vf-row">
+                <p><strong>b)</strong> Ese día llegué tarde. Estaba lloviendo y el camión se descompuso.</p>
+                <label><input type="radio" name="p1" value="b"> Elegir</label>
+              </div>
+              <p class="mini-title">Ahora otra:</p>
+              <div class="vf-row">
+                <p><strong>a)</strong> En mi mochila llevaba: libros, cuadernos lápices y mi lonche.</p>
+                <label><input type="radio" name="p2" value="a"> Elegir</label>
+              </div>
+              <div class="vf-row">
+                <p><strong>b)</strong> En mi mochila llevaba libros, cuadernos, lápices y mi lonche.</p>
+                <label><input type="radio" name="p2" value="b"> Elegir</label>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-primary" type="button" onclick="checkStep1()">Comprobar respuestas</button>
+              </div>
+              <div id="fbStep1" style="margin-top:4px;font-size:.82rem;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASO 2 -->
+      <section class="card step-panel" id="step-2">
+        <h2><span class="icon">🛠️</span><span>Paso 2. Corrijo un fragmento autobiográfico</span></h2>
+        <p>Lee este fragmento autobiográfico. Está casi sin puntuación. Reescríbelo usando <strong>comas, puntos y de ser posible dos puntos</strong> para que se entienda mejor.</p>
+        <div class="example-box">
+          <div class="example-label">Texto sin casi puntuación</div>
+          <p>
+            cuando entré por primera vez a esta escuela sentí un nudo en la garganta todos hablaban entre ellos yo no conocía a nadie el maestro me sonrió me dijo que pasara al frente y me presentó con el grupo ese día pensé que sería muy difícil pero poco a poco las cosas cambiaron
+          </p>
+        </div>
+        <p class="mini-title">Reescribe el fragmento con buena puntuación:</p>
+        <textarea id="fixText" placeholder="Escribe aquí el mismo texto, pero con comas, puntos, párrafos y, si quieres, dos puntos."></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="evaluateFix()">Revisar rápidamente</button>
+        </div>
+        <div id="fbFix" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- PASO 3 -->
+      <section class="card step-panel" id="step-3">
+        <h2><span class="icon">✍️</span><span>Paso 3. Escribo un fragmento de mi autobiografía</span></h2>
+        <p>Ahora escribe un fragmento de tu propia autobiografía usando la primera persona (<strong>yo</strong>). Elige un suceso importante y cuenta:</p>
+        <ul class="list">
+          <li>¿Qué pasó antes?</li>
+          <li>¿Qué pasó durante el momento?</li>
+          <li>¿Qué pasó después?</li>
+        </ul>
+        <p class="mini-title">Recuerda usar comas, puntos, punto y aparte y dos puntos cuando los necesites.</p>
+        <textarea id="myAuto" placeholder="Ejemplo de inicio: Ese día nunca lo voy a olvidar: era mi primer día en..."></textarea>
+        <p class="mini-title">Reto extra: escribe una segunda versión mejorada de una parte de tu texto.</p>
+        <textarea id="myAuto2" placeholder="Toma una parte de tu autobiografía y reescríbela con mejor puntuación y más detalles."></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="quickCheckMyAuto()">Revisión rápida</button>
+        </div>
+        <div id="fbMyAuto" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- PASO 4 -->
+      <section class="card step-panel" id="step-4">
+        <h2><span class="icon">📄</span><span>Paso 4. Hoja de resultados</span></h2>
+        <p>Aquí verás un resumen de cómo usaste la puntuación al escribir tu fragmento autobiográfico.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="generateResults()">Generar hoja de resultados</button>
+          <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir actividad</button>
+        </div>
+        <div id="resultsPanel" class="card results-card" style="margin-top:8px;display:none;">
+          <h2><span class="icon">📊</span><span>Hoja de resultados</span></h2>
+          <p><strong>Alumno(a):</strong> <span id="resName"></span></p>
+          <ul class="list">
+            <li><span id="resStep1"></span></li>
+            <li><span id="resFix"></span></li>
+            <li><span id="resMyAuto"></span></li>
+          </ul>
+          <p><strong>Comentario del maestro Martín:</strong></p>
+          <p id="resComment"></p>
+          <p class="mini-title">Mi compromiso como escritor(a):</p>
+          <textarea id="resCommit" placeholder="Escribe aquí qué te propones mejorar la próxima vez que escribas un texto autobiográfico."></textarea>
+          <div class="btn-row">
+            <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir resultados</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TARJETA EXTRA DE APOYO -->
+      <section class="card">
+        <h2><span class="icon">🧩</span><span>Tips extra y reto de escritura</span></h2>
+        <p>Si terminaste las actividades y aún tienes espacio, aprovecha para <strong>mejorar todavía más</strong> tu forma de escribir.</p>
+        <ul class="list">
+          <li>Lee en voz alta tu fragmento autobiográfico y marca las pausas naturales: ahí podrías necesitar una coma o un punto.</li>
+          <li>Subraya (o resalta) una parte que no se entienda bien y vuelve a escribirla con más claridad.</li>
+          <li>Piensa si puedes añadir un detalle sensorial: qué viste, escuchaste, oliste, sentiste o pensaste en ese momento.</li>
+        </ul>
+        <p class="mini-title">Reto opcional: reescribe una parte de tu autobiografía para que quede más clara.</p>
+        <textarea id="extraChallenge" placeholder="Elige un párrafo de tu autobiografía y escribe aquí una versión mejorada."></textarea>
+      </section>
+    </main>
+
+    <footer>
+      <span class="project">Proyecto: “Mi historia, mi voz, mi camino”</span>
+      <span>Campo formativo: Lenguajes · Fase 5</span>
+      <span>© 2025. Diseño de ODA: Mtro. Martín Reta. Material educativo. Prohibida su venta.</span>
+    </footer>
+  </div>
+
+  <script>
+    function setStep(n){
+      document.querySelectorAll('.step-tab').forEach(btn=>{
+        btn.classList.toggle('active', Number(btn.dataset.step)===n);
+      });
+      document.querySelectorAll('.step-panel').forEach((p,idx)=>{
+        p.classList.toggle('active', idx===n-1);
+      });
+    }
+
+    function playGuide(){
+      try{
+        const msg=new SpeechSynthesisUtterance(
+          'En esta ODA vas a practicar cómo escribir un fragmento de tu autobiografía usando bien las comas, los puntos y los párrafos para que tus ideas se entiendan con claridad.'
+        );
+        msg.lang='es-MX';
+        msg.rate=1;
+        msg.pitch=1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(msg);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function checkStep1(){
+      const p1=document.querySelector('input[name="p1"]:checked');
+      const p2=document.querySelector('input[name="p2"]:checked');
+      const fb=document.getElementById('fbStep1');
+      let ok1=p1 && p1.value==='b';
+      let ok2=p2 && p2.value==='b';
+      if(ok1 && ok2){
+        fb.innerHTML='<span class="result-good">✔ Muy bien. Elegiste las opciones con mejor puntuación para un texto autobiográfico.</span>';
+      }else{
+        fb.innerHTML='<span class="result-bad">Revisa de nuevo. Observa dónde hacen falta puntos o comas para que las ideas se entiendan.</span>';
+      }
+    }
+
+    function evaluateFix(){
+      const text=document.getElementById('fixText').value;
+      const fb=document.getElementById('fbFix');
+      if(!text.trim()){
+        fb.innerHTML='<span class="result-bad">Escribe tu versión corregida del texto.</span>';
+        return;
+      }
+      const hasComa=text.includes(',');
+      const hasPoint=text.includes('.');
+      const hasColon=text.includes(':');
+      let msg='';
+      if(hasComa && hasPoint){
+        msg='<span class="result-good">Vas muy bien. Usaste comas y puntos para separar ideas. </span>';
+      }else{
+        msg='<span class="result-bad">Revisa: procura usar comas y puntos para separar las partes de la historia.</span>';
+      }
+      if(hasColon){
+        msg += ' <span class="result-good">Además, usaste dos puntos para destacar una parte de tu experiencia.</span>';
+      }else{
+        msg += ' <span>Si quieres, intenta añadir dos puntos para presentar una explicación o lista importante.</span>';
+      }
+      fb.innerHTML=msg;
+    }
+
+    function quickCheckMyAuto(){
+      const text=document.getElementById('myAuto').value;
+      const fb=document.getElementById('fbMyAuto');
+      if(!text.trim()){
+        fb.innerHTML='<span class="result-bad">Primero escribe tu fragmento autobiográfico.</span>';
+        return;
+      }
+      const lengthOk=text.trim().split(/\\s+/).length>=40;
+      const hasYo=/\\byo\\b/i.test(text);
+      const hasComa=text.includes(',');
+      const hasPoint=text.includes('.');
+      let parts=[];
+      if(lengthOk) parts.push('Tu texto tiene una buena extensión.');
+      else parts.push('Tu texto es muy corto; intenta agregar más detalles.');
+      if(hasYo) parts.push('Estás usando la primera persona para contar tu experiencia.');
+      else parts.push('Recuerda usar la palabra “yo” para que se note que es autobiografía.');
+      if(hasComa && hasPoint) parts.push('Usaste comas y puntos para separar tus ideas.');
+      else parts.push('Revisa si puedes agregar comas y puntos para separar mejor tus ideas.');
+      fb.textContent=parts.join(' ');
+    }
+
+    function generateResults(){
+      const name=document.getElementById('studentName').value || 'Sin nombre';
+      const p1=document.querySelector('input[name="p1"]:checked');
+      const p2=document.querySelector('input[name="p2"]:checked');
+      const step1Ok=p1 && p1.value==='b' && p2 && p2.value==='b';
+
+      const fixText=document.getElementById('fixText').value;
+      const fixOk=fixText.trim() && fixText.includes(',') && fixText.includes('.');
+
+      const myAuto=document.getElementById('myAuto').value;
+      const lengthOk=myAuto.trim().split(/\\s+/).length>=40;
+      const hasYo=/\\byo\\b/i.test(myAuto);
+      const punctOk=myAuto.includes(',') && myAuto.includes('.');
+      const myAutoOk=myAuto.trim() && lengthOk && hasYo && punctOk;
+
+      document.getElementById('resName').textContent=name;
+
+      const resStep1=document.getElementById('resStep1');
+      resStep1.innerHTML = step1Ok
+        ? '<span style="color:#1d4ed8;">Reconoce ejemplos correctos de puntuación en textos autobiográficos.</span>'
+        : '<span style="color:#b91c1c;">Necesita reforzar el reconocimiento de ejemplos bien puntuados.</span>';
+
+      const resFix=document.getElementById('resFix');
+      resFix.innerHTML = fixOk
+        ? '<span style="color:#1d4ed8;">Corrigió un texto añadiendo comas y puntos para dar claridad.</span>'
+        : '<span style="color:#b91c1c;">Debe seguir practicando la corrección de textos sin puntuación.</span>';
+
+      const resMyAuto=document.getElementById('resMyAuto');
+      resMyAuto.innerHTML = myAutoOk
+        ? '<span style="color:#1d4ed8;">Escribió un fragmento autobiográfico suficiente, en primera persona y con puntuación adecuada.</span>'
+        : '<span style="color:#b91c1c;">Aún necesita mejorar la extensión, el uso de “yo” y/o la puntuación en su fragmento autobiográfico.</span>';
+
+      const score=(step1Ok?1:0)+(fixOk?1:0)+(myAutoOk?1:0);
+      const resComment=document.getElementById('resComment');
+      if(score===3){
+        resComment.textContent='¡Excelente! Tus ideas se leen con claridad gracias al uso cuidadoso de comas, puntos y párrafos.';
+      }else if(score===2){
+        resComment.textContent='Vas muy bien. Refuerza el aspecto que aparece en rojo y cada vez escribirás con más claridad.';
+      }else{
+        resComment.textContent='Sigue practicando. La puntuación se mejora poco a poco; vuelve a leer tus textos en voz alta y marca las pausas con comas y puntos.';
+      }
+
+      document.getElementById('resultsPanel').style.display='block';
+      setStep(4);
+      document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>

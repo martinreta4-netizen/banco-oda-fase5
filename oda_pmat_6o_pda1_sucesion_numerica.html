@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Sucesión numérica hasta billones (6.º) – Dinámica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#1d4ed8;
+      --primary-soft:#dbeafe;
+      --accent:#0ea5e9;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --card:#ffffff;
+      --shadow:0 16px 35px rgba(15,23,42,.18);
+      --error:#b91c1c;
+      --success:#15803d;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#e0f2fe 0,#eff6ff 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:12% 16%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1180px;
+      background:radial-gradient(circle at top left,#dbeafe 0,#ffffff 45%,#eff6ff 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #bfdbfe;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.3fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #dbeafe;
+    }
+    @media(max-width:900px){
+      header{grid-template-columns:1fr;text-align:center;}
+      .author-block{text-align:center;}
+    }
+    .logo-left img{
+      max-height:60px;
+      width:auto;
+      display:block;
+    }
+    @media(max-width:900px){
+      .logo-left{display:flex;justify-content:center;}
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.22rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-block h1 .icon{font-size:1.45rem;}
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      margin-top:3px;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.78rem;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#eff6ff;
+      border:1px solid #dbeafe;
+    }
+    .chip .dot{
+      width:7px;height:7px;border-radius:999px;background:#22c55e;
+    }
+    .author-block{
+      font-size:.82rem;
+      color:var(--muted);
+      text-align:right;
+    }
+
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);
+      gap:10px;
+      margin-top:2px;
+    }
+    @media(max-width:900px){
+      main{grid-template-columns:1fr;}
+    }
+    .left-column,.right-column{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      box-shadow:0 8px 20px rgba(15,23,42,.06);
+      overflow:hidden;
+    }
+    .card-header{
+      padding:8px 12px 6px;
+      border-bottom:1px solid #e5e7eb;
+      background:linear-gradient(90deg,#dbeafe,#eff6ff);
+    }
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+      font-weight:600;
+      color:#0f172a;
+    }
+    .card-title .icon{font-size:1.05rem;}
+    .card-body{
+      padding:8px 12px 10px;
+      font-size:.84rem;
+    }
+
+    .objective-list{
+      padding-left:18px;
+      margin:6px 0;
+    }
+    .objective-list li{margin-bottom:3px;}
+
+    .timeline{
+      margin-top:6px;
+      border-radius:12px;
+      border:1px dashed #bfdbfe;
+      background:#eff6ff;
+      padding:6px 8px;
+      font-size:.8rem;
+    }
+    .timeline-item{
+      display:flex;
+      gap:6px;
+      margin-bottom:3px;
+    }
+    .timeline-label{
+      font-weight:600;
+      color:var(--primary);
+      min-width:97px;
+    }
+
+    .module-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .module-button{
+      flex:1 1 120px;
+      border-radius:999px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      padding:5px 8px;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      cursor:pointer;
+      transition:.15s;
+    }
+    .module-button span.icon{font-size:.95rem;}
+    .module-button.active{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+      box-shadow:0 0 0 1px rgba(37,99,235,.6);
+    }
+
+    .module-panel{display:none;}
+    .module-panel.active{display:block;}
+
+    .status{
+      margin-top:6px;
+      border-radius:10px;
+      padding:6px 8px;
+      display:flex;
+      gap:6px;
+      font-size:.8rem;
+      align-items:flex-start;
+    }
+    .status span{font-size:1rem;}
+    .status-info{
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e3a8a;
+    }
+    .status-success{
+      background:#dcfce7;
+      border:1px solid #22c55e;
+      color:#166534;
+    }
+    .status-error{
+      background:#fee2e2;
+      border:1px solid #f97373;
+      color:#991b1b;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      padding:5px 10px;
+      font-size:.8rem;
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn-primary{background:var(--primary);color:#fff;}
+    .btn-secondary{background:#e5e7eb;color:#111827;}
+    .btn-outline{
+      background:#fff;
+      border:1px solid #cbd5f5;
+      color:#1e3a8a;
+    }
+
+    .sequence-block{
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:6px 8px;
+      margin-top:4px;
+      background:#f9fafb;
+      font-size:.8rem;
+    }
+    .sequence-title{
+      font-weight:600;
+      margin-bottom:2px;
+      color:#1e3a8a;
+    }
+    .sequence-line{
+      margin-top:3px;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:4px;
+    }
+    .sequence-line span.num{
+      padding:3px 6px;
+      border-radius:999px;
+      background:#e5e7eb;
+      font-family:monospace;
+      font-size:.82rem;
+    }
+    .sequence-line input{
+      width:115px;
+      max-width:35%;
+      padding:3px 5px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.8rem;
+      font-family:monospace;
+    }
+
+    .type-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 6px;
+      border-radius:999px;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      font-size:.72rem;
+      margin-top:2px;
+    }
+
+    .asc-desc-list{
+      list-style:none;
+      padding-left:0;
+      margin:4px 0;
+      font-size:.8rem;
+    }
+    .asc-desc-list li{
+      margin-bottom:4px;
+      padding:4px 6px;
+      border-radius:8px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+    }
+    .asc-desc-list code{
+      font-family:monospace;
+      font-size:.82rem;
+    }
+    .asc-desc-select{
+      margin-top:3px;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.78rem;
+    }
+
+    .options-list{
+      list-style:none;
+      padding-left:0;
+      margin:6px 0;
+      font-size:.8rem;
+    }
+    .options-list li{margin-bottom:4px;}
+    .options-list label{
+      display:flex;
+      align-items:flex-start;
+      gap:4px;
+      cursor:pointer;
+    }
+
+    .student-card .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      margin-bottom:6px;
+    }
+    .student-card input[type="text"]{
+      padding:5px 7px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.82rem;
+      width:100%;
+    }
+
+    .avatar-card{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .avatar-circle{
+      width:120px;
+      height:auto;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:18px;
+      overflow:visible;
+      flex-shrink:0;
+    }
+    .avatar-circle img{
+      width:100%;
+      height:auto;
+      object-fit:contain;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#374151;
+    }
+    .avatar-steps{
+      margin:4px 0;
+      padding-left:18px;
+    }
+    .avatar-steps li{margin-bottom:3px;}
+    .badge-step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      background:#1d4ed8;
+      color:#fff;
+      font-size:.7rem;
+      margin-right:4px;
+    }
+
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #dbeafe;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+
+  <div class="wrapper">
+    <header>
+      <div class="logo-left">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🔢</span>
+          <span>Sucesión numérica hasta billones – 6.º (Dinámica)</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Estudio de los números.</strong><br>
+          PDA 6.º: <strong>Expresa oralmente la sucesión numérica hasta billones, en español y hasta donde sea posible, en su lengua materna, de manera ascendente y descendente a partir de un número natural dado.</strong><br>
+          <span class="phase-label">Pensamiento Matemático · Fase 5 · 6.º grado</span>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Campo formativo: Saberes y Pensamiento Matemático</span>
+          <span class="chip">Proyecto: <strong>Números que cuentan historias (6.º)</strong></span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong><br>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- COLUMNA IZQUIERDA -->
+      <section class="left-column">
+        <!-- Propósito -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎯</span>
+              <span>Propósito de la ODA</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Al finalizar esta ODA, las y los estudiantes serán capaces de <strong>continuar y describir sucesiones numéricas</strong>
+            hasta billones, de forma <strong>ascendente y descendente</strong>, a partir de un número natural dado y con diferentes
+            pasos (de 1, de 10, de 100, de 1 000, de 100 000, de 1 000 000, etc.).
+            <ul class="objective-list">
+              <li>Identificar si una sucesión es ascendente, descendente o constante.</li>
+              <li>Continuar sucesiones numéricas grandes con distintos pasos.</li>
+              <li>Completar términos faltantes en listas de números de hasta 12 cifras.</li>
+              <li>Interpretar sucesiones numéricas en situaciones de la vida cotidiana (poblaciones, producción, distancias, etc.).</li>
+            </ul>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-label">1. Caliento</div>
+                <div>Practico contar hacia adelante y hacia atrás.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">2. Completo</div>
+                <div>Lleno espacios vacíos en sucesiones.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">3. Analizo</div>
+                <div>Identifico el tipo de sucesión y su regla.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">4. Aplico</div>
+                <div>Resuelvo situaciones con números grandes.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulos -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧩</span>
+              <span>Módulos de trabajo</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="module-nav">
+              <button class="module-button active" data-module="calienta">
+                <span class="icon">🔥</span> Calentamiento numérico
+              </button>
+              <button class="module-button" data-module="completa">
+                <span class="icon">✏️</span> Completa la sucesión
+              </button>
+              <button class="module-button" data-module="analiza">
+                <span class="icon">📊</span> Ascendente o descendente
+              </button>
+              <button class="module-button" data-module="aplica">
+                <span class="icon">📝</span> Sucesiones en contexto
+              </button>
+            </div>
+
+            <!-- Panel 1: Calentamiento -->
+            <div id="panel-calienta" class="module-panel active">
+              <p>
+                Observa cada sucesión y escribe los números que siguen o los que van antes,
+                según se indica. Los números pueden tener hasta <strong>12 cifras</strong>.
+              </p>
+              <div id="warmContainer">
+                <!-- se llena con JS -->
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnGenWarm">🔄 Nuevas sucesiones</button>
+                <button class="btn btn-primary" id="btnCheckWarm">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetWarm">↩️ Limpiar</button>
+              </div>
+              <div id="statusWarm" class="status status-info">
+                <span>ℹ️</span>
+                <div>Completa los espacios y haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 2: Completa la sucesión -->
+            <div id="panel-completa" class="module-panel">
+              <p>
+                Cada sucesión tiene algunos <strong>números ocultos</strong>. Escríbelos en los espacios en blanco.
+              </p>
+              <div id="fillContainer">
+                <!-- se llena con JS -->
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnGenFill">🔄 Nuevas sucesiones</button>
+                <button class="btn btn-primary" id="btnCheckFill">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetFill">↩️ Limpiar</button>
+              </div>
+              <div id="statusFill" class="status status-info">
+                <span>ℹ️</span>
+                <div>Llena los espacios vacíos y haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 3: Analiza -->
+            <div id="panel-analiza" class="module-panel">
+              <p>
+                Identifica si cada sucesión es <strong>ascendente</strong>, <strong>descendente</strong>
+                o si <strong>no tiene una regla clara</strong>.
+              </p>
+              <ul class="asc-desc-list" id="ascDescList">
+                <!-- se llena con JS -->
+              </ul>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnGenAscDesc">🔄 Nuevas sucesiones</button>
+                <button class="btn btn-primary" id="btnCheckAscDesc">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetAscDesc">↩️ Limpiar</button>
+              </div>
+              <div id="statusAscDesc" class="status status-info">
+                <span>ℹ️</span>
+                <div>Elige una opción en cada sucesión y haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 4: Aplica en contexto -->
+            <div id="panel-aplica" class="module-panel">
+              <p>Responde las preguntas. Piensa en lo que significan los números en cada situación.</p>
+              <ol class="options-list">
+                <li>
+                  <div>
+                    <strong>1)</strong> La población de un país crece cada año en <strong>1 000 000</strong> de habitantes.  
+                    En 2025 tiene <strong>129 000 000</strong> de habitantes. ¿Qué población tendrá en 2027
+                    si sigue creciendo al mismo ritmo?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ev1" value="a"> 130 000 000</label></li>
+                    <li><label><input type="radio" name="ev1" value="b"> 131 000 000</label></li>
+                    <li><label><input type="radio" name="ev1" value="c"> 131 000 002</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>2)</strong> Un contador marca los kilómetros recorridos por un tráiler:  
+                    2 350 000, 2 360 000, 2 370 000, 2 380 000, ...  
+                    ¿Qué tipo de sucesión es y de cuánto en cuánto está aumentando?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ev2" value="a"> Descendente, de 10 000 en 10 000.</label></li>
+                    <li><label><input type="radio" name="ev2" value="b"> Ascendente, de 10 000 en 10 000.</label></li>
+                    <li><label><input type="radio" name="ev2" value="c"> Ascendente, de 1 000 en 1 000.</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>3)</strong> En un torneo, el número de espectadores disminuye cada día en <strong>50 000</strong>:  
+                    Día 1: 800 000 &nbsp;&nbsp; Día 2: 750 000 &nbsp;&nbsp; Día 3: 700 000  
+                    ¿Cuál será el número de espectadores el Día 5 si la sucesión continúa igual?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ev3" value="a"> 600 000</label></li>
+                    <li><label><input type="radio" name="ev3" value="b"> 650 000</label></li>
+                    <li><label><input type="radio" name="ev3" value="c"> 550 000</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>4)</strong> Una fábrica produce 5 000 000 de latas en enero, 5 500 000 en febrero y
+                    6 000 000 en marzo. Si la producción sigue aumentando con la misma diferencia, ¿cuántas latas producirá en junio?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ev4" value="a"> 6 500 000</label></li>
+                    <li><label><input type="radio" name="ev4" value="b"> 7 000 000</label></li>
+                    <li><label><input type="radio" name="ev4" value="c"> 7 500 000</label></li>
+                  </ul>
+                </li>
+              </ol>
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckEvalua">📝 Revisar respuestas</button>
+                <button class="btn btn-secondary" id="btnResetEvalua">↩️ Empezar de nuevo</button>
+              </div>
+              <div id="statusEvalua" class="status status-info">
+                <span>ℹ️</span>
+                <div>Responde todas las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <section class="right-column">
+        <!-- Datos del alumno -->
+        <div class="card student-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🎓</span>
+              <span>Datos del alumno y controles</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir resultados</button>
+              <button class="btn btn-outline" id="btnPrintActivity">📄 Actividad para imprimir</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar guía -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🏫</span>
+              <span>Avatar guía – Instrucciones</span>
+            </div>
+          </div>
+          <div class="card-body avatar-card">
+            <div class="avatar-circle" aria-hidden="true">
+              <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, soy el maestro Martín Reta.</strong> Hoy vamos a trabajar con sucesiones numéricas muy grandes,
+              hasta billones.
+              <ol class="avatar-steps">
+                <li><span class="badge-step">1</span> En <strong>“Calentamiento numérico”</strong> cuentas hacia adelante y hacia atrás.</li>
+                <li><span class="badge-step">2</span> En <strong>“Completa la sucesión”</strong> llenas números que faltan en listas grandes.</li>
+                <li><span class="badge-step">3</span> En <strong>“Ascendente o descendente”</strong> identificas el tipo de sucesión.</li>
+                <li><span class="badge-step">4</span> En <strong>“Sucesiones en contexto”</strong> resuelves problemas de la vida diaria.</li>
+              </ol>
+              <button class="btn btn-primary" id="btnPlayVoice">🔊 Escucha las instrucciones</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sugerencias docente -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📌</span>
+              <span>Sugerencias de uso en el aula</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="objective-list">
+              <li>Relaciona las sucesiones con <strong>poblaciones, producción, dinero recaudado, kilómetros recorridos</strong>, etc.</li>
+              <li>Invita a que las y los estudiantes expliquen <strong>la regla de la sucesión</strong> (de cuánto en cuánto cambia).</li>
+              <li>Propicia que inventen sus propias sucesiones y las compartan con el grupo.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© 2025. Elaborado por <strong>Mtro. Martín Reta</strong> – Escuela Primaria “Gral. Lázaro Cárdenas”.</div>
+      <div class="project">Proyecto “Números que cuentan historias” · ODA 6.º: Sucesión numérica hasta billones (PDA 1).</div>
+    </footer>
+  </div>
+
+  <script>
+    function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+
+    // Generar número grande (hasta billones) como entero
+    function randomBig(){
+      // 100 millones a 9999 millones de millones (~10^8 a 10^12)
+      const base=Math.pow(10,8);
+      const span=Math.pow(10,4)-1; // 4 dígitos más
+      const extra=randInt(0,span)*Math.pow(10,8);
+      return base+extra+randInt(0,99999999);
+    }
+
+    function formatBig(n){
+      return n.toLocaleString("es-MX");
+    }
+
+    // Navegación de módulos
+    const moduleButtons=document.querySelectorAll(".module-button");
+    const panels={
+      calienta:document.getElementById("panel-calienta"),
+      completa:document.getElementById("panel-completa"),
+      analiza:document.getElementById("panel-analiza"),
+      aplica:document.getElementById("panel-aplica")
+    };
+    moduleButtons.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const mod=btn.dataset.module;
+        moduleButtons.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        Object.keys(panels).forEach(k=>panels[k].classList.remove("active"));
+        panels[mod].classList.add("active");
+      });
+    });
+
+    let lastWarmScore=null,
+        lastFillScore=null,
+        lastAscDescScore=null,
+        lastEvaluaScore=null;
+
+    // ---------- Módulo 1: Calentamiento ----------
+    const warmContainer=document.getElementById("warmContainer");
+    const statusWarm=document.getElementById("statusWarm");
+    let warmData=[]; // {start, step, direction, answers[]}
+
+    function genWarm(){
+      warmData=[];
+      warmContainer.innerHTML="";
+      const steps=[1,10,100,1000,100000,1000000,10000000];
+      for(let i=0;i<3;i++){
+        const direction=Math.random()<0.5?"up":"down";
+        const step=steps[randInt(0,steps.length-1)];
+        let start=randomBig();
+        // Ajustamos para no ir debajo de 0
+        if(direction==="down"){
+          start=start+step*4;
+        }
+        const block=document.createElement("div");
+        block.className="sequence-block";
+        block.setAttribute("data-idx",i);
+        const title=document.createElement("div");
+        title.className="sequence-title";
+        title.textContent="Sucesión "+(i+1);
+        block.appendChild(title);
+        const pill=document.createElement("div");
+        pill.className="type-pill";
+        pill.innerHTML=(direction==="up"
+          ? "Cuenta hacia adelante de <strong>"+formatBig(step)+"</strong>."
+          : "Cuenta hacia atrás de <strong>"+formatBig(step)+"</strong>.");
+        block.appendChild(pill);
+
+        const line=document.createElement("div");
+        line.className="sequence-line";
+        const labelDir=document.createElement("span");
+        labelDir.textContent=(direction==="up"?"De menor a mayor:":"De mayor a menor:");
+        line.appendChild(labelDir);
+
+        const startSpan=document.createElement("span");
+        startSpan.className="num";
+        startSpan.textContent=formatBig(start);
+        line.appendChild(startSpan);
+
+        const answers=[];
+        for(let k=0;k<4;k++){
+          const input=document.createElement("input");
+          input.type="text";
+          input.placeholder="siguiente número";
+          input.setAttribute("data-pos",k);
+          line.appendChild(input);
+          const val=(direction==="up")
+              ? start+step*(k+1)
+              : start-step*(k+1);
+          answers.push(val);
+        }
+        block.appendChild(line);
+        warmContainer.appendChild(block);
+        warmData.push({start,step,direction,answers});
+      }
+    }
+    genWarm();
+
+    document.getElementById("btnGenWarm").addEventListener("click",()=>{
+      genWarm();
+      lastWarmScore=null;
+      statusWarm.className="status status-info";
+      statusWarm.innerHTML="<span>ℹ️</span><div>Se generaron nuevas sucesiones. Complétalas y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    document.getElementById("btnCheckWarm").addEventListener("click",()=>{
+      let total=0,correct=0,empty=0;
+      warmContainer.querySelectorAll(".sequence-block").forEach(block=>{
+        const idx=parseInt(block.getAttribute("data-idx"),10);
+        const info=warmData[idx];
+        const inputs=block.querySelectorAll("input");
+        inputs.forEach((inp,pos)=>{
+          total++;
+          const val=inp.value.replace(/\s/g,"").replace(/,/g,"");
+          if(val===""){empty++;return;}
+          const n=parseInt(val,10);
+          if(!isNaN(n) && n===info.answers[pos])correct++;
+        });
+      });
+      if(empty>0){
+        statusWarm.className="status status-info";
+        statusWarm.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+empty+"</strong> espacio(s) por completar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastWarmScore={correct,total,percent};
+      if(percent>=70){
+        statusWarm.className="status status-success";
+        statusWarm.innerHTML="<span>✅</span><div>Completaste correctamente <strong>"+correct+" de "+total+"</strong> números ("+percent+"%). ¡Buen control de la sucesión numérica!</div>";
+      }else{
+        statusWarm.className="status status-error";
+        statusWarm.innerHTML="<span>📘</span><div>Completaste correctamente <strong>"+correct+" de "+total+"</strong> números ("+percent+"%). Revisa de cuánto en cuánto está cambiando la sucesión.</div>";
+      }
+    });
+
+    document.getElementById("btnResetWarm").addEventListener("click",()=>{
+      warmContainer.querySelectorAll("input").forEach(i=>i.value="");
+      lastWarmScore=null;
+      statusWarm.className="status status-info";
+      statusWarm.innerHTML="<span>ℹ️</span><div>Completa los espacios y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // ---------- Módulo 2: Completa la sucesión ----------
+    const fillContainer=document.getElementById("fillContainer");
+    const statusFill=document.getElementById("statusFill");
+    let fillData=[]; // {values, missingPositions[]}
+
+    function genFill(){
+      fillData=[];
+      fillContainer.innerHTML="";
+      const steps=[1000,10000,100000,1000000,5000000,10000000];
+      for(let i=0;i<3;i++){
+        const step=steps[randInt(0,steps.length-1)];
+        const start=randomBig();
+        const values=[];
+        for(let k=0;k<6;k++){
+          values.push(start+step*k);
+        }
+        const missingPositions=[1,3]; // dos huecos centrales
+        const block=document.createElement("div");
+        block.className="sequence-block";
+        block.setAttribute("data-idx",i);
+        const title=document.createElement("div");
+        title.className="sequence-title";
+        title.textContent="Sucesión "+(i+1);
+        block.appendChild(title);
+        const pill=document.createElement("div");
+        pill.className="type-pill";
+        pill.innerHTML="Suma constante de <strong>"+formatBig(step)+"</strong>.";
+        block.appendChild(pill);
+
+        const line=document.createElement("div");
+        line.className="sequence-line";
+        for(let k=0;k<values.length;k++){
+          if(missingPositions.includes(k)){
+            const inp=document.createElement("input");
+            inp.type="text";
+            inp.placeholder="falta";
+            inp.setAttribute("data-pos",k);
+            line.appendChild(inp);
+          }else{
+            const s=document.createElement("span");
+            s.className="num";
+            s.textContent=formatBig(values[k]);
+            line.appendChild(s);
+          }
+        }
+        block.appendChild(line);
+        fillContainer.appendChild(block);
+        fillData.push({values,missingPositions});
+      }
+    }
+    genFill();
+
+    document.getElementById("btnGenFill").addEventListener("click",()=>{
+      genFill();
+      lastFillScore=null;
+      statusFill.className="status status-info";
+      statusFill.innerHTML="<span>ℹ️</span><div>Se generaron nuevas sucesiones. Llena los espacios vacíos y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    document.getElementById("btnCheckFill").addEventListener("click",()=>{
+      let total=0,correct=0,empty=0;
+      fillContainer.querySelectorAll(".sequence-block").forEach(block=>{
+        const idx=parseInt(block.getAttribute("data-idx"),10);
+        const info=fillData[idx];
+        const inputs=block.querySelectorAll("input");
+        inputs.forEach(inp=>{
+          const pos=parseInt(inp.getAttribute("data-pos"),10);
+          total++;
+          const val=inp.value.replace(/\s/g,"").replace(/,/g,"");
+          if(val===""){empty++;return;}
+          const n=parseInt(val,10);
+          if(!isNaN(n) && n===info.values[pos])correct++;
+        });
+      });
+      if(empty>0){
+        statusFill.className="status status-info";
+        statusFill.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+empty+"</strong> espacio(s) por completar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastFillScore={correct,total,percent};
+      if(percent>=70){
+        statusFill.className="status status-success";
+        statusFill.innerHTML="<span>✅</span><div>Completaste correctamente <strong>"+correct+" de "+total+"</strong> números ("+percent+"%). ¡Muy bien!</div>";
+      }else{
+        statusFill.className="status status-error";
+        statusFill.innerHTML="<span>📘</span><div>Completaste correctamente <strong>"+correct+" de "+total+"</strong> números ("+percent+"%). Revisa de cuánto en cuánto aumenta la sucesión.</div>";
+      }
+    });
+
+    document.getElementById("btnResetFill").addEventListener("click",()=>{
+      fillContainer.querySelectorAll("input").forEach(i=>i.value="");
+      lastFillScore=null;
+      statusFill.className="status status-info";
+      statusFill.innerHTML="<span>ℹ️</span><div>Llena los espacios vacíos y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // ---------- Módulo 3: Ascendente o descendente ----------
+    const ascDescList=document.getElementById("ascDescList");
+    const statusAscDesc=document.getElementById("statusAscDesc");
+    let ascDescData=[]; // {seq, type}
+
+    function genAscDesc(){
+      ascDescData=[];
+      ascDescList.innerHTML="";
+      const types=["asc","desc","none"];
+      for(let i=0;i<4;i++){
+        const t=types[randInt(0,types.length-1)];
+        let seq=[];
+        if(t==="asc"){
+          const step=[1000,10000,100000,1000000][randInt(0,3)];
+          const start=randomBig();
+          for(let k=0;k<5;k++)seq.push(start+step*k);
+        }else if(t==="desc"){
+          const step=[1000,10000,100000,1000000][randInt(0,3)];
+          const start=randomBig()+step*4;
+          for(let k=0;k<5;k++)seq.push(start-step*k);
+        }else{
+          const start=randomBig();
+          seq=[start, start+10000, start+5000, start+20000, start+15000]; // sin regla clara
+        }
+        const li=document.createElement("li");
+        li.setAttribute("data-idx",i);
+        const code=document.createElement("code");
+        code.textContent=seq.map(formatBig).join(" , ");
+        li.appendChild(code);
+        const br=document.createElement("br");
+        li.appendChild(br);
+        const sel=document.createElement("select");
+        sel.className="asc-desc-select";
+        sel.innerHTML='<option value="">-- Selecciona --</option>'+
+                      '<option value="asc">Ascendente</option>'+
+                      '<option value="desc">Descendente</option>'+
+                      '<option value="none">No tiene una regla clara</option>';
+        li.appendChild(sel);
+        ascDescList.appendChild(li);
+        ascDescData.push({seq,type:t});
+      }
+    }
+    genAscDesc();
+
+    document.getElementById("btnGenAscDesc").addEventListener("click",()=>{
+      genAscDesc();
+      lastAscDescScore=null;
+      statusAscDesc.className="status status-info";
+      statusAscDesc.innerHTML="<span>ℹ️</span><div>Se generaron nuevas sucesiones. Elige el tipo y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    document.getElementById("btnCheckAscDesc").addEventListener("click",()=>{
+      let total=ascDescData.length,correct=0,empty=0;
+      ascDescList.querySelectorAll("li").forEach(li=>{
+        const idx=parseInt(li.getAttribute("data-idx"),10);
+        const sel=li.querySelector("select");
+        const v=sel.value;
+        if(!v){empty++;return;}
+        if(v===ascDescData[idx].type)correct++;
+      });
+      if(empty>0){
+        statusAscDesc.className="status status-info";
+        statusAscDesc.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+empty+"</strong> sucesión(es) por clasificar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastAscDescScore={correct,total,percent};
+      if(percent>=70){
+        statusAscDesc.className="status status-success";
+        statusAscDesc.innerHTML="<span>✅</span><div>Clasificaste correctamente <strong>"+correct+" de "+total+"</strong> sucesiones ("+percent+"%). ¡Buen análisis!</div>";
+      }else{
+        statusAscDesc.className="status status-error";
+        statusAscDesc.innerHTML="<span>📘</span><div>Clasificaste correctamente <strong>"+correct+" de "+total+"</strong> sucesiones ("+percent+"%). Observa con cuidado si los números aumentan, disminuyen o cambian sin orden.</div>";
+      }
+    });
+
+    document.getElementById("btnResetAscDesc").addEventListener("click",()=>{
+      ascDescList.querySelectorAll("select").forEach(s=>s.value="");
+      lastAscDescScore=null;
+      statusAscDesc.className="status status-info";
+      statusAscDesc.innerHTML="<span>ℹ️</span><div>Elige una opción en cada sucesión y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // ---------- Módulo 4: Aplica en contexto ----------
+    const statusEvalua=document.getElementById("statusEvalua");
+    const correctEval={ev1:"b",ev2:"b",ev3:"a",ev4:"c"};
+
+    document.getElementById("btnCheckEvalua").addEventListener("click",()=>{
+      let total=4,correct=0,unanswered=0,msg=[];
+      Object.keys(correctEval).forEach(q=>{
+        const ans=document.querySelector('input[name="'+q+'"]:checked');
+        const num=q.replace("ev","");
+        if(!ans){unanswered++;return;}
+        if(ans.value===correctEval[q]){
+          correct++;msg.push("Pregunta "+num+": ✅ correcta.");
+        }else{
+          msg.push("Pregunta "+num+": revisa la sucesión y de cuánto en cuánto cambia.");
+        }
+      });
+      if(unanswered>0){
+        statusEvalua.className="status status-info";
+        statusEvalua.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> pregunta(s) por responder.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastEvaluaScore={correct,total,percent};
+      if(correct>=3){
+        statusEvalua.className="status status-success";
+        statusEvalua.innerHTML="<span>✅</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Buen manejo de sucesiones numéricas en contexto.<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusEvalua.className="status status-error";
+        statusEvalua.innerHTML="<span>📘</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Puedes practicar de nuevo en los otros módulos y regresar a este.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+
+    document.getElementById("btnResetEvalua").addEventListener("click",()=>{
+      ["ev1","ev2","ev3","ev4"].forEach(name=>{
+        document.querySelectorAll('input[name="'+name+'"]').forEach(r=>r.checked=false);
+      });
+      lastEvaluaScore=null;
+      statusEvalua.className="status status-info";
+      statusEvalua.innerHTML="<span>ℹ️</span><div>Responde todas las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>";
+    });
+
+    // ---------- Voz instrucciones ----------
+    const btnPlayVoice=document.getElementById("btnPlayVoice");
+    const instructionsText="Hola, soy el maestro Martin Reta. En esta actividad vas a trabajar con sucesiones numericas muy grandes, hasta billones. Primero haras un calentamiento contando hacia adelante y hacia atras. Despues completaras numeros que faltan en listas. Luego decidiras si una sucesion es ascendente, descendente o sin regla clara. Al final resolveras problemas de la vida diaria usando estas sucesiones.";
+
+    function speakInstructions(){
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no permite la lectura en voz alta. Puedes leer las instrucciones en pantalla.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(instructionsText);
+      u.lang="es-MX";
+      const voices=window.speechSynthesis.getVoices();
+      let chosen=null;
+      if(voices && voices.length){
+        chosen=voices.find(v=>v.lang.startsWith("es") && /Hombre|Male|Miguel|Diego|Jorge|Antonio|Carlos/i.test(v.name))
+               || voices.find(v=>v.lang.startsWith("es"))
+               || voices[0];
+      }
+      if(chosen)u.voice=chosen;
+      window.speechSynthesis.speak(u);
+    }
+
+    btnPlayVoice.addEventListener("click",()=>{
+      const voices=window.speechSynthesis.getVoices();
+      if(!voices || !voices.length){
+        window.speechSynthesis.onvoiceschanged=speakInstructions;
+        window.speechSynthesis.getVoices();
+      }else{
+        speakInstructions();
+      }
+    });
+
+    // ---------- Imprimir resultados ----------
+    document.getElementById("btnPrintResults").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      if(!lastWarmScore && !lastFillScore && !lastAscDescScore && !lastEvaluaScore){
+        alert("Primero realiza al menos un módulo para poder imprimir resultados.");
+        return;
+      }
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Resultados del estudiante – Sucesión numérica hasta billones</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:4px 0;} .small{font-size:12px;color:#4b5563;} .blue{color:#1d4ed8;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Resultados del estudiante – Sucesión numérica hasta billones (PDA 1, 6.º)</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta</p>");
+      w.document.write("<p><strong>Proyecto:</strong> Números que cuentan historias (6.º)</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Expresa oralmente la sucesión numérica hasta billones, en español y hasta donde sea posible, en su lengua materna, de manera ascendente y descendente a partir de un número natural dado.</p>");
+
+      if(lastWarmScore){
+        w.document.write("<h2>Módulo 1. Calentamiento numérico</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastWarmScore.correct+" de "+lastWarmScore.total+" ("+lastWarmScore.percent+"%)</span></p>");
+      }
+      if(lastFillScore){
+        w.document.write("<h2>Módulo 2. Completa la sucesión</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastFillScore.correct+" de "+lastFillScore.total+" ("+lastFillScore.percent+"%)</span></p>");
+      }
+      if(lastAscDescScore){
+        w.document.write("<h2>Módulo 3. Ascendente o descendente</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastAscDescScore.correct+" de "+lastAscDescScore.total+" ("+lastAscDescScore.percent+"%)</span></p>");
+      }
+      if(lastEvaluaScore){
+        w.document.write("<h2>Módulo 4. Sucesiones en contexto</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastEvaluaScore.correct+" de "+lastEvaluaScore.total+" ("+lastEvaluaScore.percent+"%)</span></p>");
+      }
+
+      w.document.write("<p class='small'><strong>Observaciones del docente:</strong></p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+
+    // ---------- Actividad para imprimir ----------
+    document.getElementById("btnPrintActivity").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Actividad para imprimir – Sucesión numérica hasta billones</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:6px 0;} ol{padding-left:18px;} li{margin-bottom:6px;} .small{font-size:12px;color:#4b5563;} table{border-collapse:collapse;width:100%;margin-top:6px;} th,td{border:1px solid #e5e7eb;padding:4px 6px;text-align:center;font-size:12px;} th{background:#eff6ff;} .left{text-align:left;font-weight:600;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Actividad para imprimir – Sucesión numérica hasta billones</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta &nbsp;&nbsp;&nbsp; <strong>Proyecto:</strong> Números que cuentan historias (6.º)</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Expresa oralmente la sucesión numérica hasta billones, en español y hasta donde sea posible, en su lengua materna, de manera ascendente y descendente a partir de un número natural dado.</p>");
+
+      w.document.write("<h2>Parte A. Completa hacia adelante</h2>");
+      w.document.write("<p>Escribe los tres números que siguen en cada sucesión.</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>3 450 000 000 ; 3 460 000 000 ; 3 470 000 000 ; ______ ; ______ ; ______</li>");
+      w.document.write("<li>980 000 100 ; 980 000 200 ; 980 000 300 ; ______ ; ______ ; ______</li>");
+      w.document.write("<li>15 000 000 000 ; 15 000 100 000 ; 15 000 200 000 ; ______ ; ______ ; ______</li>");
+      w.document.write("</ol>");
+
+      w.document.write("<h2>Parte B. Completa hacia atrás</h2>");
+      w.document.write("<p>En cada caso, escribe los números anteriores.</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>______ ; ______ ; ______ ; 4 000 000 000 ; 3 900 000 000 ; 3 800 000 000</li>");
+      w.document.write("<li>______ ; ______ ; 2 500 000 ; 2 400 000 ; 2 300 000 ; 2 200 000</li>");
+      w.document.write("</ol>");
+
+      w.document.write("<h2>Parte C. Ascendente o descendente</h2>");
+      w.document.write("<p>Escribe si cada sucesión es ascendente, descendente o no tiene regla clara.</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>120 000 ; 220 000 ; 320 000 ; 420 000 ; 520 000 : _________________________</li>");
+      w.document.write("<li>5 000 000 ; 4 500 000 ; 4 000 000 ; 3 500 000 : _________________________</li>");
+      w.document.write("<li>800 000 ; 900 000 ; 850 000 ; 950 000 : _________________________</li>");
+      w.document.write("</ol>");
+
+      w.document.write("<h2>Parte D. Problema</h2>");
+      w.document.write("<p>Resuelve y explica tu procedimiento.</p>");
+      w.document.write("<p>En un municipio, el número de árboles plantados cada año sigue esta sucesión:</p>");
+      w.document.write("<p>2022: 2 000 000 &nbsp;&nbsp; 2023: 2 200 000 &nbsp;&nbsp; 2024: 2 400 000</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>¿Cuántos árboles se plantarán en 2025 si se sigue el mismo patrón?</li>");
+      w.document.write("<li>Describe con palabras la regla de la sucesión.</li>");
+      w.document.write("</ol>");
+
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+  </script>
+</body>
+</html>

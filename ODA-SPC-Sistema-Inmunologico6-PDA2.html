@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Hábitos que fortalecen el sistema inmunológico (PDA 2)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#1d4ed8;
+      --primary-soft:#dbeafe;
+      --accent:#0ea5e9;
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --shadow:0 16px 35px rgba(15,23,42,.14);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#e0f2fe 0,#eff6ff 38%,#e5e7eb 100%);
+      color:var(--text);
+      min-height:100vh;
+      padding:16px;
+      display:flex;
+      justify-content:center;
+    }
+    .oda-shell{
+      width:100%;
+      max-width:1160px;
+      background:rgba(255,255,255,.92);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(148,163,184,.35);
+      backdrop-filter:blur(10px);
+      padding:18px 18px 22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    header{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      border-bottom:1px solid var(--border);
+      padding-bottom:10px;
+    }
+    .logo-block{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .logo-block img{
+      height:50px;
+      width:auto;
+      object-fit:contain;
+    }
+    .title-block{
+      flex:1;
+      min-width:220px;
+    }
+    .title-block h1{
+      font-size:1.15rem;
+      color:#0f172a;
+      margin-bottom:4px;
+    }
+    .title-block p{
+      font-size:.82rem;
+      color:var(--muted);
+      line-height:1.25;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+    .chip{
+      font-size:.72rem;
+      padding:3px 8px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:#1e3a8a;
+      border:1px solid rgba(37,99,235,.25);
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+    }
+    .chip strong{font-weight:600;}
+    .author-block{
+      font-size:.76rem;
+      color:var(--muted);
+      text-align:right;
+      min-width:190px;
+    }
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,2.1fr) minmax(260px,1fr);
+      gap:14px;
+      margin-top:6px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      border:1px solid var(--border);
+      box-shadow:0 8px 16px rgba(15,23,42,.04);
+      padding:10px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+      margin-bottom:4px;
+      flex-wrap:wrap;
+    }
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+      font-weight:600;
+    }
+    .card-title .icon{font-size:1.15rem;}
+    .card-sub{font-size:.74rem;color:var(--muted);}
+    .card-body{font-size:.84rem;color:var(--muted);}
+    .step-tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .step-tab{
+      flex:1;
+      min-width:110px;
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:4px;
+      cursor:pointer;
+      transition:all .17s ease;
+    }
+    .step-tab span.step-index{
+      width:18px;height:18px;border-radius:999px;
+      background:#1d4ed8;color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.7rem;font-weight:600;
+    }
+    .step-tab.active{
+      background:#1d4ed8;
+      color:#e0f2fe;
+      border-color:#1d4ed8;
+      box-shadow:0 6px 15px rgba(37,99,235,.35);
+    }
+    .step-tab.active span.step-index{
+      background:#eff6ff;
+      color:#1d4ed8;
+    }
+    .step-panel{display:none;animation:fadeIn .22s ease-out;}
+    .step-panel.active{display:block;}
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(4px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+    .info-box{
+      background:#eff6ff;
+      border-radius:12px;
+      padding:8px 9px;
+      border:1px solid #bfdbfe;
+      display:flex;
+      gap:6px;
+      align-items:flex-start;
+      margin-bottom:8px;
+    }
+    .info-box span{font-size:1.1rem;}
+    .info-box p{
+      font-size:.8rem;
+      color:#1e40af;
+      line-height:1.3;
+    }
+    .columns-2{
+      display:grid;
+      grid-template-columns:minmax(0,1.05fr) minmax(0,1.05fr);
+      gap:10px;
+      margin-top:6px;
+    }
+    .schema-card{
+      border-radius:14px;
+      border:1px dashed #cbd5f5;
+      padding:8px 9px;
+      background:#f9fafb;
+    }
+    .schema-title{
+      font-size:.86rem;
+      font-weight:600;
+      color:#1d4ed8;
+      margin-bottom:4px;
+    }
+    .schema-sub{
+      font-size:.76rem;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .pill-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .pill{
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      background:#eff6ff;
+      font-size:.75rem;
+      color:#1e3a8a;
+      cursor:pointer;
+      user-select:none;
+      transition:all .15s ease;
+    }
+    .pill.active{
+      background:#1d4ed8;
+      color:#e0f2fe;
+      box-shadow:0 4px 10px rgba(37,99,235,.35);
+      border-color:#1d4ed8;
+    }
+    .day-plan{
+      display:grid;
+      grid-template-columns: minmax(0,1.1fr) minmax(0,1.1fr);
+      gap:8px;
+      margin-top:6px;
+    }
+    .day-item{
+      font-size:.78rem;
+      margin-bottom:4px;
+      display:flex;
+      align-items:center;
+      gap:5px;
+    }
+    .day-item select{
+      font-size:.76rem;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      background:#ffffff;
+      min-width:150px;
+    }
+    .question-block{
+      margin-top:4px;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+    }
+    .question-block + .question-block{margin-top:6px;}
+    .question-title{
+      font-weight:600;
+      font-size:.84rem;
+      margin-bottom:3px;
+      color:#1e3a8a;
+    }
+    .question-block p{font-size:.8rem;margin-bottom:2px;}
+    .options{
+      margin-top:3px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      font-size:.8rem;
+    }
+    .options label{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+    }
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:9px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      padding:7px 12px;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:500;
+      transition:all .16s ease;
+      white-space:nowrap;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,#1d4ed8,#0ea5e9);
+      color:#eff6ff;
+      box-shadow:0 8px 16px rgba(37,99,235,.45);
+    }
+    .btn-primary:hover{
+      box-shadow:0 10px 22px rgba(30,64,175,.6);
+      transform:translateY(-1px);
+    }
+    .btn-outline{
+      background:#ffffff;
+      border:1px solid #cbd5f5;
+      color:#1e3a8a;
+    }
+    .btn-outline:hover{background:#eff6ff;}
+    .status{
+      margin-top:7px;
+      border-radius:12px;
+      padding:6px 8px;
+      font-size:.78rem;
+      display:flex;
+      gap:6px;
+      align-items:flex-start;
+    }
+    .status span.icon{font-size:1rem;}
+    .status-info{
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e3a8a;
+    }
+    .status-ok{
+      background:#ecfdf5;
+      border:1px solid #6ee7b7;
+      color:#166534;
+    }
+    .status-warn{
+      background:#fef9c3;
+      border:1px solid #facc15;
+      color:#92400e;
+    }
+    .right-column{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.8rem;
+      margin-bottom:4px;
+    }
+    .student-row input{
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.8rem;
+      width:100%;
+    }
+    .avatar-card{
+      display:flex;
+      gap:9px;
+      align-items:flex-start;
+    }
+    .avatar-circle{
+      flex-shrink:0;
+      width:56px;height:56px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 20%,#e0f2fe,#1d4ed8);
+      display:flex;align-items:center;justify-content:center;
+      overflow:hidden;
+      border:2px solid #bfdbfe;
+      box-shadow:0 6px 14px rgba(15,23,42,.35);
+    }
+    .avatar-circle img{
+      width:100%;height:100%;object-fit:cover;
+    }
+    .avatar-text{font-size:.8rem;color:#4b5563;}
+    .avatar-text strong{
+      display:block;
+      color:#1e3a8a;
+      margin-bottom:3px;
+    }
+    .avatar-steps{
+      margin-top:4px;
+      padding-left:15px;
+      font-size:.78rem;
+      color:#374151;
+    }
+    .avatar-steps li{margin-bottom:2px;}
+    .badge-step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;height:16px;
+      border-radius:999px;
+      background:#1d4ed8;
+      color:#eff6ff;
+      font-size:.66rem;
+      margin-right:3px;
+    }
+    .pda-text{
+      font-size:.78rem;
+      color:#374151;
+      line-height:1.35;
+      max-height:120px;
+      overflow:auto;
+    }
+    audio{width:100%;margin-top:4px;}
+    .corner-logo{
+      position:fixed;
+      right:10px;
+      bottom:10px;
+      width:70px;
+      opacity:.9;
+      z-index:40;
+    }
+    .print-note{
+      font-size:.72rem;
+      color:#9ca3af;
+      margin-top:4px;
+    }
+    .result-good{color:#1d4ed8;font-weight:600;}
+    .result-need{color:#b91c1c;font-weight:600;}
+    .copyright{
+      margin-top:4px;
+      font-size:.7rem;
+      color:#9ca3af;
+      text-align:right;
+    }
+    @media(max-width:860px){
+      main{grid-template-columns:1fr;}
+      .author-block{text-align:left;}
+      .corner-logo{width:56px;}
+    }
+    @media(max-width:600px){
+      .oda-shell{padding:14px 10px 16px;border-radius:16px;}
+      header{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+  <div class="oda-shell">
+    <header>
+      <div class="logo-block">
+        <img src="sep_logo.png" alt="SEP">
+      </div>
+      <div class="title-block">
+        <h1>ODA – Hábitos que fortalecen el sistema inmunológico</h1>
+        <p>Fase 5 · Sexto grado · Campo formativo: Saberes y Pensamiento Científico</p>
+        <div class="chips">
+          <span class="chip">Contenido: <strong>Estructura y funcionamiento del cuerpo humano</strong></span>
+          <span class="chip">PDA 2: <strong>Hábitos que fortalecen el sistema inmunológico</strong></span>
+          <span class="chip">Ejes: Vida saludable · Pensamiento crítico · Aprendizaje colaborativo</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong><br>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- IZQUIERDA -->
+      <section>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧭</span><span>Ruta de trabajo</span>
+            </div>
+            <div class="card-sub">Sigue los pasos en orden</div>
+          </div>
+          <div class="card-body">
+            <div class="step-tabs">
+              <button class="step-tab active" data-step="explora2">
+                <span class="step-index">1</span><span>Explora los hábitos</span><span>👁️</span>
+              </button>
+              <button class="step-tab" data-step="habitos2">
+                <span class="step-index">2</span><span>Organiza tu día</span><span>📅</span>
+              </button>
+              <button class="step-tab" data-step="evalua2">
+                <span class="step-index">3</span><span>Evalúate</span><span>✅</span>
+              </button>
+            </div>
+
+            <!-- PANEL 1 -->
+            <div class="step-panel active" id="panel-explora2">
+              <div class="info-box">
+                <span>💡</span>
+                <p>Lee y descubre cómo <strong>vacunación, higiene, alimentación, agua, descanso y actividad física</strong> ayudan a que tus defensas funcionen mejor.</p>
+              </div>
+              <p style="font-size:.83rem;margin-bottom:6px;">
+                El sistema inmunológico se fortalece cuando llevas una <strong>vida saludable</strong>. Cada buen hábito es como un escudo extra que protege a tu cuerpo.
+              </p>
+              <div class="columns-2">
+                <div class="schema-card">
+                  <div class="schema-title">1. Pilares de un sistema fuerte</div>
+                  <div class="schema-sub">Haz clic en los hábitos saludables.</div>
+                  <div class="pill-list" id="pillHabits">
+                    <span class="pill" data-good="true">Vacunarse según la Cartilla</span>
+                    <span class="pill" data-good="true">Lavarse las manos</span>
+                    <span class="pill" data-good="false">Dormir muy tarde</span>
+                    <span class="pill" data-good="true">Comer frutas y verduras</span>
+                    <span class="pill" data-good="false">Saltarse el desayuno</span>
+                    <span class="pill" data-good="true">Beber agua simple</span>
+                    <span class="pill" data-good="true">Hacer actividad física</span>
+                    <span class="pill" data-good="false">Tomar muchos refrescos</span>
+                  </div>
+                  <p style="font-size:.76rem;margin-top:6px;color:#4b5563;">
+                    Intenta activar solo los que cuidan tus defensas. <strong>Cambiar pequeños hábitos</strong> mejora mucho tu salud.
+                  </p>
+                </div>
+                <div class="schema-card">
+                  <div class="schema-title">2. Beneficios principales</div>
+                  <ul style="font-size:.78rem;color:#374151;margin-left:16px;display:flex;flex-direction:column;gap:3px;">
+                    <li><strong>Vacunación:</strong> prepara al sistema inmunológico para reconocer ciertos gérmenes.</li>
+                    <li><strong>Higiene:</strong> reduce la cantidad de gérmenes que entran al cuerpo.</li>
+                    <li><strong>Alimentación saludable:</strong> da energía y nutrientes a las células de defensa.</li>
+                    <li><strong>Agua simple:</strong> ayuda a transportar nutrientes y a eliminar desechos.</li>
+                    <li><strong>Descanso:</strong> permite que el cuerpo se recupere y repare.</li>
+                    <li><strong>Actividad física:</strong> mejora la circulación y fortalece órganos y sistemas.</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 2 -->
+            <div class="step-panel" id="panel-habitos2">
+              <div class="info-box">
+                <span>📅</span>
+                <p>Elabora un <strong>plan de día saludable</strong>. Elige la opción que más ayude a tus defensas en cada momento del día.</p>
+              </div>
+              <div class="schema-card">
+                <div class="schema-title">Plan de un día saludable</div>
+                <div class="schema-sub">Selecciona la opción más saludable.</div>
+                <div class="day-plan">
+                  <div>
+                    <div class="day-item">
+                      <span><strong>Mañana:</strong></span>
+                      <select data-correct="desayuno-saludable">
+                        <option value="">Selecciona...</option>
+                        <option value="desayuno-saludable">Desayuno con fruta y agua simple</option>
+                        <option value="desayuno-refresco">Refresco y frituras</option>
+                      </select>
+                    </div>
+                    <div class="day-item">
+                      <span><strong>Mediodía:</strong></span>
+                      <select data-correct="comida-equilibrada">
+                        <option value="">Selecciona...</option>
+                        <option value="comida-equilibrada">Comida con verduras y poca grasa</option>
+                        <option value="comida-rapida">Comida rápida todos los días</option>
+                      </select>
+                    </div>
+                    <div class="day-item">
+                      <span><strong>Tarde:</strong></span>
+                      <select data-correct="actividad-fisica">
+                        <option value="">Selecciona...</option>
+                        <option value="actividad-fisica">Jugar fútbol / correr / andar en bici</option>
+                        <option value="pantalla">Ver pantalla sin levantarse</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="day-item">
+                      <span><strong>Higiene:</strong></span>
+                      <select data-correct="higiene-diaria">
+                        <option value="">Selecciona...</option>
+                        <option value="higiene-diaria">Bañarse y lavarse manos antes de comer</option>
+                        <option value="poca-higiene">Casi nunca lavarse las manos</option>
+                      </select>
+                    </div>
+                    <div class="day-item">
+                      <span><strong>Agua:</strong></span>
+                      <select data-correct="agua-simple">
+                        <option value="">Selecciona...</option>
+                        <option value="agua-simple">Beber agua simple varias veces</option>
+                        <option value="solo-refresco">Tomar solo refresco en el día</option>
+                      </select>
+                    </div>
+                    <div class="day-item">
+                      <span><strong>Noche:</strong></span>
+                      <select data-correct="dormir-temprano">
+                        <option value="">Selecciona...</option>
+                        <option value="dormir-temprano">Dormir a una hora adecuada</option>
+                        <option value="trasnochar">Dormir muy tarde por videojuegos</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="schema-card" style="margin-top:8px;">
+                <div class="schema-title">¿Fortalece o debilita?</div>
+                <div class="schema-sub">Marca si cada acción fortalece o debilita el sistema inmunológico.</div>
+                <div class="question-block">
+                  <div class="question-title">1. Comer frutas y verduras todos los días.</div>
+                  <div class="options">
+                    <label><input type="radio" name="h1" value="fortalece">Fortalece</label>
+                    <label><input type="radio" name="h1" value="debilita">Debilita</label>
+                  </div>
+                </div>
+                <div class="question-block">
+                  <div class="question-title">2. No lavarse las manos antes de comer.</div>
+                  <div class="options">
+                    <label><input type="radio" name="h2" value="fortalece">Fortalece</label>
+                    <label><input type="radio" name="h2" value="debilita">Debilita</label>
+                  </div>
+                </div>
+                <div class="question-block">
+                  <div class="question-title">3. Dormir bien por la noche.</div>
+                  <div class="options">
+                    <label><input type="radio" name="h3" value="fortalece">Fortalece</label>
+                    <label><input type="radio" name="h3" value="debilita">Debilita</label>
+                  </div>
+                </div>
+                <div class="question-block">
+                  <div class="question-title">4. Hacer actividad física varios días a la semana.</div>
+                  <div class="options">
+                    <label><input type="radio" name="h4" value="fortalece">Fortalece</label>
+                    <label><input type="radio" name="h4" value="debilita">Debilita</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckHabits">🔎 Comprobar hábitos</button>
+              </div>
+              <div id="statusHabits" class="status status-info">
+                <span class="icon">ℹ️</span>
+                <div>Completa todas las casillas y marca una opción en cada pregunta. Luego haz clic en <strong>“Comprobar hábitos”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- PANEL 3 -->
+            <div class="step-panel" id="panel-evalua2">
+              <div class="info-box">
+                <span>✅</span>
+                <p>Responde el cuestionario para revisar qué tanto comprendes los beneficios de los hábitos saludables.</p>
+              </div>
+              <div class="question-block">
+                <div class="question-title">1. ¿Por qué es importante beber agua simple potable?</div>
+                <div class="options">
+                  <label><input type="radio" name="q2_1" value="a">Porque sustituye a las defensas del cuerpo.</label>
+                  <label><input type="radio" name="q2_1" value="b">Porque ayuda a que el cuerpo funcione bien y a eliminar desechos.</label>
+                  <label><input type="radio" name="q2_1" value="c">Solo para no tener sed.</label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="question-title">2. Un beneficio de la actividad física para el sistema inmunológico es que…</div>
+                <div class="options">
+                  <label><input type="radio" name="q2_2" value="a">Cansa tanto que debilita al cuerpo.</label>
+                  <label><input type="radio" name="q2_2" value="b">Mejora la circulación y fortalece órganos y sistemas.</label>
+                  <label><input type="radio" name="q2_2" value="c">Solo sirve para ganar partidos.</label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="question-title">3. ¿Cuál combinación de hábitos es la más saludable?</div>
+                <div class="options">
+                  <label><input type="radio" name="q2_3" value="a">Dormir poco, tomar refresco y no desayunar.</label>
+                  <label><input type="radio" name="q2_3" value="b">Alimentación saludable, agua simple y descanso suficiente.</label>
+                  <label><input type="radio" name="q2_3" value="c">Comer solo dulces pero hacer ejercicio.</label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="question-title">4. Una buena higiene ayuda porque…</div>
+                <div class="options">
+                  <label><input type="radio" name="q2_4" value="a">Evita totalmente que existan gérmenes en el mundo.</label>
+                  <label><input type="radio" name="q2_4" value="b">Disminuye los gérmenes que entran al cuerpo.</label>
+                  <label><input type="radio" name="q2_4" value="c">Solo sirve para verse bien.</label>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckQuiz2">📊 Comprobar cuestionario</button>
+              </div>
+              <div id="statusQuiz2" class="status status-info">
+                <span class="icon">ℹ️</span>
+                <div>Marca una opción en cada pregunta y luego haz clic en <strong>“Comprobar cuestionario”</strong>.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- DERECHA -->
+      <aside class="right-column">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧾</span><span>Datos del alumno y reportes</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName2">Nombre del alumno(a):</label>
+              <input type="text" id="studentName2" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-outline" id="btnPrintResults2">🖨️ Imprimir resultados</button>
+              <button class="btn btn-outline" id="btnPrintActivity2">📄 Imprimir actividad</button>
+            </div>
+            <p class="print-note">
+              La hoja de resultados marcará en <span class="result-good">azul</span> los aciertos y en <span class="result-need">rojo</span> las áreas por mejorar.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🏫</span><span>Avatar guía – Instrucciones</span>
+            </div>
+          </div>
+          <div class="card-body avatar-card">
+            <div class="avatar-circle">
+              <img src="avatar_guia.png" alt="Avatar del maestro Martín">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, soy el maestro Martín.</strong>
+              <p>En esta ODA verás qué hábitos fortalecen tus defensas y cómo organizar tu día para cuidar tu salud.</p>
+              <ol class="avatar-steps">
+                <li><span class="badge-step">1</span> En <strong>“Explora los hábitos”</strong> identifica cuáles son saludables.</li>
+                <li><span class="badge-step">2</span> En <strong>“Organiza tu día”</strong> arma un plan que fortalezca tu sistema inmunológico.</li>
+                <li><span class="badge-step">3</span> En <strong>“Evalúate”</strong> responde el cuestionario.</li>
+                <li><span class="badge-step">4</span> Escribe tu nombre y <strong>imprime tus resultados y la actividad</strong>.</li>
+              </ol>
+              <audio controls>
+                <source src="inserta_tu_audio_pda2.mp3" type="audio/mpeg">
+                Tu navegador no soporta el elemento de audio.
+              </audio>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎯</span><span>PDA 2 (SEP, 2024) – Texto literal</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="pda-text">
+              Describe los beneficios y practica acciones para fortalecer y cuidar el sistema inmunológico: vacunación, higiene, alimentación saludable, consumo de agua simple potable, descanso, actividades físicas y recreativas.
+            </div>
+          </div>
+        </div>
+
+        <div class="copyright">
+          © 2025 · Profe Martín Reta · ODA – Hábitos que fortalecen el sistema inmunológico (PDA 2).
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <img src="escudo_escuela.png" alt="Escudo de la escuela" class="corner-logo">
+
+  <script>
+    // Navegación
+    const tabs2 = document.querySelectorAll(".step-tab");
+    const panels2 = {
+      explora2: document.getElementById("panel-explora2"),
+      habitos2: document.getElementById("panel-habitos2"),
+      evalua2: document.getElementById("panel-evalua2")
+    };
+    tabs2.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        tabs2.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        const step = btn.getAttribute("data-step");
+        Object.keys(panels2).forEach(k=>panels2[k].classList.remove("active"));
+        panels2[step].classList.add("active");
+      });
+    });
+
+    // Pills hábitos (visual)
+    document.querySelectorAll("#pillHabits .pill").forEach(p=>{
+      p.addEventListener("click",()=>p.classList.toggle("active"));
+    });
+
+    const results2 = {habits:null, quiz:null};
+
+    // Comprobar hábitos
+    const statusHabits = document.getElementById("statusHabits");
+    document.getElementById("btnCheckHabits").addEventListener("click",()=>{
+      const selects = document.querySelectorAll("#panel-habitos2 .day-item select");
+      let totalSel = selects.length;
+      let answeredSel = 0;
+      let correctSel = 0;
+      selects.forEach(sel=>{
+        if(sel.value!==""){
+          answeredSel++;
+          if(sel.value===sel.dataset.correct) correctSel++;
+        }
+      });
+
+      const pairs = {
+        h1:"fortalece",
+        h2:"debilita",
+        h3:"fortalece",
+        h4:"fortalece"
+      };
+      let totalPairs = 4;
+      let answeredPairs = 0;
+      let correctPairs = 0;
+      Object.keys(pairs).forEach(k=>{
+        const sel = document.querySelector('input[name="'+k+'"]:checked');
+        if(sel){
+          answeredPairs++;
+          if(sel.value===pairs[k]) correctPairs++;
+        }
+      });
+
+      const total = totalSel + totalPairs;
+      const answered = answeredSel + answeredPairs;
+      const correct = correctSel + correctPairs;
+
+      results2.habits = {total,answered,correct};
+
+      statusHabits.className="status";
+      if(answered<total){
+        statusHabits.classList.add("status-warn");
+        statusHabits.innerHTML='<span class="icon">⚠️</span><div>Te faltan elementos por completar. Elige en todos los espacios y marca cada pregunta.</div>';
+      }else{
+        const pct = Math.round((correct/total)*100);
+        statusHabits.classList.add("status-ok");
+        statusHabits.innerHTML='<span class="icon">✅</span><div>Has completado la actividad de hábitos. Respuestas correctas: <strong>'+correct+'/'+total+'</strong> ('+pct+'%).</div>';
+      }
+    });
+
+    // Comprobar cuestionario
+    const statusQuiz2 = document.getElementById("statusQuiz2");
+    document.getElementById("btnCheckQuiz2").addEventListener("click",()=>{
+      const answers = {q2_1:"b",q2_2:"b",q2_3:"b",q2_4:"b"};
+      let total = 4;
+      let answered = 0;
+      let correct = 0;
+      Object.keys(answers).forEach(q=>{
+        const sel = document.querySelector('input[name="'+q+'"]:checked');
+        if(sel){
+          answered++;
+          if(sel.value===answers[q]) correct++;
+        }
+      });
+      results2.quiz = {total,answered,correct};
+      statusQuiz2.className="status";
+      if(answered<total){
+        statusQuiz2.classList.add("status-warn");
+        statusQuiz2.innerHTML='<span class="icon">⚠️</span><div>Te faltan preguntas por responder. Marca una opción en cada una.</div>';
+      }else{
+        const pct = Math.round((correct/total)*100);
+        statusQuiz2.classList.add("status-ok");
+        statusQuiz2.innerHTML='<span class="icon">✅</span><div>Has completado el cuestionario. Respuestas correctas: <strong>'+correct+'/'+total+'</strong> ('+pct+'%).</div>';
+      }
+    });
+
+    // Imprimir resultados
+    document.getElementById("btnPrintResults2").addEventListener("click",()=>{
+      const name = document.getElementById("studentName2").value || "Sin nombre";
+      const today = new Date();
+      const dateStr = today.toLocaleDateString("es-MX",{year:"numeric",month:"2-digit",day:"2-digit"});
+      const win = window.open("","_blank","width=900,height=700");
+      const h = results2.habits;
+      const q = results2.quiz;
+      win.document.write(`
+        <!DOCTYPE html><html lang="es"><head>
+        <meta charset="UTF-8"><title>Resultados – Hábitos y sistema inmunológico</title>
+        <style>
+          body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:24px;background:#f3f4f6;color:#111827;}
+          h1{font-size:1.25rem;margin-bottom:4px;color:#1f2937;}
+          h2{font-size:1rem;margin-top:16px;margin-bottom:4px;color:#1d4ed8;}
+          .meta{font-size:.85rem;color:#4b5563;margin-bottom:10px;}
+          .box{background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;padding:10px 12px;margin-top:8px;}
+          .good{color:#1d4ed8;font-weight:600;}
+          .need{color:#b91c1c;font-weight:600;}
+          ul{font-size:.9rem;color:#374151;margin-left:18px;}
+          .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.75rem;}
+          .badge-ok{background:#d1fae5;color:#166534;}
+          .badge-mid{background:#fef9c3;color:#92400e;}
+          .badge-low{background:#fee2e2;color:#b91c1c;}
+          .footer{margin-top:16px;font-size:.75rem;color:#9ca3af;text-align:right;}
+        </style></head><body>
+        <h1>Resultados de la ODA – Hábitos que fortalecen el sistema inmunológico</h1>
+        <div class="meta">
+          Alumno(a): <strong>${name}</strong><br>
+          Fecha: ${dateStr}<br>
+          Campo formativo: Saberes y Pensamiento Científico – Sexto grado
+        </div>
+        <h2>1. Organización de hábitos</h2>
+        <div class="box">
+      `);
+      if(!h){
+        win.document.write(`<p>No se registró información. <span class="need">El alumno no ha comprobado la actividad de hábitos.</span></p>`);
+      }else{
+        const pct = Math.round((h.correct/h.total)*100);
+        let badge="badge-ok";
+        if(pct<75 && pct>=50) badge="badge-mid";
+        if(pct<50) badge="badge-low";
+        win.document.write(`
+          <p>Resultado: <span class="good">${h.correct}/${h.total}</span> aciertos (${pct}%) 
+          <span class="badge ${badge}">${pct>=75?"Adecuado":(pct>=50?"En proceso":"Requiere apoyo")}</span></p>
+          <ul>
+            <li class="${pct>=75?"good":"need"}">Reconoce hábitos que fortalecen el sistema inmunológico.</li>
+            <li class="${pct>=75?"good":"need"}">Organiza un día con acciones favorables para la salud.</li>
+          </ul>
+        `);
+      }
+      win.document.write(`</div><h2>2. Cuestionario “Evalúate”</h2><div class="box">`);
+      if(!q){
+        win.document.write(`<p>No se registró información. <span class="need">El alumno no ha comprobado el cuestionario.</span></p>`);
+      }else{
+        const pctQ = Math.round((q.correct/q.total)*100);
+        let badgeQ="badge-ok";
+        if(pctQ<75 && pctQ>=50) badgeQ="badge-mid";
+        if(pctQ<50) badgeQ="badge-low";
+        win.document.write(`
+          <p>Resultado: <span class="good">${q.correct}/${q.total}</span> aciertos (${pctQ}%) 
+          <span class="badge ${badgeQ}">${pctQ>=75?"Adecuado":(pctQ>=50?"En proceso":"Requiere apoyo")}</span></p>
+          <ul>
+            <li class="${pctQ>=75?"good":"need"}">Comprende beneficios de agua simple, descanso y actividad física.</li>
+            <li class="${pctQ>=75?"good":"need"}">Reconoce que la higiene ayuda a reducir gérmenes que afectan la salud.</li>
+          </ul>
+        `);
+      }
+      win.document.write(`
+        </div>
+        <h2>3. Observaciones del docente</h2>
+        <div class="box">
+          <p>__________________________________________________________________________</p>
+          <p>__________________________________________________________________________</p>
+          <p>__________________________________________________________________________</p>
+        </div>
+        <div class="footer">
+          ODA – Hábitos que fortalecen el sistema inmunológico (PDA 2) · Profe Martín Reta
+        </div>
+        <script>window.print();<\/script>
+        </body></html>
+      `);
+      win.document.close();
+    });
+
+    // Actividad imprimible (distinta)
+    document.getElementById("btnPrintActivity2").addEventListener("click",()=>{
+      const name=document.getElementById("studentName2").value || "________________";
+      const win=window.open("","_blank","width=900,height=700");
+      win.document.write(`
+        <!DOCTYPE html><html lang="es"><head>
+        <meta charset="UTF-8"><title>Actividad imprimible – Mis hábitos y mis defensas</title>
+        <style>
+          body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:24px;background:#ffffff;color:#111827;}
+          h1{font-size:1.25rem;margin-bottom:4px;color:#1f2937;}
+          h2{font-size:1rem;margin-top:16px;margin-bottom:4px;color:#1d4ed8;}
+          .meta{font-size:.9rem;color:#4b5563;margin-bottom:10px;}
+          ol{font-size:.9rem;color:#111827;margin-left:18px;}
+          .line{border-bottom:1px solid #9ca3af;margin:6px 0 8px;}
+          table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:4px;}
+          td,th{border:1px solid #9ca3af;padding:6px 8px;vertical-align:top;}
+        </style></head><body>
+        <h1>Actividad – Mis hábitos y mis defensas</h1>
+        <div class="meta">
+          Nombre del alumno(a): ${name}<br>
+          Grado: 6.º · Campo formativo: Saberes y Pensamiento Científico
+        </div>
+        <h2>1. Completa las oraciones</h2>
+        <ol>
+          <li>La alimentación saludable ayuda a mi sistema inmunológico porque ____________________________________.</li>
+          <div class="line"></div>
+          <li>Beber agua simple potable es importante ya que ____________________________________________________.</li>
+          <div class="line"></div>
+          <li>El descanso suficiente permite que _______________________________________________________________.</li>
+          <div class="line"></div>
+          <li>Una acción que realizaré desde hoy para cuidar mis defensas es ______________________________________.</li>
+          <div class="line"></div>
+        </ol>
+        <h2>2. Mi semana saludable</h2>
+        <p>Marca con una ✔ los días en que practicaste cada hábito.</p>
+        <table>
+          <tr>
+            <th>Hábito</th>
+            <th>Lunes</th><th>Martes</th><th>Miércoles</th><th>Jueves</th><th>Viernes</th><th>Sábado</th><th>Domingo</th>
+          </tr>
+          <tr>
+            <td>Comí frutas o verduras</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Bebí agua simple suficiente</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Hice actividad física</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+          <tr>
+            <td>Dormí a una hora adecuada</td>
+            <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          </tr>
+        </table>
+        <h2>3. Dibuja</h2>
+        <p>Dibuja una escena donde se vea un hábito que fortalece tu sistema inmunológico.</p>
+        <div style="border:1px solid #9ca3af;height:200px;margin-top:6px;"></div>
+        <script>window.print();<\/script>
+        </body></html>
+      `);
+      win.document.close();
+    });
+  </script>
+</body>
+</html>

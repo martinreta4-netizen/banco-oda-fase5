@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Describo personas, lugares y hechos en mi autobiografía</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#b91c1c;
+      --primary-soft:#fef2f2;
+      --accent:#fb923c;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#fecaca;
+      --card:#ffffff;
+      --shadow:0 16px 35px rgba(127,29,29,.18);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#fff7ed 0,#fef2f2 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1180px;
+      background:radial-gradient(circle at top left,#fee2e2 0,#ffffff 45%,#fef2f2 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #fed7d7;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.4fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #fee2e2;
+    }
+    @media(max-width:900px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .header-logos{justify-content:center;}
+    }
+    .header-logos{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .header-logos img{
+      max-height:54px;
+      width:auto;
+      display:block;
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.22rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:#7f1d1d;
+    }
+    .title-block h1 .icon{
+      font-size:1.45rem;
+    }
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:3px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#7f1d1d;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+    }
+    .author-block{
+      font-size:.78rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:900px){
+      .author-block{text-align:center;}
+    }
+    .author-block strong{
+      display:block;
+      font-size:.86rem;
+      color:#111827;
+    }
+    .top-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .student-name{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.82rem;
+      background:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #fecaca;
+    }
+    .student-name label{
+      font-weight:600;
+      color:#374151;
+    }
+    .student-name input{
+      border:none;
+      outline:none;
+      font-size:.9rem;
+      min-width:180px;
+    }
+    .avatar-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:5px 9px;
+      border:1px solid #fecaca;
+    }
+    .avatar-row img{
+      height:56px;
+      width:auto;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#7f1d1d;
+    }
+    .btn-voice{
+      border-radius:999px;
+      border:none;
+      background:#b91c1c;
+      color:#fff;
+      padding:5px 10px;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:0 6px 18px rgba(127,29,29,.4);
+    }
+    .btn-voice span{
+      font-size:1rem;
+    }
+    .ejes-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.75rem;
+    }
+    .chip{
+      border-radius:999px;
+      padding:2px 9px;
+      border:1px solid #fed7d7;
+      background:#fff1f2;
+      color:#b91c1c;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#b91c1c;
+    }
+    .steps-bar{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:6px;
+      border:1px solid #fecaca;
+    }
+    .step-tab{
+      flex:1 1 140px;
+      border-radius:999px;
+      border:1px solid transparent;
+      padding:5px 10px;
+      font-size:.82rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      cursor:pointer;
+      color:#7f1d1d;
+      background:#fff;
+      transition:.2s ease;
+    }
+    .step-left{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .step-circle{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:2px solid #fecaca;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.78rem;
+      font-weight:600;
+      background:#fff5f5;
+    }
+    .step-label-main{
+      font-weight:600;
+    }
+    .step-label-sub{
+      font-size:.74rem;
+      color:#9f1239;
+    }
+    .step-tab.active{
+      background:linear-gradient(90deg,#b91c1c,#f97316);
+      border-color:#b91c1c;
+      color:#fff;
+      box-shadow:0 10px 22px rgba(185,28,28,.45);
+    }
+    .step-tab.active .step-circle{
+      background:#fff;
+      border-color:#fee2e2;
+      color:#b91c1c;
+    }
+    .step-icon-right{
+      font-size:.95rem;
+    }
+    main{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:6px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:10px 11px;
+    }
+    .card h2{
+      margin:0 0 4px;
+      font-size:.98rem;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card h2 .icon{
+      font-size:1.1rem;
+    }
+    .card p{
+      font-size:.86rem;
+      color:#374151;
+      margin:.15rem 0;
+    }
+    .two-col{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(0,1.1fr);
+      gap:10px;
+    }
+    @media(max-width:900px){
+      .two-col{grid-template-columns:1fr;}
+    }
+    .example-box{
+      border-radius:14px;
+      padding:8px 10px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      font-size:.84rem;
+      color:#7c2d12;
+    }
+    .example-label{
+      font-size:.78rem;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      color:#c2410c;
+      margin-bottom:3px;
+    }
+    .list{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.85rem;
+    }
+    .list li{margin-bottom:3px;}
+    textarea,input[type="text"]{
+      width:100%;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:5px 7px;
+      font-family:inherit;
+      font-size:.86rem;
+      resize:vertical;
+    }
+    textarea{min-height:80px;}
+    .mini-title{
+      font-weight:600;
+      font-size:.86rem;
+      color:#7f1d1d;
+      margin-top:4px;
+    }
+    .line-example{
+      padding:4px 6px;
+      border-radius:8px;
+      background:#fef2f2;
+      border:1px dashed #fecaca;
+      font-size:.84rem;
+      margin-bottom:4px;
+    }
+    .vf-row{
+      margin-top:4px;
+      padding:6px 7px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:.84rem;
+    }
+    .vf-row label{margin-right:8px;}
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+    .btn-secondary{
+      background:#f3f4f6;
+      color:#111827;
+    }
+    .btn-outline{
+      background:#fff;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+    .step-panel{display:none;font-size:.86rem;}
+    .step-panel.active{display:block;}
+    .results-card{
+      font-size:.84rem;
+    }
+    .result-good{color:#166534;font-weight:600;}
+    .result-bad{color:#b91c1c;font-weight:600;}
+    .chips-row-small{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin-top:4px;
+      font-size:.76rem;
+    }
+    .chip-soft{
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+      border:1px solid #fecaca;
+      color:#7f1d1d;
+    }
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #fee2e2;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        padding:0;
+      }
+      .school-logo-fixed{position:fixed;right:8px;bottom:8px;height:60px;}
+      .btn-row,.steps-bar,.avatar-row,.ejes-row{display:none!important;}
+      .wrapper{
+        box-shadow:none;
+        border:none;
+        border-radius:0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+  <div class="wrapper">
+    <header>
+      <div class="header-logos">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🌄</span>
+          <span>ODA – Describo personas, lugares y hechos en mi autobiografía</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Narración de sucesos autobiográficos.</strong><br>
+          PDA: <strong>Describe personas, lugares y hechos a través del uso de reiteraciones, frases adjetivas, símiles e imágenes, y mantiene la referencia a los mismos en toda la narración por medio de pronombres y sinónimos.</strong><br>
+          <span class="phase-label">Lenguajes · Fase 5</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <div class="top-row">
+      <div class="student-name">
+        <label for="studentName">Nombre del alumno(a):</label>
+        <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+      </div>
+      <div class="avatar-row">
+        <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+        <div class="avatar-text">
+          <strong>Hola, soy el maestro Martín.</strong><br>
+          Hoy vamos a darle color y vida a tu autobiografía con buenas descripciones.
+        </div>
+        <button class="btn-voice" type="button" onclick="playGuide()">
+          <span>🔊</span> Escuchar instrucciones
+        </button>
+      </div>
+    </div>
+
+    <div class="ejes-row">
+      <span class="chip"><span class="dot"></span>Inclusión</span>
+      <span class="chip"><span class="dot"></span>Pensamiento crítico</span>
+      <span class="chip"><span class="dot"></span>Lenguajes para la vida</span>
+      <span class="chip"><span class="dot"></span>Interculturalidad crítica</span>
+    </div>
+
+    <div class="steps-bar">
+      <button class="step-tab active" data-step="1" onclick="setStep(1)">
+        <div class="step-left">
+          <div class="step-circle">1</div>
+          <div>
+            <div class="step-label-main">Recuerdo recursos</div>
+            <div class="step-label-sub">Adjetivos y símiles</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="2" onclick="setStep(2)">
+        <div class="step-left">
+          <div class="step-circle">2</div>
+          <div>
+            <div class="step-label-main">Observo y describo</div>
+            <div class="step-label-sub">Personas y lugares</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="3" onclick="setStep(3)">
+        <div class="step-left">
+          <div class="step-circle">3</div>
+          <div>
+            <div class="step-label-main">Mejoro mi párrafo</div>
+            <div class="step-label-sub">Pronombres y sinónimos</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="4" onclick="setStep(4)">
+        <div class="step-left">
+          <div class="step-circle">4</div>
+          <div>
+            <div class="step-label-main">Hoja de resultados</div>
+            <div class="step-label-sub">Cómo describo ahora</div>
+          </div>
+        </div>
+        <span class="step-icon-right">✓</span>
+      </button>
+    </div>
+
+    <main>
+      <!-- PASO 1 -->
+      <section class="card step-panel active" id="step-1">
+        <h2><span class="icon">🎨</span><span>Paso 1. ¿Cómo doy vida a lo que cuento?</span></h2>
+        <div class="two-col">
+          <div>
+            <p>Para que tu autobiografía no se lea plana, necesitas usar <strong>recursos descriptivos</strong>:</p>
+            <ul class="list">
+              <li><strong>Reiteraciones</strong>: repetir una idea importante con otras palabras para reforzarla.</li>
+              <li><strong>Frases adjetivas</strong>: grupos de palabras que describen.<br>
+                <span class="line-example">Mi abuela, <em>de manos arrugadas y sonrisa tierna</em>, me esperaba en la puerta.</span>
+              </li>
+              <li><strong>Símiles</strong>: comparaciones con “como”, “parecía”, “igual que”.<br>
+                <span class="line-example">Mi corazón latía <em>como un tambor</em>.</span>
+              </li>
+              <li><strong>Imágenes</strong>: palabras que hacen que el lector imagine colores, sonidos, olores, sensaciones.</li>
+            </ul>
+            <p class="mini-title">Mantener la referencia</p>
+            <p>Para no repetir el mismo nombre muchas veces, usamos <strong>pronombres y sinónimos</strong>:</p>
+            <div class="line-example">María llegó tarde. <strong>Ella</strong> estaba nerviosa, pero la <strong>niña</strong> se sentó en silencio.</div>
+          </div>
+          <div>
+            <div class="example-box">
+              <div class="example-label">Actividad 1 · ¿Qué descripción es mejor?</div>
+              <p>1. Elige la descripción que da una mejor imagen del lugar:</p>
+              <div class="vf-row">
+                <p><strong>a)</strong> El patio era grande.</p>
+                <label><input type="radio" name="d1" value="a"> Elegir</label>
+              </div>
+              <div class="vf-row">
+                <p><strong>b)</strong> El patio era grande, polvoso y lleno de risas, con balones rodando por todas partes.</p>
+                <label><input type="radio" name="d1" value="b"> Elegir</label>
+              </div>
+              <p>2. Elige el mejor símil para completar la frase:</p>
+              <p class="line-example">Cuando entré al salón, mis manos temblaban como...</p>
+              <div class="vf-row">
+                <p><strong>a)</strong> ...un árbol en medio de una tormenta.</p>
+                <label><input type="radio" name="d2" value="a"> Elegir</label>
+              </div>
+              <div class="vf-row">
+                <p><strong>b)</strong> ...una cosa.</p>
+                <label><input type="radio" name="d2" value="b"> Elegir</label>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-primary" type="button" onclick="checkStep1()">Comprobar respuestas</button>
+              </div>
+              <div id="fbStep1" style="margin-top:4px;font-size:.82rem;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASO 2 -->
+      <section class="card step-panel" id="step-2">
+        <h2><span class="icon">🧍‍♀️</span><span>Paso 2. Observo y describo personas y lugares</span></h2>
+        <p>Imagina estas “mini imágenes” de tu vida y descríbelas usando <strong>frases adjetivas</strong> y, si puedes, algún <strong>símil</strong>.</p>
+        <div class="example-box">
+          <div class="example-label">Mini galería de escenas</div>
+          <ul class="list">
+            <li>Escena 1: Tú en la cancha, a punto de tirar un penal.</li>
+            <li>Escena 2: La cocina de tu casa un domingo por la mañana.</li>
+            <li>Escena 3: El camino de terracería rumbo a la escuela en un día nublado.</li>
+          </ul>
+        </div>
+        <p class="mini-title">Describe una persona importante en una de esas escenas:</p>
+        <textarea id="descPersona" placeholder="Ejemplo: Mi abuelo, de sombrero viejo y mirada tranquila, caminaba a mi lado como si el tiempo fuera más despacio."></textarea>
+        <p class="mini-title">Describe el lugar donde ocurre la escena:</p>
+        <textarea id="descLugar" placeholder="Ejemplo: La cancha polvosa brillaba bajo el sol y las porterías, chuecas y viejas, parecían esperar nuestra siguiente aventura."></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="quickCheckStep2()">Revisión rápida</button>
+        </div>
+        <div id="fbStep2" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- PASO 3 -->
+      <section class="card step-panel" id="step-3">
+        <h2><span class="icon">🧹</span><span>Paso 3. Mejoro un párrafo con pronombres y sinónimos</span></h2>
+        <p>Lee este párrafo. Fíjate cómo repite demasiado el mismo nombre:</p>
+        <div class="example-box">
+          <p>
+            Mi primo Diego llegó a mi casa. Diego traía una mochila azul. Diego se veía muy cansado porque Diego había caminado desde su casa. Diego se sentó en la silla y Diego me contó lo que había pasado.
+          </p>
+        </div>
+        <p class="mini-title">Reescribe el párrafo usando pronombres y sinónimos:</p>
+        <textarea id="fixPron" placeholder="Ejemplo: Mi primo Diego llegó a mi casa. Él traía una mochila azul..."></textarea>
+        <p class="mini-title">Ahora escribe un pequeño párrafo autobiográfico donde mantengas la referencia sin repetir todo el tiempo el mismo nombre:</p>
+        <textarea id="ownPron" placeholder="Cuenta algo que te haya pasado, usando pronombres como: él, ella, ellos, ella, yo, nosotros, él mismo, la niña, el chico, etc."></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="quickCheckStep3()">Revisión rápida</button>
+        </div>
+        <div id="fbStep3" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- PASO 4 -->
+      <section class="card step-panel" id="step-4">
+        <h2><span class="icon">📄</span><span>Paso 4. Hoja de resultados</span></h2>
+        <p>Genera tu hoja de resultados sobre cómo estás describiendo personas, lugares y hechos en tu autobiografía.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="generateResults()">Generar hoja de resultados</button>
+          <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir actividad</button>
+        </div>
+        <div id="resultsPanel" class="card results-card" style="margin-top:8px;display:none;">
+          <h2><span class="icon">📊</span><span>Hoja de resultados</span></h2>
+          <p><strong>Alumno(a):</strong> <span id="resName"></span></p>
+          <ul class="list">
+            <li><span id="resR1"></span></li>
+            <li><span id="resR2"></span></li>
+            <li><span id="resR3"></span></li>
+          </ul>
+          <p><strong>Comentario del maestro Martín:</strong></p>
+          <p id="resComment"></p>
+          <p class="mini-title">Mi compromiso como escritor(a):</p>
+          <textarea id="resCommit" placeholder="¿Qué te propones mejorar en tus descripciones para la próxima vez?"></textarea>
+          <div class="btn-row">
+            <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir resultados</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TARJETA EXTRA: BANCO DE PALABRAS -->
+      <section class="card">
+        <h2><span class="icon">🧩</span><span>Banco de palabras para describir mejor</span></h2>
+        <p>Usa este banco de palabras para enriquecer tus descripciones. Puedes copiar algunas en tus párrafos.</p>
+        <p class="mini-title">Adjetivos para personas</p>
+        <div class="chips-row-small">
+          <span class="chip-soft">tímido(a)</span>
+          <span class="chip-soft">valiente</span>
+          <span class="chip-soft">alegre</span>
+          <span class="chip-soft">cansado(a)</span>
+          <span class="chip-soft">callado(a)</span>
+          <span class="chip-soft">bromista</span>
+          <span class="chip-soft">paciente</span>
+          <span class="chip-soft">distraído(a)</span>
+        </div>
+        <p class="mini-title">Adjetivos para lugares</p>
+        <div class="chips-row-small">
+          <span class="chip-soft">polvoso</span>
+          <span class="chip-soft">ruidoso</span>
+          <span class="chip-soft">tranquilo</span>
+          <span class="chip-soft">lleno de gente</span>
+          <span class="chip-soft">luminoso</span>
+          <span class="chip-soft">estrecho</span>
+          <span class="chip-soft">amplio</span>
+          <span class="chip-soft">colorido</span>
+        </div>
+        <p class="mini-title">Símiles posibles</p>
+        <div class="chips-row-small">
+          <span class="chip-soft">como un tambor</span>
+          <span class="chip-soft">como un volcán</span>
+          <span class="chip-soft">como un susurro</span>
+          <span class="chip-soft">como un trueno</span>
+          <span class="chip-soft">como una linterna</span>
+          <span class="chip-soft">como un remolino</span>
+        </div>
+        <p class="mini-title">Pronombres que ayudan a no repetir</p>
+        <div class="chips-row-small">
+          <span class="chip-soft">él</span>
+          <span class="chip-soft">ella</span>
+          <span class="chip-soft">ellos</span>
+          <span class="chip-soft">ellas</span>
+          <span class="chip-soft">yo</span>
+          <span class="chip-soft">nosotros</span>
+          <span class="chip-soft">nosotras</span>
+          <span class="chip-soft">él mismo</span>
+          <span class="chip-soft">la niña</span>
+          <span class="chip-soft">el chico</span>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="project">Proyecto: “Mi historia, mi voz, mi camino”</span>
+      <span>Campo formativo: Lenguajes · Fase 5</span>
+      <span>© 2025. Diseño de ODA: Mtro. Martín Reta. Material educativo. Prohibida su venta.</span>
+    </footer>
+  </div>
+
+  <script>
+    function setStep(n){
+      document.querySelectorAll('.step-tab').forEach(btn=>{
+        btn.classList.toggle('active', Number(btn.dataset.step)===n);
+      });
+      document.querySelectorAll('.step-panel').forEach((p,idx)=>{
+        p.classList.toggle('active', idx===n-1);
+      });
+    }
+
+    function playGuide(){
+      try{
+        const msg=new SpeechSynthesisUtterance(
+          'En esta ODA vas a practicar cómo describir personas, lugares y hechos usando adjetivos, símiles y pronombres para que tu autobiografía se vea más viva y clara.'
+        );
+        msg.lang='es-MX';
+        msg.rate=1;
+        msg.pitch=1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(msg);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function checkStep1(){
+      const d1=document.querySelector('input[name="d1"]:checked');
+      const d2=document.querySelector('input[name="d2"]:checked');
+      const fb=document.getElementById('fbStep1');
+      const ok1=d1 && d1.value==='b';
+      const ok2=d2 && d2.value==='a';
+      if(ok1 && ok2){
+        fb.innerHTML='<span class="result-good">✔ Muy bien. Elegiste las opciones que crean mejores imágenes en la mente del lector.</span>';
+      }else{
+        fb.innerHTML='<span class="result-bad">Revisa de nuevo. Piensa qué opción permite imaginar mejor el lugar o la emoción.</span>';
+      }
+    }
+
+    function quickCheckStep2(){
+      const persona=document.getElementById('descPersona').value;
+      const lugar=document.getElementById('descLugar').value;
+      const fb=document.getElementById('fbStep2');
+      if(!persona.trim() && !lugar.trim()){
+        fb.innerHTML='<span class="result-bad">Escribe al menos una descripción de persona o de lugar.</span>';
+        return;
+      }
+      const hasComo=/\\bcomo\\b/i.test(persona + ' ' + lugar);
+      const manyWords=(persona + ' ' + lugar).trim().split(/\\s+/).length>=30;
+      let msg='';
+      if(manyWords){
+        msg += 'Tu descripción tiene buena extensión. ';
+      }else{
+        msg += 'Tus descripciones son cortas; intenta agregar más detalles. ';
+      }
+      if(hasComo){
+        msg += 'Estás usando símiles para comparar, lo cual enriquece tu texto.';
+      }else{
+        msg += 'Prueba agregar al menos un símil usando la palabra “como”.';
+      }
+      fb.textContent=msg;
+    }
+
+    function quickCheckStep3(){
+      const fix=document.getElementById('fixPron').value;
+      const own=document.getElementById('ownPron').value;
+      const fb=document.getElementById('fbStep3');
+      if(!fix.trim() && !own.trim()){
+        fb.innerHTML='<span class="result-bad">Primero reescribe el párrafo y luego escribe uno propio.</span>';
+        return;
+      }
+      const pronRegex=/\\b(él|ella|ellos|ellas|yo|nosotros|nosotras|lo|la|le|su|sus)\\b/i;
+      const hasPron=pronRegex.test(fix + ' ' + own);
+      let msg='';
+      if(hasPron){
+        msg += 'Estás utilizando pronombres para no repetir tanto los nombres. ';
+      }else{
+        msg += 'Intenta usar pronombres como “él”, “ella”, “ellos” o “yo” para evitar repetir nombres. ';
+      }
+      const lengthOk=(fix + ' ' + own).trim().split(/\\s+/).length>=40;
+      if(lengthOk){
+        msg += 'La extensión es adecuada para un ejercicio de descripción.';
+      }else{
+        msg += 'Puedes ampliar un poco más tus ideas para que se entienda mejor la escena.';
+      }
+      fb.textContent=msg;
+    }
+
+    function generateResults(){
+      const name=document.getElementById('studentName').value || 'Sin nombre';
+      document.getElementById('resName').textContent=name;
+
+      // Resultado 1: recursos descriptivos (Paso 1)
+      const d1=document.querySelector('input[name="d1"]:checked');
+      const d2=document.querySelector('input[name="d2"]:checked');
+      const ok1=d1 && d1.value==='b';
+      const ok2=d2 && d2.value==='a';
+      const r1=document.getElementById('resR1');
+      if(ok1 && ok2){
+        r1.innerHTML='<span style="color:#1d4ed8;">Reconoce ejemplos potentes de descripciones y símiles.</span>';
+      }else{
+        r1.innerHTML='<span style="color:#b91c1c;">Debe reforzar la elección de descripciones que crean mejores imágenes.</span>';
+      }
+
+      // Resultado 2: descripciones de persona y lugar (Paso 2)
+      const persona=document.getElementById('descPersona').value;
+      const lugar=document.getElementById('descLugar').value;
+      const textPL=(persona + ' ' + lugar).trim();
+      const manyWords=textPL.split(/\\s+/).length>=30;
+      const hasComo=/\\bcomo\\b/i.test(textPL);
+      const r2=document.getElementById('resR2');
+      if(textPL && manyWords && hasComo){
+        r2.innerHTML='<span style="color:#1d4ed8;">Escribe descripciones amplias de personas y lugares, incluyendo al menos un símil.</span>';
+      }else{
+        r2.innerHTML='<span style="color:#b91c1c;">Necesita ampliar sus descripciones y/o incluir comparaciones con “como”.</span>';
+      }
+
+      // Resultado 3: pronombres y sinónimos (Paso 3)
+      const fix=document.getElementById('fixPron').value;
+      const own=document.getElementById('ownPron').value;
+      const textAll=(fix + ' ' + own).trim();
+      const pronRegex=/\\b(él|ella|ellos|ellas|yo|nosotros|nosotras|lo|la|le|su|sus)\\b/i;
+      const hasPron=pronRegex.test(textAll);
+      const longEnough=textAll.split(/\\s+/).length>=40;
+      const r3=document.getElementById('resR3');
+      if(textAll && hasPron && longEnough){
+        r3.innerHTML='<span style="color:#1d4ed8;">Mantiene la referencia a personas usando pronombres y evitando repeticiones excesivas.</span>';
+      }else{
+        r3.innerHTML='<span style="color:#b91c1c;">Aún debe trabajar el uso de pronombres y la extensión de sus párrafos descriptivos.</span>';
+      }
+
+      const score=(ok1&&ok2?1:0)+(textPL && manyWords && hasComo?1:0)+(textAll && hasPron && longEnough?1:0);
+      const comment=document.getElementById('resComment');
+      if(score===3){
+        comment.textContent='¡Excelente! Tus descripciones permiten imaginar claramente personas, lugares y hechos en tu autobiografía.';
+      }else if(score===2){
+        comment.textContent='Vas muy bien. Refuerza el aspecto que aparece en rojo y tus descripciones serán cada vez más claras y ricas.';
+      }else{
+        comment.textContent='Sigue practicando. Añade más detalles, comparaciones y pronombres para que tus escenas se vean más vivas.';
+      }
+
+      document.getElementById('resultsPanel').style.display='block';
+      setStep(4);
+      document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>

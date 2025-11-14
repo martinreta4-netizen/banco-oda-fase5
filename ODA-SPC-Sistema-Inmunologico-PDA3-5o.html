@@ -1,0 +1,1130 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ODA - SPC - Guardianes contra las enfermedades (PDA 3)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --azul-oscuro: #0d47a1;
+      --azul-medio: #1976d2;
+      --azul-claro: #e3f2fd;
+      --gris-claro: #f5f5f5;
+      --texto: #123047;
+      --exito: #1565c0;
+      --dificultad: #c62828;
+      --verde: #2e7d32;
+      --naranja: #ef6c00;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #e3f2fd 0%, #bbdefb 40%, #e3f2fd 100%);
+      color: var(--texto);
+      padding: 16px;
+    }
+
+    .oda-contenedor {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      border: 3px solid var(--azul-medio);
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio));
+      color: white;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logos img {
+      height: 50px;
+      object-fit: contain;
+      background: white;
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .titulo-encabezado {
+      text-align: center;
+      flex: 1;
+    }
+
+    .titulo-encabezado h1 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .titulo-encabezado h2 {
+      font-size: 0.9rem;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .sub-encabezado {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .avatar-contenedor {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .avatar-contenedor img {
+      height: 70px;
+      width: auto;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #bbdefb;
+      object-fit: contain;
+    }
+
+    .avatar-texto {
+      font-size: 0.75rem;
+      max-width: 140px;
+    }
+
+    main {
+      padding: 16px 18px 20px 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(260px, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .avatar-contenedor {
+        display: none;
+      }
+    }
+
+    .tarjeta-presentacion {
+      background: var(--azul-claro);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-left: 5px solid var(--azul-oscuro);
+    }
+
+    .tarjeta-presentacion h2 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+
+    .badge-campo {
+      display: inline-block;
+      background: #ffffffdd;
+      color: var(--azul-oscuro);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      border: 1px solid #bbdefb;
+    }
+
+    .info-programa {
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+    }
+
+    .info-programa strong {
+      color: var(--azul-oscuro);
+    }
+
+    .pda-texto {
+      font-size: 0.75rem;
+      margin-top: 6px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: #ffffffaa;
+      border: 1px dashed var(--azul-medio);
+    }
+
+    .datos-alumno {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 0.78rem;
+    }
+
+    .datos-alumno label {
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .datos-alumno input {
+      border-radius: 999px;
+      border: 1px solid #90caf9;
+      padding: 3px 8px;
+      font-size: 0.78rem;
+      min-width: 130px;
+    }
+
+    .tabs-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .tabs-menu button {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      background: #ffffff;
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .tabs-menu button.activo {
+      background: var(--azul-medio);
+      color: white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .tabs-menu button span.icono {
+      font-size: 0.9rem;
+    }
+
+    .tab-contenido {
+      display: none;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid #e0e0e0;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .tab-contenido.activo {
+      display: block;
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--azul-oscuro);
+    }
+
+    p {
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin-bottom: 6px;
+    }
+
+    ul li {
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+
+    .bloque {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: var(--gris-claro);
+    }
+
+    .bloque h4 {
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+
+    .etiqueta-ejes {
+      display: inline-block;
+      font-size: 0.72rem;
+      background: #e8f5e9;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      border: 1px solid #c8e6c9;
+    }
+
+    .boton-voz {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      background: #e3f2fd;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .boton-voz:hover {
+      background: #bbdefb;
+    }
+
+    .columna-derecha {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tarjeta-avatar-lado {
+      background: var(--azul-claro);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #bbdefb;
+    }
+
+    .tarjeta-avatar-lado img {
+      height: 110px;
+      width: auto;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #90caf9;
+      margin-bottom: 6px;
+      object-fit: contain;
+    }
+
+    .tarjeta-avatar-lado p {
+      font-size: 0.77rem;
+    }
+
+    .tarjeta-acciones {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .tarjeta-acciones h3 {
+      margin-bottom: 4px;
+    }
+
+    .tarjeta-acciones button {
+      width: 100%;
+      margin-top: 6px;
+      border-radius: 999px;
+      border: none;
+      padding: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: var(--azul-oscuro);
+      color: white;
+    }
+
+    .tarjeta-acciones button.secundario {
+      background: #ffffff;
+      color: var(--azul-oscuro);
+      border: 1px solid var(--azul-oscuro);
+    }
+
+    .tarjeta-acciones button:hover {
+      filter: brightness(1.05);
+    }
+
+    .tarjeta-notas {
+      background: #fafafa;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px dashed #b0bec5;
+    }
+
+    .tarjeta-notas textarea {
+      width: 100%;
+      min-height: 80px;
+      border-radius: 10px;
+      border: 1px solid #cfd8dc;
+      padding: 6px;
+      font-size: 0.8rem;
+      resize: vertical;
+    }
+
+    /* Modelo inmunológico animado simple */
+    .modelo-inmunologico {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (max-width: 700px) {
+      .modelo-inmunologico {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .animacion-inmune {
+      background: linear-gradient(to top, #e3f2fd, #ffffff);
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid #bbdefb;
+      position: relative;
+      min-height: 190px;
+      overflow: hidden;
+    }
+
+    .animacion-inmune h4 {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .vaso-sangre {
+      position: absolute;
+      left: 12px;
+      right: 12px;
+      top: 70px;
+      height: 60px;
+      border-radius: 30px;
+      background: rgba(227, 242, 253, 0.9);
+      border: 2px solid #90caf9;
+      overflow: hidden;
+    }
+
+    .celula-defensa,
+    .microbio {
+      position: absolute;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+    }
+
+    .celula-defensa {
+      background: #a5d6a7;
+      border: 2px solid #2e7d32;
+      animation: patrulla 4s linear infinite;
+    }
+
+    .microbio {
+      background: #ffcc80;
+      border: 2px solid #ef6c00;
+      animation: invade 6s linear infinite;
+    }
+
+    .celula-defensa::before {
+      content: "+";
+      position: absolute;
+      font-size: 0.75rem;
+      color: #1b5e20;
+      top: 1px;
+      left: 5px;
+    }
+
+    .microbio::before {
+      content: "×";
+      position: absolute;
+      font-size: 0.75rem;
+      color: #e65100;
+      top: 1px;
+      left: 5px;
+    }
+
+    @keyframes patrulla {
+      0% { left: 10px; top: 5px; }
+      25% { left: 80px; top: 30px; }
+      50% { left: 150px; top: 10px; }
+      75% { left: 220px; top: 35px; }
+      100% { left: 10px; top: 5px; }
+    }
+
+    @keyframes invade {
+      0% { right: 10px; top: 30px; }
+      50% { right: 150px; top: 10px; }
+      100% { right: 10px; top: 30px; }
+    }
+
+    .texto-inmune {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.75rem;
+      text-align: center;
+      max-width: 230px;
+    }
+
+    .actividad-pregunta {
+      margin-bottom: 10px;
+      padding: 8px;
+      background: #fafafa;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .actividad-pregunta p {
+      margin-bottom: 4px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .actividad-opciones label {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+      cursor: pointer;
+      font-weight: 400;
+    }
+
+    .retroalimentacion {
+      font-size: 0.78rem;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .retro-ok {
+      color: var(--exito);
+    }
+
+    .retro-mal {
+      color: var(--dificultad);
+    }
+
+    .lista-auto {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 6px;
+    }
+
+    .item-auto {
+      padding: 6px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      font-size: 0.78rem;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .item-auto input {
+      margin-top: 2px;
+    }
+
+    .item-auto span {
+      flex: 1;
+    }
+
+    .logro {
+      color: var(--exito);
+      font-weight: 600;
+    }
+
+    .dificultad {
+      color: var(--dificultad);
+      font-weight: 600;
+    }
+
+    .imprimible {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px dashed #b0bec5;
+      margin-bottom: 8px;
+    }
+
+    .imprimible h4 {
+      text-align: center;
+      margin-bottom: 4px;
+      font-size: 0.88rem;
+      color: var(--azul-oscuro);
+    }
+
+    .imprimible p,
+    .imprimible li {
+      font-size: 0.78rem;
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #607d8b;
+      padding: 6px 10px 10px 10px;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .oda-contenedor {
+        border: none;
+        box-shadow: none;
+      }
+      .tarjeta-acciones,
+      .tarjeta-notas,
+      .tabs-menu,
+      .boton-voz,
+      .no-imprimir,
+      .avatar-contenedor,
+      .tarjeta-avatar-lado {
+        display: none !important;
+      }
+      .tab-contenido {
+        max-height: none;
+        overflow: visible;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="oda-contenedor">
+    <header>
+      <div class="logos">
+        <img src="sep_logo.png" alt="Logo SEP" />
+      </div>
+
+      <div class="titulo-encabezado">
+        <h1>Saberes y Pensamiento Científico – Fase 5</h1>
+        <h2>Guardianes contra las enfermedades</h2>
+        <div class="sub-encabezado">
+          Contenido: <strong>Estructura y funcionamiento del cuerpo humano: sistemas circulatorio, respiratorio e inmunológico, y su relación con la salud ambiental, así como acciones para su cuidado.</strong>
+        </div>
+      </div>
+
+      <div class="avatar-contenedor">
+        <img src="avatar_guia.png" alt="Avatar guía" />
+        <div class="avatar-texto">
+          <strong>Hola, soy tu guía.</strong><br />
+          Hoy conoceremos a los guardianes de tu cuerpo: las células de defensa.
+        </div>
+      </div>
+
+      <div class="logos">
+        <img src="escudo_escuela.png" alt="Escudo escuela" />
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="tarjeta-presentacion">
+          <div class="badge-campo">Campo formativo: Saberes y Pensamiento Científico</div>
+          <h2>Quinto grado · Sistema inmunológico</h2>
+          <div class="info-programa">
+            <strong>PDA (5.º – 3):</strong><br />
+            Reconoce y describe los elementos principales del sistema inmunológico y
+            propone acciones cotidianas para favorecer su funcionamiento y prevenir enfermedades.
+          </div>
+
+          <div class="pda-texto" id="texto-intro-inmune">
+            <strong>Propósito de la ODA:</strong>
+            Que las niñas y los niños identifiquen que el cuerpo cuenta con un sistema de defensa
+            formado por diferentes células y órganos, comprendan cómo actúa frente a virus y
+            bacterias, y propongan acciones para cuidarlo.
+          </div>
+
+          <button class="boton-voz no-imprimir" onclick="leerTexto('texto-intro-inmune')">
+            🔊 Escuchar la consigna inicial
+          </button>
+
+          <div class="datos-alumno">
+            <div>
+              <label for="nombre-alumno">Nombre del alumno(a):</label>
+              <input type="text" id="nombre-alumno" placeholder="Escribe tu nombre" />
+            </div>
+            <div>
+              <label for="grado-grupo">Grado y grupo:</label>
+              <input type="text" id="grado-grupo" placeholder="5.º / 6.º" />
+            </div>
+            <div>
+              <label for="fecha">Fecha:</label>
+              <input type="text" id="fecha" placeholder="dd/mm/aaaa" />
+            </div>
+          </div>
+        </div>
+
+        <nav class="tabs-menu no-imprimir">
+          <button class="activo" data-tab="inicio-inmune">
+            <span class="icono">🏁</span> Inicio
+          </button>
+          <button data-tab="explora-inmune">
+            <span class="icono">🔍</span> Explora
+          </button>
+          <button data-tab="modelo-inmune">
+            <span class="icono">🛡️</span> Modelos
+          </button>
+          <button data-tab="practica-inmune">
+            <span class="icono">✏️</span> Practica
+          </button>
+          <button data-tab="evalua-inmune">
+            <span class="icono">📊</span> Evalúo mi aprendizaje
+          </button>
+          <button data-tab="imprimibles-inmune">
+            <span class="icono">🖨️</span> Imprimibles
+          </button>
+        </nav>
+
+        <!-- INICIO -->
+        <section id="inicio-inmune" class="tab-contenido activo">
+          <h3>1. Bienvenida: tu ejército interior</h3>
+          <div class="bloque">
+            <h4>¿Qué aprenderás?</h4>
+            <p>
+              En esta ODA conocerás al <strong>sistema inmunológico</strong>, el “ejército” que te
+              protege de virus, bacterias y otros microbios. Descubrirás que tu cuerpo tiene
+              <strong>barreras externas</strong> (como la piel) y <strong>defensas internas</strong>
+              (como los glóbulos blancos) que trabajan todo el tiempo.
+            </p>
+          </div>
+
+          <div class="bloque">
+            <h4>Ejes articuladores presentes</h4>
+            <span class="etiqueta-ejes">Vida saludable</span>
+            <span class="etiqueta-ejes">Igualdad de género</span>
+            <span class="etiqueta-ejes">Interculturalidad crítica</span>
+            <p>
+              Reflexionarás sobre prácticas de cuidado como el lavado de manos, la alimentación
+              saludable, el descanso y las vacunas, y cómo estas acciones benefician a toda la
+              comunidad, sin importar su origen o género.
+            </p>
+          </div>
+        </section>
+
+        <!-- EXPLORA -->
+        <section id="explora-inmune" class="tab-contenido">
+          <h3>2. Explora: “La batalla en tu cuerpo”</h3>
+
+          <button class="boton-voz" onclick="leerTexto('texto-explora-inmune')">
+            🔊 Escuchar la lectura
+          </button>
+
+          <div class="bloque" id="texto-explora-inmune">
+            <h4>Lectura guiada</h4>
+            <p>
+              Cada vez que respiras, comes o tocas objetos, algunos <strong>microbios</strong> pueden
+              intentar entrar en tu cuerpo. No todos son dañinos, pero algunos pueden causar
+              enfermedades. Para defenderte, cuentas con el <strong>sistema inmunológico</strong>.
+            </p>
+            <p>
+              La primera línea de defensa son las <strong>barreras externas</strong>: la piel, las
+              lágrimas, la saliva, los vellos de la nariz y el moco que atrapa polvo y microbios.
+              Si algunos logran pasar, entran en acción los <strong>glóbulos blancos</strong>, que
+              circulan en la sangre.
+            </p>
+            <p>
+              Algunos glóbulos blancos se comportan como “comecocos”, rodean a los microbios y los
+              destruyen. Otros ayudan a producir <strong>anticuerpos</strong>, unas sustancias que
+              reconocen a los microbios y avisan al resto del sistema para eliminarlos más rápido.
+            </p>
+            <p>
+              Tu cuerpo también tiene órganos que participan en la defensa, como los
+              <strong>ganglios linfáticos</strong> (bolitas que a veces se inflaman cuando te enfermas),
+              el <strong>bazo</strong> y la <strong>médula ósea</strong>, donde se forman muchas células
+              de la sangre.
+            </p>
+            <p>
+              Las <strong>vacunas</strong> entrenan a tu sistema inmunológico: le presentan fragmentos
+              del microbio o una forma debilitada para que aprenda a reconocerlo y reaccionar más
+              rápido si algún día entra al cuerpo.
+            </p>
+          </div>
+
+          <div class="bloque">
+            <h4>Piensa y comenta</h4>
+            <ul>
+              <li>¿Qué acciones cotidianas crees que ayudan a tus defensas?</li>
+              <li>¿Qué prácticas en tu comunidad pueden debilitarlas (por ejemplo, no lavarse las manos o no dormir lo suficiente)?</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- MODELOS -->
+        <section id="modelo-inmune" class="tab-contenido">
+          <h3>3. Modelos del sistema inmunológico</h3>
+
+          <div class="modelo-inmunologico">
+            <div class="bloque">
+              <h4>3.1 Modelo real: “Tarjetas de defensa”</h4>
+              <p><strong>Materiales:</strong></p>
+              <ul>
+                <li>Tiras de cartulina o papel (al menos 6)</li>
+                <li>Plumones de colores</li>
+                <li>Cinta adhesiva</li>
+              </ul>
+              <p><strong>Pasos:</strong></p>
+              <ol style="padding-left:18px; font-size:0.8rem; margin-top:4px;">
+                <li>En una tarjeta escribe “Virus” o “Bacteria” y dibuja su forma (microbio).</li>
+                <li>En otras tarjetas escribe “Piel”, “Glóbulo blanco”, “Anticuerpo”, “Vacuna”.</li>
+                <li>Pega las tarjetas en el pizarrón o en una hoja grande, formando una historia:</li>
+              </ol>
+              <ul style="padding-left:22px; font-size:0.8rem;">
+                <li>1. El microbio intenta entrar.</li>
+                <li>2. La piel y el moco intentan detenerlo.</li>
+                <li>3. Si pasa, los glóbulos blancos lo persiguen.</li>
+                <li>4. Los anticuerpos lo marcan para que sea destruido.</li>
+                <li>5. La vacuna ayuda a reconocerlo más rápido.</li>
+              </ul>
+              <p>
+                Representen en equipo esta secuencia como si fuera una pequeña obra o historieta.
+              </p>
+            </div>
+
+            <div class="animacion-inmune">
+              <h4>3.2 Modelo animado: patrulla de defensa</h4>
+              <div class="vaso-sangre">
+                <div class="celula-defensa"></div>
+                <div class="microbio"></div>
+              </div>
+              <div class="texto-inmune">
+                Las células de defensa (verde) patrullan la sangre y buscan microbios (naranja)
+                para atraparlos y destruirlos. Tu sistema inmunológico está activo todo el tiempo.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- PRACTICA -->
+        <section id="practica-inmune" class="tab-contenido">
+          <h3>4. Practica lo aprendido</h3>
+
+          <button class="boton-voz" onclick="leerTexto('consigna-practica-inmune')">
+            🔊 Escuchar instrucciones de la actividad
+          </button>
+
+          <div class="bloque" id="consigna-practica-inmune">
+            <h4>Instrucciones generales</h4>
+            <p>
+              Responde las actividades para mostrar lo que aprendiste sobre el sistema inmunológico.
+              Puedes apoyarte en la lectura y en el modelo de tarjetas.
+            </p>
+          </div>
+
+          <div class="actividad-pregunta">
+            <p>4.1 Opción múltiple</p>
+            <p style="font-weight:400;">
+              ¿Cuál es la función principal de los glóbulos blancos?
+            </p>
+            <div class="actividad-opciones">
+              <label>
+                <input type="radio" name="p3" value="a" onchange="revisarP3(this.value)" />
+                a) Transportar oxígeno a todas las células.
+              </label>
+              <label>
+                <input type="radio" name="p3" value="b" onchange="revisarP3(this.value)" />
+                b) Defender al cuerpo de microbios y sustancias extrañas.
+              </label>
+              <label>
+                <input type="radio" name="p3" value="c" onchange="revisarP3(this.value)" />
+                c) Almacenar grasa para obtener energía.
+              </label>
+            </div>
+            <div id="retro-p3" class="retroalimentacion"></div>
+          </div>
+
+          <div class="actividad-pregunta">
+            <p>4.2 Verdadero (V) o Falso (F)</p>
+            <ol style="padding-left:18px; font-size:0.8rem;">
+              <li>La piel y el moco son barreras que ayudan a evitar la entrada de microbios. ( )</li>
+              <li>Las vacunas debilitan el sistema inmunológico. ( )</li>
+              <li>El lavado de manos ayuda a que entren menos microbios al cuerpo. ( )</li>
+            </ol>
+          </div>
+
+          <div class="actividad-pregunta">
+            <p>4.3 Completa las oraciones</p>
+            <ol style="padding-left:18px; font-size:0.8rem;">
+              <li>
+                Los ________ blancos circulan en la sangre y atacan a los microbios.
+              </li>
+              <li>
+                Los ________ ayudan a reconocer a los microbios y a eliminarlos más rápido.
+              </li>
+            </ol>
+          </div>
+
+          <div class="actividad-pregunta">
+            <p>4.4 Escribe</p>
+            <p style="font-weight:400;">
+              Menciona dos acciones cotidianas que puedes hacer para cuidar tu sistema inmunológico.
+            </p>
+            <p>______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+          </div>
+        </section>
+
+        <!-- EVALÚO -->
+        <section id="evalua-inmune" class="tab-contenido">
+          <h3>5. Evalúo mi aprendizaje</h3>
+          <div class="bloque">
+            <h4>Autoevaluación</h4>
+            <p>
+              Marca con una ✓ lo que consideras que ya haces bien y señala con un círculo lo que aún necesitas practicar.
+            </p>
+            <div class="lista-auto">
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Identifico qué es el sistema inmunológico y para qué sirve.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Reconozco la función de los glóbulos blancos y los anticuerpos.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Relaciono las vacunas con la protección de la salud.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Menciono acciones concretas para cuidar mis defensas (higiene, descanso, alimentación, evitar sustancias dañinas).</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bloque">
+            <h4>Diálogo con mi maestra o maestro</h4>
+            <p>Comenta con tu docente:</p>
+            <ul>
+              <li><span class="logro">Lo que ya dominas</span> sobre el sistema inmunológico.</li>
+              <li><span class="dificultad">Lo que se te dificulta</span> y quieres seguir aprendiendo.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- IMPRIMIBLES -->
+        <section id="imprimibles-inmune" class="tab-contenido">
+          <h3>6. Material para imprimir</h3>
+
+          <div class="imprimible" id="actividad-impresa-inmune">
+            <h4>Actividad para imprimir – Guardianes contra las enfermedades</h4>
+            <p><strong>Nombre del alumno(a): _______________________   Grado y grupo: _________</strong></p>
+            <p><strong>Instrucciones:</strong> Responde en el espacio indicado. Usa letra clara.</p>
+
+            <p style="margin-top:6px;"><strong>1. Relaciona.</strong></p>
+            <p>Une cada elemento con su función.</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:0.78rem;">
+              <div>
+                <strong>Elementos</strong>
+                <ul>
+                  <li>a) Piel</li>
+                  <li>b) Glóbulos blancos</li>
+                  <li>c) Vacunas</li>
+                </ul>
+              </div>
+              <div>
+                <strong>Funciones</strong>
+                <ul>
+                  <li>( ) Entrenan al sistema inmunológico para reconocer microbios.</li>
+                  <li>( ) Forman una barrera que evita la entrada de muchos microbios.</li>
+                  <li>( ) Circulan en la sangre y atacan a los microbios que entran.</li>
+                </ul>
+              </div>
+            </div>
+
+            <p style="margin-top:6px;"><strong>2. Verdadero (V) o Falso (F).</strong></p>
+            <ol style="padding-left:18px; font-size:0.78rem;">
+              <li>El sistema inmunológico ayuda a prevenir y combatir enfermedades. (   )</li>
+              <li>No es necesario lavarse las manos si ya tengo vacunas. (   )</li>
+              <li>Dormir bien y alimentarme saludable fortalece mis defensas. (   )</li>
+            </ol>
+
+            <p style="margin-top:6px;"><strong>3. Completa.</strong></p>
+            <ol style="padding-left:18px; font-size:0.78rem;">
+              <li>Los ________ blancos son parte del sistema inmunológico.</li>
+              <li>Las ________ sirven para prevenir algunas enfermedades.</li>
+            </ol>
+
+            <p style="margin-top:6px;"><strong>4. Escribe.</strong></p>
+            <p>Menciona dos acciones que puedes hacer en tu familia o escuela para cuidar la salud de todos.</p>
+            <p>______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+          </div>
+
+          <div class="imprimible" id="resultados-impresos-inmune">
+            <h4>Hoja de resultados – Sistema inmunológico</h4>
+            <p><strong>Nombre del alumno(a): ______________________  Grado y grupo: _________</strong></p>
+            <p><strong>PDA trabajado (5.º – 3):</strong> Reconoce y describe los elementos principales del sistema inmunológico y propone acciones cotidianas para favorecer su funcionamiento y prevenir enfermedades.</p>
+
+            <p style="margin-top:6px;"><strong>Logros observados (marcar en azul):</strong></p>
+            <ul style="margin-left:16px; margin-top:2px;">
+              <li>Identifica qué es el sistema inmunológico y su función general.</li>
+              <li>Reconoce la importancia de los glóbulos blancos y las vacunas.</li>
+              <li>Propone acciones de higiene y cuidado que fortalecen las defensas.</li>
+            </ul>
+
+            <p style="margin-top:6px;"><strong>Dificultades detectadas (marcar en rojo):</strong></p>
+            <ul style="margin-left:16px; margin-top:2px;">
+              <li>Confunde el sistema inmunológico con otros sistemas del cuerpo.</li>
+              <li>Muestra ideas equivocadas sobre las vacunas.</li>
+              <li>Requiere apoyo para relacionar hábitos de vida con el cuidado de las defensas.</li>
+            </ul>
+
+            <p style="margin-top:6px;"><strong>Observaciones de la maestra o maestro:</strong></p>
+            <p>______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+
+            <p style="margin-top:6px;"><strong>Compromisos de mejora del alumno(a):</strong></p>
+            <p>______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+          </div>
+
+          <p class="no-imprimir" style="font-size:0.78rem; margin-top:4px;">
+            Usa los botones del panel derecho para imprimir solo la <strong>actividad</strong> o solo la
+            <strong>hoja de resultados</strong>.
+          </p>
+        </section>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <aside class="columna-derecha">
+        <div class="tarjeta-avatar-lado">
+          <img src="avatar_guia.png" alt="Avatar guía" />
+          <p>
+            <strong>Tip del guía:</strong><br />
+            Antes de comer y al llegar a casa, lávate las manos con agua y jabón.
+            Es una forma sencilla de ayudar a tus defensas.
+          </p>
+        </div>
+
+        <div class="tarjeta-acciones">
+          <h3>Impresiones rápidas</h3>
+          <button onclick="imprimirSeccion('actividad-impresa-inmune')">
+            🖨️ Imprimir actividad para el alumno
+          </button>
+          <button class="secundario" onclick="imprimirSeccion('resultados-impresos-inmune')">
+            🖨️ Imprimir hoja de resultados
+          </button>
+        </div>
+
+        <div class="tarjeta-notas">
+          <h3>Notas para el docente</h3>
+          <p style="font-size:0.75rem; margin-bottom:4px;">
+            Puedes registrar ejemplos de enfermedades comunes en tu comunidad y cómo se pueden prevenir.
+          </p>
+          <textarea placeholder="Ejemplo: resfriados, infecciones estomacales, COVID-19; reforzar lavado de manos, uso de agua potable y esquema de vacunación."></textarea>
+        </div>
+      </aside>
+    </main>
+
+    <div class="copyright">
+      © 2025. Autor: Martín Reta (docente) en co-creación con ChatGPT (OpenAI).
+      Uso estrictamente educativo y sin fines de lucro.
+    </div>
+  </div>
+
+  <script>
+    // --- Cambio de pestañas ---
+    document.querySelectorAll(".tabs-menu button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tabId = btn.getAttribute("data-tab");
+
+        document
+          .querySelectorAll(".tabs-menu button")
+          .forEach((b) => b.classList.remove("activo"));
+        btn.classList.add("activo");
+
+        document
+          .querySelectorAll(".tab-contenido")
+          .forEach((sec) => sec.classList.remove("activo"));
+        document.getElementById(tabId).classList.add("activo");
+      });
+    });
+
+    // --- Voz (masculina, donde sea posible) ---
+    function leerTexto(idElemento) {
+      const elemento = document.getElementById(idElemento);
+      if (!elemento) return;
+
+      const texto = elemento.innerText || elemento.textContent;
+      if (!("speechSynthesis" in window)) {
+        alert("Lo siento, tu navegador no soporta lectura en voz alta.");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const mensaje = new SpeechSynthesisUtterance(texto);
+      mensaje.lang = "es-MX";
+
+      const voces = window.speechSynthesis.getVoices();
+      const vozMasculina =
+        voces.find(
+          (v) =>
+            v.lang.startsWith("es") &&
+            (v.name.toLowerCase().includes("male") ||
+              v.name.toLowerCase().includes("hombre") ||
+              v.name.toLowerCase().includes("miguel") ||
+              v.name.toLowerCase().includes("diego"))
+        ) ||
+        voces.find((v) => v.lang.startsWith("es")) ||
+        null;
+
+      if (vozMasculina) {
+        mensaje.voice = vozMasculina;
+      }
+
+      window.speechSynthesis.speak(mensaje);
+    }
+
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+
+    // --- Retroalimentación P3 ---
+    function revisarP3(valor) {
+      const retro = document.getElementById("retro-p3");
+      if (!retro) return;
+
+      if (valor === "b") {
+        retro.textContent = "✔ Correcto: los glóbulos blancos defienden al cuerpo de microbios.";
+        retro.className = "retroalimentacion retro-ok";
+      } else {
+        retro.textContent = "✘ Revisa la lectura: los glóbulos blancos no transportan oxígeno ni almacenan grasa.";
+        retro.className = "retroalimentacion retro-mal";
+      }
+    }
+
+    // --- Impresión de secciones ---
+    function imprimirSeccion(idSeccion) {
+      const seccion = document.getElementById(idSeccion);
+      if (!seccion) return;
+
+      const ventana = window.open("", "_blank");
+      ventana.document.write("<html><head><title>Imprimir</title>");
+      ventana.document.write(
+        '<meta charset="UTF-8"><style>body{font-family:Segoe UI,system-ui,sans-serif;font-size:12px;padding:12px;} h4{text-align:center;margin-bottom:6px;} ul,ol{padding-left:18px;}</style>'
+      );
+      ventana.document.write("</head><body>");
+      ventana.document.write(seccion.innerHTML);
+      ventana.document.write("</body></html>");
+      ventana.document.close();
+      ventana.focus();
+      ventana.print();
+      ventana.close();
+    }
+  </script>
+</body>
+</html>

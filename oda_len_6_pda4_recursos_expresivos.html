@@ -1,0 +1,1226 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA V3 – Pinto mi historia con palabras: recursos expresivos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#7f1d1d;
+      --primary-soft:#fef2f2;
+      --accent:#fbbf24;
+      --accent-soft:#fffbeb;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#fecaca;
+      --card:#ffffff;
+      --shadow:0 18px 40px rgba(127,29,29,.22);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#fee2e2 0,#ffffff 40%,#fff7ed 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1240px;
+      background:linear-gradient(135deg,#fef2f2 0,#ffffff 50%,#fffbeb 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #fee2e2;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.6fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #fee2e2;
+    }
+    @media(max-width:900px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .header-logos{justify-content:center;}
+    }
+    .header-logos{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .header-logos img{
+      max-height:54px;
+      width:auto;
+      display:block;
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.26rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:#7f1d1d;
+    }
+    .title-block h1 .icon{
+      font-size:1.5rem;
+    }
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:3px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#7f1d1d;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+    }
+    .badge-grade{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 8px;
+      font-size:.78rem;
+      border-radius:999px;
+      background:#fffbeb;
+      border:1px solid #facc15;
+      color:#92400e;
+      margin-left:4px;
+    }
+    .badge-grade span{
+      font-size:.9rem;
+    }
+    .author-block{
+      font-size:.78rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:900px){
+      .author-block{text-align:center;}
+    }
+    .author-block strong{
+      display:block;
+      font-size:.86rem;
+      color:#111827;
+    }
+    .top-layout{
+      display:grid;
+      grid-template-columns:minmax(0,2.2fr) minmax(260px,1.2fr);
+      gap:10px;
+      align-items:stretch;
+      margin-top:4px;
+    }
+    @media(max-width:900px){
+      .top-layout{
+        grid-template-columns:1fr;
+      }
+    }
+    .student-and-tabs{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .student-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .student-name{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.82rem;
+      background:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #fecaca;
+    }
+    .student-name label{
+      font-weight:600;
+      color:#374151;
+    }
+    .student-name input{
+      border:none;
+      outline:none;
+      font-size:.9rem;
+      min-width:190px;
+    }
+    .ejes-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.74rem;
+    }
+    .chip{
+      border-radius:999px;
+      padding:2px 9px;
+      border:1px solid #fed7d7;
+      background:#fff1f2;
+      color:#b91c1c;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#b91c1c;
+    }
+    .avatar-panel{
+      background:radial-gradient(circle at top,#fee2e2 0,#ffffff 55%);
+      border-radius:20px;
+      border:1px solid #fecaca;
+      padding:8px 10px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      box-shadow:0 10px 24px rgba(127,29,29,.18);
+    }
+    .avatar-panel img{
+      height:70px;
+      width:auto;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#7f1d1d;
+    }
+    .btn-voice{
+      border-radius:999px;
+      border:none;
+      background:#7f1d1d;
+      color:#fff;
+      padding:5px 10px;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:0 6px 18px rgba(127,29,29,.45);
+      margin-top:4px;
+    }
+    .btn-voice span{
+      font-size:1rem;
+    }
+    .pill-tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:5px;
+      border:1px solid #fecaca;
+    }
+    .pill-tab{
+      flex:1 1 150px;
+      border-radius:999px;
+      padding:5px 10px;
+      font-size:.82rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      cursor:pointer;
+      border:1px solid transparent;
+      background:#fff;
+      color:#7f1d1d;
+      transition:.2s;
+    }
+    .pill-main{
+      font-weight:600;
+    }
+    .pill-sub{
+      font-size:.72rem;
+      color:#9f1239;
+    }
+    .pill-number{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:2px solid #fecaca;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.78rem;
+      background:#fff5f5;
+    }
+    .pill-tab.active{
+      background:linear-gradient(90deg,#7f1d1d,#f97316);
+      color:#fff;
+      border-color:#7f1d1d;
+      box-shadow:0 10px 24px rgba(127,29,29,.4);
+    }
+    .pill-tab.active .pill-number{
+      background:#fff;
+      border-color:#fee2e2;
+      color:#7f1d1d;
+    }
+    main{
+      margin-top:6px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .section-panel{
+      display:none;
+      background:var(--card);
+      border-radius:20px;
+      border:1px solid var(--border);
+      padding:10px 12px;
+    }
+    .section-panel.active{
+      display:block;
+    }
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-bottom:4px;
+    }
+    .section-header h2{
+      margin:0;
+      font-size:.98rem;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .section-header h2 .icon{
+      font-size:1.1rem;
+    }
+    .section-badge{
+      font-size:.72rem;
+      padding:2px 7px;
+      border-radius:999px;
+      background:#fffbeb;
+      border:1px solid #facc15;
+      color:#92400e;
+    }
+    .section-panel p{
+      font-size:.86rem;
+      color:#374151;
+      margin:.15rem 0;
+    }
+    .flip-grid{
+      display:grid;
+      grid-template-columns:repeat(4,minmax(0,1fr));
+      gap:10px;
+      margin-top:6px;
+    }
+    @media(max-width:1100px){
+      .flip-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    }
+    @media(max-width:700px){
+      .flip-grid{grid-template-columns:1fr;}
+    }
+    .flip-card{
+      background:transparent;
+      perspective:1000px;
+      cursor:pointer;
+    }
+    .flip-inner{
+      position:relative;
+      width:100%;
+      min-height:150px;
+      transition:transform .5s;
+      transform-style:preserve-3d;
+    }
+    .flip-card.flipped .flip-inner{
+      transform:rotateY(180deg);
+    }
+    .flip-face{
+      position:absolute;
+      inset:0;
+      backface-visibility:hidden;
+      border-radius:18px;
+      border:1px solid #fecaca;
+      padding:8px 9px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .flip-front{
+      background:linear-gradient(145deg,#fef2f2,#fffbeb);
+    }
+    .flip-back{
+      background:#ffffff;
+      transform:rotateY(180deg);
+    }
+    .flip-title{
+      font-weight:700;
+      font-size:.9rem;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .flip-icon{
+      font-size:1.2rem;
+    }
+    .flip-tag{
+      font-size:.72rem;
+      padding:2px 7px;
+      border-radius:999px;
+      align-self:flex-start;
+      background:#fee2e2;
+      color:#7c2d12;
+    }
+    .flip-front p,
+    .flip-back p{
+      font-size:.8rem;
+      margin:.1rem 0;
+    }
+    .list{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.83rem;
+    }
+    .list li{margin-bottom:3px;}
+    .mini-title{
+      font-weight:600;
+      font-size:.86rem;
+      color:#7f1d1d;
+      margin-top:4px;
+    }
+    .compare-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.2fr) repeat(4,minmax(0,1fr));
+      gap:4px;
+      margin-top:6px;
+      font-size:.8rem;
+      align-items:start;
+    }
+    .compare-grid .head{
+      font-weight:700;
+      background:#fee2e2;
+      padding:4px 5px;
+      border-radius:10px;
+      text-align:center;
+      border:1px solid #fecaca;
+    }
+    .compare-grid .row-label{
+      font-weight:600;
+      background:#f9fafb;
+      border-radius:10px;
+      padding:4px 5px;
+      border:1px solid #e5e7eb;
+    }
+    .compare-cell{
+      background:#ffffff;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:4px 5px;
+    }
+    select{
+      width:100%;
+      border:none;
+      background:transparent;
+      font-size:.8rem;
+      font-family:inherit;
+      outline:none;
+    }
+    .vf-row{
+      margin-top:4px;
+      padding:6px 7px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:.84rem;
+    }
+    .vf-row label{margin-right:8px;}
+    textarea{
+      width:100%;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:5px 7px;
+      font-family:inherit;
+      font-size:.84rem;
+      resize:vertical;
+      min-height:70px;
+    }
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+    .btn-outline{
+      background:#fff;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+    .result-good{color:#166534;font-weight:600;}
+    .result-bad{color:#b91c1c;font-weight:600;}
+    .results-card{
+      font-size:.84rem;
+      margin-top:6px;
+      border-radius:18px;
+      border:1px solid #fecaca;
+      padding:8px 9px;
+      background:#fffbeb;
+    }
+    .activity-sheet{
+      font-size:.84rem;
+      margin-top:8px;
+      border-radius:18px;
+      border:1px dashed #fecaca;
+      padding:8px 9px;
+      background:#ffffff;
+    }
+    .activity-sheet h3{
+      margin:0 0 4px;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+    }
+    .activity-sheet table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:4px;
+      font-size:.8rem;
+    }
+    .activity-sheet th,
+    .activity-sheet td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      vertical-align:top;
+    }
+    .activity-sheet th{
+      background:#fef2f2;
+      text-align:center;
+    }
+    .activity-sheet .line{
+      display:block;
+      border-bottom:1px solid #e5e7eb;
+      margin:4px 0;
+      height:12px;
+    }
+    .reader-corner{
+      background:#111827;
+      color:#f9fafb;
+      border-radius:18px;
+      padding:8px 10px;
+      margin-top:4px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .reader-corner h3{
+      margin:0;
+      font-size:.9rem;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .reader-quote{
+      font-size:.8rem;
+      font-style:italic;
+    }
+    .reader-author{
+      font-size:.78rem;
+      text-align:right;
+      opacity:.9;
+    }
+    footer{
+      margin-top:6px;
+      padding-top:7px;
+      border-top:1px solid #fee2e2;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        padding:0;
+      }
+      .school-logo-fixed{position:fixed;right:8px;bottom:8px;height:60px;}
+      .btn-row,.pill-tabs,.avatar-panel,.reader-corner{display:none!important;}
+      .wrapper{
+        box-shadow:none;
+        border:none;
+        border-radius:0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+
+  <div class="wrapper">
+    <header>
+      <div class="header-logos">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🎨</span>
+          <span>Pinto mi historia con palabras: recursos descriptivos y expresivos</span>
+        </h1>
+        <div class="title-meta">
+          Campo formativo: <strong>Lenguajes.</strong> Contenido: <strong>Narración de sucesos autobiográficos.</strong><br>
+          PDA: <strong>Emplea recursos descriptivos y expresivos (adjetivos, comparaciones, metáforas, reiteraciones) para enriquecer la narración.</strong><br>
+          <span class="phase-label">Fase 5</span>
+          <span class="badge-grade"><span>🎓</span>6.º grado</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <div class="top-layout">
+      <div class="student-and-tabs">
+        <div class="student-row">
+          <div class="student-name">
+            <label for="studentName">Nombre del alumno(a):</label>
+            <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+          </div>
+        </div>
+        <div class="ejes-row">
+          <span class="chip"><span class="dot"></span>Lenguajes para la vida</span>
+          <span class="chip"><span class="dot"></span>Pensamiento crítico</span>
+          <span class="chip"><span class="dot"></span>Interculturalidad crítica</span>
+          <span class="chip"><span class="dot"></span>Comunidades de aprendizaje</span>
+        </div>
+
+        <div class="pill-tabs">
+          <button class="pill-tab active" data-sec="1" onclick="setSection(1)">
+            <div>
+              <div class="pill-main">Exploro</div>
+              <div class="pill-sub">Adjetivos y figuras</div>
+            </div>
+            <div class="pill-number">1</div>
+          </button>
+          <button class="pill-tab" data-sec="2" onclick="setSection(2)">
+            <div>
+              <div class="pill-main">Clasifico</div>
+              <div class="pill-sub">¿Qué recurso es?</div>
+            </div>
+            <div class="pill-number">2</div>
+          </button>
+          <button class="pill-tab" data-sec="3" onclick="setSection(3)">
+            <div>
+              <div class="pill-main">Escribo</div>
+              <div class="pill-sub">Descripción autobiográfica</div>
+            </div>
+            <div class="pill-number">3</div>
+          </button>
+          <button class="pill-tab" data-sec="4" onclick="setSection(4)">
+            <div>
+              <div class="pill-main">Evalúo</div>
+              <div class="pill-sub">Hoja de resultados</div>
+            </div>
+            <div class="pill-number">4</div>
+          </button>
+        </div>
+      </div>
+
+      <aside class="avatar-panel">
+        <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+        <div>
+          <div class="avatar-text">
+            <strong>Hola, soy el maestro Martín.</strong><br>
+            Hoy vas a transformar tu autobiografía usando <strong>adjetivos, comparaciones, metáforas y reiteraciones</strong>, para que tu historia se vea más viva y llena de imágenes.
+          </div>
+          <button class="btn-voice" type="button" onclick="playGuide()">
+            <span>🔊</span> Escuchar instrucciones
+          </button>
+        </div>
+      </aside>
+    </div>
+
+    <main>
+      <!-- SECCIÓN 1 -->
+      <section class="section-panel active" id="sec-1">
+        <div class="section-header">
+          <h2><span class="icon">🔍</span><span>Sección 1. Exploro: palabras que pintan imágenes</span></h2>
+          <span class="section-badge">Voltea las tarjetas</span>
+        </div>
+        <p>Da clic en cada tarjeta para descubrir cómo funcionan estos recursos y cómo pueden ayudarte a que tu autobiografía sea más expresiva.</p>
+
+        <div class="flip-grid">
+          <!-- Adjetivos -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="flip-title">
+                  <span class="flip-icon">🎯</span>
+                  <span>Adjetivos</span>
+                </div>
+                <span class="flip-tag">Cómo es, cómo está</span>
+                <p>“Mi abuelo tiene una <strong>risa contagiosa</strong> y unas <strong>manos ásperas</strong> por el trabajo.”</p>
+                <p class="mini-title">Pista</p>
+                <p>¿Qué palabras describen a “risa” y “manos”?</p>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-title">
+                  <span class="flip-icon">🎯</span>
+                  <span>Adjetivos</span>
+                </div>
+                <ul class="list">
+                  <li>Describen características de personas, lugares u objetos.</li>
+                  <li>Responden a “¿cómo es?”, “¿cómo está?” (alto, alegre, cansado...).</li>
+                  <li>Enriquecen la imagen mental del lector.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Comparaciones -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="flip-title">
+                  <span class="flip-icon">⚖️</span>
+                  <span>Comparaciones</span>
+                </div>
+                <span class="flip-tag">“Como”, “igual que”</span>
+                <p>“Cuando corría en la cancha, sentía mi corazón <strong>como un tambor</strong> golpeando fuerte en mi pecho.”</p>
+                <p class="mini-title">Pista</p>
+                <p>¿Qué palabra une las dos cosas que se comparan?</p>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-title">
+                  <span class="flip-icon">⚖️</span>
+                  <span>Comparaciones</span>
+                </div>
+                <ul class="list">
+                  <li>Relacionan dos elementos usando “como”, “igual que”, “parece”.</li>
+                  <li>Ayudan a imaginar mejor la situación.</li>
+                  <li>Ejemplo: “Sus ojos brillaban como estrellas”.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Metáforas -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="flip-title">
+                  <span class="flip-icon">🔥</span>
+                  <span>Metáforas</span>
+                </div>
+                <span class="flip-tag">Una cosa es otra</span>
+                <p>“Mi infancia fue un <strong>río de barro y risas</strong> que corría por las calles del ejido.”</p>
+                <p class="mini-title">Pista</p>
+                <p>¿De verdad la infancia es un río? ¿O es una forma de decirlo?</p>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-title">
+                  <span class="flip-icon">🔥</span>
+                  <span>Metáforas</span>
+                </div>
+                <ul class="list">
+                  <li>Dicen que algo <strong>es</strong> otra cosa, aunque no lo sea literalmente.</li>
+                  <li>Crean imágenes poéticas: “Mi casa es un refugio”.</li>
+                  <li>Hacen más profunda y emotiva la narración.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reiteraciones -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="flip-title">
+                  <span class="flip-icon">🔁</span>
+                  <span>Reiteraciones</span>
+                </div>
+                <span class="flip-tag">Repetir con intención</span>
+                <p>“Corrí, <strong>corrí</strong> y <strong>corrí</strong> hasta que sentí que el aire se me acababa.”</p>
+                <p class="mini-title">Pista</p>
+                <p>¿Qué palabra se repite y qué sensación produce?</p>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-title">
+                  <span class="flip-icon">🔁</span>
+                  <span>Reiteraciones</span>
+                </div>
+                <ul class="list">
+                  <li>Repetición intencional de palabras o frases.</li>
+                  <li>Refuerza una idea o emoción.</li>
+                  <li>No se trata de repetir por descuido, sino para dar fuerza al mensaje.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SECCIÓN 2 -->
+      <section class="section-panel" id="sec-2">
+        <div class="section-header">
+          <h2><span class="icon">🧠</span><span>Sección 2. Clasifico: ¿qué recurso es?</span></h2>
+          <span class="section-badge">Elige la opción correcta</span>
+        </div>
+        <p>Clasifica cada oración según el recurso expresivo que se usa. Luego marca las afirmaciones correctas.</p>
+
+        <div class="compare-grid">
+          <div></div>
+          <div class="head">Frase A</div>
+          <div class="head">Frase B</div>
+          <div class="head">Frase C</div>
+          <div class="head">Frase D</div>
+
+          <div class="row-label">Oración</div>
+          <div class="compare-cell">
+            <p>“Mi infancia fue un río de risas y juegos interminables.”</p>
+          </div>
+          <div class="compare-cell">
+            <p>“Mi abuela tiene manos suaves como la tierra húmeda después de la lluvia.”</p>
+          </div>
+          <div class="compare-cell">
+            <p>“El enorme árbol viejo de la entrada siempre me esperaba silencioso.”</p>
+          </div>
+          <div class="compare-cell">
+            <p>“Corrí, corrí y corrí hasta que el corazón se me quiso salir.”</p>
+          </div>
+
+          <div class="row-label">Tipo de recurso</div>
+          <div class="compare-cell">
+            <select id="selA">
+              <option value="">Selecciona…</option>
+              <option value="adj">Adjetivos</option>
+              <option value="comp">Comparación</option>
+              <option value="met">Metáfora</option>
+              <option value="reit">Reiteración</option>
+            </select>
+          </div>
+          <div class="compare-cell">
+            <select id="selB">
+              <option value="">Selecciona…</option>
+              <option value="adj">Adjetivos</option>
+              <option value="comp">Comparación</option>
+              <option value="met">Metáfora</option>
+              <option value="reit">Reiteración</option>
+            </select>
+          </div>
+          <div class="compare-cell">
+            <select id="selC">
+              <option value="">Selecciona…</option>
+              <option value="adj">Adjetivos</option>
+              <option value="comp">Comparación</option>
+              <option value="met">Metáfora</option>
+              <option value="reit">Reiteración</option>
+            </select>
+          </div>
+          <div class="compare-cell">
+            <select id="selD">
+              <option value="">Selecciona…</option>
+              <option value="adj">Adjetivos</option>
+              <option value="comp">Comparación</option>
+              <option value="met">Metáfora</option>
+              <option value="reit">Reiteración</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="vf-row">
+          <p>Marca las afirmaciones correctas:</p>
+          <label><input type="checkbox" id="ck1"> Los adjetivos ayudan a describir cómo son las personas, lugares u objetos.</label><br>
+          <label><input type="checkbox" id="ck2"> Las comparaciones suelen usar palabras como “como”, “igual que” o “parece”.</label><br>
+          <label><input type="checkbox" id="ck3"> En una metáfora se dice que una cosa es otra, aunque no lo sea literalmente.</label><br>
+          <label><input type="checkbox" id="ck4"> La reiteración siempre es un error y nunca debe usarse.</label>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="checkResources()">Comprobar</button>
+        </div>
+        <div id="fbResources" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- SECCIÓN 3 -->
+      <section class="section-panel" id="sec-3">
+        <div class="section-header">
+          <h2><span class="icon">✍️</span><span>Sección 3. Escribo: un momento de mi vida con colores y sonidos</span></h2>
+          <span class="section-badge">Producción de texto</span>
+        </div>
+        <p>Escribe un fragmento de tu autobiografía (entre <strong>8 y 12 oraciones</strong>) donde describas un momento importante de tu vida (un juego, una fiesta, un viaje, un cambio, etc.).</p>
+        <p>Procura usar:</p>
+        <ul class="list">
+          <li>Al menos <strong>4 adjetivos</strong>.</li>
+          <li>Al menos <strong>1 comparación</strong> (con “como”, “parece”, “igual que”).</li>
+          <li>Al menos <strong>1 metáfora o reiteración</strong>.</li>
+        </ul>
+
+        <textarea id="descText" placeholder="Ejemplo de inicio: Aquella tarde de viento en el ejido fue como una película que nunca olvidaré..."></textarea>
+
+        <p class="mini-title">Reflexiono sobre mi escritura</p>
+        <textarea id="refDesc" placeholder="Escribe qué recurso te gustó más usar (adjetivos, comparaciones, metáforas o reiteraciones) y por qué."></textarea>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="checkWriting()">Revisión rápida</button>
+        </div>
+        <div id="fbWriting" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- SECCIÓN 4 -->
+      <section class="section-panel" id="sec-4">
+        <div class="section-header">
+          <h2><span class="icon">📋</span><span>Sección 4. Evalúo: hoja de resultados</span></h2>
+          <span class="section-badge">Autovaloración</span>
+        </div>
+        <p>Con la siguiente hoja de resultados podrás saber cómo vas en este PDA al <strong>usar recursos descriptivos y expresivos</strong> en tu autobiografía.</p>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="generateResults()">Generar hoja de resultados</button>
+          <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir ODA</button>
+        </div>
+
+        <!-- HOJA DE RESULTADOS -->
+        <div id="resultsPanel" class="results-card" style="display:none;">
+          <h3 style="margin:0 0 4px;color:#7f1d1d;display:flex;align-items:center;gap:6px;">
+            <span>📊</span><span>Hoja de resultados – Pinto mi historia con palabras</span>
+          </h3>
+          <p><strong>Alumno(a):</strong> <span id="resName"></span></p>
+          <ul class="list">
+            <li><span id="res1"></span></li>
+            <li><span id="res2"></span></li>
+            <li><span id="res3"></span></li>
+          </ul>
+          <p><strong>Comentario del maestro Martín:</strong></p>
+          <p id="resComment"></p>
+          <p class="mini-title">Mi compromiso como escritor(a):</p>
+          <textarea id="resCommit" placeholder="Escribe qué te propones hacer para seguir mejorando el uso de recursos expresivos en tu autobiografía."></textarea>
+
+          <div class="btn-row">
+            <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir resultados</button>
+          </div>
+        </div>
+
+        <!-- HOJA DE ACTIVIDADES IMPRIMIBLE -->
+        <div class="activity-sheet" id="activitySheet">
+          <h3><span>📄</span><span>Hoja de actividades – Recursos descriptivos y expresivos</span></h3>
+          <p><strong>Nombre del alumno(a):</strong> _________________________________   <strong>Grado y grupo:</strong> __________</p>
+          <p><strong>Instrucciones:</strong> Responde con letra clara. Esta hoja se puede trabajar en el cuaderno o entregarse al maestro.</p>
+
+          <p class="mini-title">1. Subrayo adjetivos</p>
+          <p>Lee el siguiente fragmento y subraya <strong>cuatro adjetivos</strong>:</p>
+          <p>“Mi escuela es pequeña pero muy acogedora. En el patio hay un árbol enorme que da sombra fresca. Cada mañana, el cielo se pinta de un color naranja brillante mientras llegamos los alumnos.”</p>
+
+          <p class="mini-title">2. Completo comparaciones</p>
+          <p>Completa las comparaciones con tus propias palabras.</p>
+          <ol class="list">
+            <li>Cuando corro en la cancha, siento mis piernas como ____________________________.</li>
+            <li>Mi casa, por las tardes, se ve iluminada como ____________________________.</li>
+          </ol>
+
+          <p class="mini-title">3. Creo metáforas</p>
+          <p>Transforma estas ideas sencillas en metáforas.</p>
+          <ol class="list">
+            <li>Idea: Mi mamá me cuida mucho.<br>Metáfora: Mi mamá es ____________________________.</li>
+            <li>Idea: El ejido es muy tranquilo.<br>Metáfora: El ejido es ____________________________.</li>
+          </ol>
+
+          <p class="mini-title">4. Reiteración con intención</p>
+          <p>Escribe una oración con reiteración para mostrar nervios o emoción.</p>
+          <span class="line"></span>
+          <span class="line"></span>
+        </div>
+      </section>
+
+      <!-- RINCÓN DEL LECTOR -->
+      <section class="reader-corner">
+        <h3><span>🌟</span><span>Rincón del lector</span></h3>
+        <p class="reader-quote">“Los adjetivos, comparaciones y metáforas son colores y pinceles: con ellos pintas la película de tu vida en la mente de quien te lee.”</p>
+        <p class="reader-author">— Comunidad lectora de la escuela</p>
+      </section>
+    </main>
+
+    <footer>
+      <span class="project">Proyecto: “Mi historia, mi voz, mi camino”</span>
+      <span>Campo formativo: Lenguajes · Fase 5</span>
+      <span>© 2025. Diseño de ODA: Mtro. Martín Reta. Material educativo. Prohibida su venta.</span>
+    </footer>
+  </div>
+
+  <script>
+    function setSection(n){
+      document.querySelectorAll('.pill-tab').forEach(btn=>{
+        btn.classList.toggle('active', Number(btn.dataset.sec)===n);
+      });
+      document.querySelectorAll('.section-panel').forEach((sec,idx)=>{
+        sec.classList.toggle('active', idx===n-1);
+      });
+    }
+
+    function toggleFlip(card){
+      card.classList.toggle('flipped');
+    }
+
+    function playGuide(){
+      try{
+        const msg=new SpeechSynthesisUtterance(
+          'En esta ODA vas a identificar y usar adjetivos, comparaciones, metáforas y reiteraciones para que los momentos de tu vida se lean más claros, más fuertes y más emocionantes.'
+        );
+        msg.lang='es-MX';
+        msg.rate=1;
+        msg.pitch=1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(msg);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function checkResources(){
+      const selA=document.getElementById('selA').value;
+      const selB=document.getElementById('selB').value;
+      const selC=document.getElementById('selC').value;
+      const selD=document.getElementById('selD').value;
+      const ck1=document.getElementById('ck1').checked;
+      const ck2=document.getElementById('ck2').checked;
+      const ck3=document.getElementById('ck3').checked;
+      const ck4=document.getElementById('ck4').checked;
+      const fb=document.getElementById('fbResources');
+
+      const okSel = (selA==='met' && selB==='comp' && selC==='adj' && selD==='reit');
+      const okCk  = (ck1 && ck2 && ck3 && !ck4);
+
+      if(okSel && okCk){
+        fb.innerHTML='<span class="result-good">✔ Excelente. Reconoces y clasificas correctamente los recursos expresivos y sabes para qué sirven.</span>';
+      }else if(okSel || okCk){
+        fb.innerHTML='<span class="result-bad">Vas bien, pero revisa de nuevo tus respuestas. Observa con cuidado qué se describe, qué se compara y qué se repite.</span>';
+      }else{
+        fb.innerHTML='<span class="result-bad">Revisa tus respuestas. Vuelve a leer las tarjetas de la sección 1 antes de intentarlo otra vez.</span>';
+      }
+    }
+
+    function checkWriting(){
+      const text=document.getElementById('descText').value.trim();
+      const ref=document.getElementById('refDesc').value.trim();
+      const fb=document.getElementById('fbWriting');
+
+      const words=text.split(/\s+/).filter(Boolean);
+      const len=words.length;
+
+      const lower=text.toLowerCase();
+
+      // Conteo muy aproximado de adjetivos: palabras que terminan en o/a/os/as
+      let adjCount=0;
+      words.forEach(w=>{
+        const lw=w.toLowerCase().replace(/[.,;:!?¡¿"]/g,'');
+        if(lw.endsWith('o')||lw.endsWith('a')||lw.endsWith('os')||lw.endsWith('as')){
+          adjCount++;
+        }
+      });
+
+      // Comparaciones
+      const compList=[' como ','parece','igual que'];
+      let compUsed=false;
+      compList.forEach(c=>{
+        if(lower.includes(c)) compUsed=true;
+      });
+
+      // Metáforas sencillas: patrón "es un" / "es una"
+      let metaUsed = lower.includes(' es un ') || lower.includes(' es una ');
+
+      // Reiteración: palabra repetida al menos 3 veces
+      const freq={};
+      words.forEach(w=>{
+        const lw=w.toLowerCase().replace(/[.,;:!?¡¿"]/g,'');
+        if(!lw) return;
+        freq[lw]=(freq[lw]||0)+1;
+      });
+      let reitUsed=false;
+      Object.values(freq).forEach(v=>{
+        if(v>=3) reitUsed=true;
+      });
+
+      const refWords=ref.split(/\s+/).filter(Boolean).length;
+
+      let msg='';
+      if(len===0){
+        msg='Aún no escribes tu fragmento. Elige un momento importante de tu vida y descríbelo usando adjetivos, comparaciones, metáforas o reiteraciones.';
+      }else{
+        msg+='Has escrito aproximadamente '+len+' palabras. ';
+        if(adjCount>=4){
+          msg+='Se observan varios adjetivos que ayudan a describir mejor lo que cuentas. ';
+        }else{
+          msg+='Puedes agregar más adjetivos para que el lector imagine mejor personas y lugares. ';
+        }
+        if(compUsed){
+          msg+='Usaste al menos una comparación, lo cual da fuerza a las imágenes. ';
+        }else{
+          msg+='Intenta agregar una comparación usando “como”, “parece” o “igual que”. ';
+        }
+        if(metaUsed || reitUsed){
+          msg+='También usas metáfora o reiteración, lo cual hace tu texto más expresivo. ';
+        }else{
+          msg+='Prueba incluir una metáfora sencilla o repetir una palabra con intención para dar énfasis. ';
+        }
+        if(refWords>=20){
+          msg+='Tu reflexión sobre los recursos que te gustaron es clara y tiene buena extensión.';
+        }else if(refWords>0){
+          msg+='Tu reflexión es breve; explica un poco más cuál recurso te gustó y por qué.';
+        }else{
+          msg+='Aún falta escribir tu reflexión sobre qué recurso te gustó más y por qué.';
+        }
+      }
+
+      fb.textContent=msg;
+    }
+
+    function generateResults(){
+      const name=document.getElementById('studentName').value || 'Sin nombre';
+      document.getElementById('resName').textContent=name;
+
+      // Result 1: clasificación de recursos
+      const selA=document.getElementById('selA').value;
+      const selB=document.getElementById('selB').value;
+      const selC=document.getElementById('selC').value;
+      const selD=document.getElementById('selD').value;
+      const ck1=document.getElementById('ck1').checked;
+      const ck2=document.getElementById('ck2').checked;
+      const ck3=document.getElementById('ck3').checked;
+      const ck4=document.getElementById('ck4').checked;
+      const okSel = (selA==='met' && selB==='comp' && selC==='adj' && selD==='reit');
+      const okCk  = (ck1 && ck2 && ck3 && !ck4);
+
+      const r1=document.getElementById('res1');
+      if(okSel && okCk){
+        r1.innerHTML='<span style="color:#1d4ed8;">Reconoce y clasifica correctamente adjetivos, comparaciones, metáforas y reiteraciones.</span>';
+      }else{
+        r1.innerHTML='<span style="color:#b91c1c;">Necesita reforzar la identificación de los distintos recursos expresivos.</span>';
+      }
+
+      // Result 2: uso en su propia escritura
+      const text=document.getElementById('descText').value.trim();
+      const words=text.split(/\s+/).filter(Boolean);
+      const len=words.length;
+      const lower=text.toLowerCase();
+
+      let adjCount=0;
+      words.forEach(w=>{
+        const lw=w.toLowerCase().replace(/[.,;:!?¡¿"]/g,'');
+        if(lw.endsWith('o')||lw.endsWith('a')||lw.endsWith('os')||lw.endsWith('as')){
+          adjCount++;
+        }
+      });
+
+      const compList=[' como ','parece','igual que'];
+      let compUsed=false;
+      compList.forEach(c=>{
+        if(lower.includes(c)) compUsed=true;
+      });
+
+      let metaUsed = lower.includes(' es un ') || lower.includes(' es una ');
+
+      const freq={};
+      words.forEach(w=>{
+        const lw=w.toLowerCase().replace(/[.,;:!?¡¿"]/g,'');
+        if(!lw) return;
+        freq[lw]=(freq[lw]||0)+1;
+      });
+      let reitUsed=false;
+      Object.values(freq).forEach(v=>{
+        if(v>=3) reitUsed=true;
+      });
+
+      const r2=document.getElementById('res2');
+      if(len>=60 && adjCount>=4 && (compUsed || metaUsed || reitUsed)){
+        r2.innerHTML='<span style="color:#1d4ed8;">Emplea varios recursos expresivos para describir un momento significativo de su vida.</span>';
+      }else if(len>0){
+        r2.innerHTML='<span style="color:#b91c1c;">Ha escrito un fragmento, pero puede enriquecerlo con más adjetivos, comparaciones, metáforas o reiteraciones.</span>';
+      }else{
+        r2.innerHTML='<span style="color:#b91c1c;">Aún no se cuenta con un fragmento para valorar el uso de recursos expresivos.</span>';
+      }
+
+      // Result 3: reflexión
+      const ref=document.getElementById('refDesc').value.trim();
+      const refWords=ref.split(/\s+/).filter(Boolean).length;
+      const r3=document.getElementById('res3');
+      if(refWords>=20){
+        r3.innerHTML='<span style="color:#1d4ed8;">Reflexiona sobre el efecto de los recursos expresivos en su propia escritura.</span>';
+      }else if(refWords>0){
+        r3.innerHTML='<span style="color:#b91c1c;">Ha comenzado a reflexionar, pero puede profundizar más en sus ideas.</span>';
+      }else{
+        r3.innerHTML='<span style="color:#b91c1c;">Aún no expresa por escrito su reflexión sobre el uso de recursos expresivos.</span>';
+      }
+
+      let score=0;
+      if(okSel && okCk) score++;
+      if(len>=60 && adjCount>=4 && (compUsed || metaUsed || reitUsed)) score++;
+      if(refWords>=20) score++;
+
+      const comment=document.getElementById('resComment');
+      if(score===3){
+        comment.textContent='¡Excelente! Tu autobiografía se llena de imágenes y emociones gracias a los recursos expresivos que utilizas.';
+      }else if(score===2){
+        comment.textContent='Vas muy bien. Refuerza el aspecto que aparece en rojo para que tu narración sea todavía más rica.';
+      }else{
+        comment.textContent='Sigue practicando. Leer y escribir más descripciones te ayudará a dominar los recursos expresivos.';
+      }
+
+      document.getElementById('resultsPanel').style.display='block';
+      setSection(4);
+      document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>

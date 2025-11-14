@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Sistema inmunológico (Saberes y Pensamiento Científico 6.º)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#1d4ed8;
+      --primary-soft:#dbeafe;
+      --accent:#0ea5e9;
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --shadow:0 16px 35px rgba(15,23,42,.14);
+    }
+    *{
+      box-sizing:border-box;
+      margin:0;
+      padding:0;
+    }
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#e0f2fe 0,#eff6ff 38%,#e5e7eb 100%);
+      color:var(--text);
+      min-height:100vh;
+      padding:16px;
+      display:flex;
+      justify-content:center;
+    }
+    .oda-shell{
+      width:100%;
+      max-width:1160px;
+      background:rgba(255,255,255,.92);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(148,163,184,.35);
+      backdrop-filter:blur(10px);
+      padding:18px 18px 22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    header{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      border-bottom:1px solid var(--border);
+      padding-bottom:10px;
+    }
+    .logo-block{
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+    .logo-block img{
+      height:50px;
+      width:auto;
+      object-fit:contain;
+    }
+    .title-block{
+      flex:1;
+      min-width:220px;
+    }
+    .title-block h1{
+      font-size:1.15rem;
+      color:#0f172a;
+      margin-bottom:4px;
+    }
+    .title-block p{
+      font-size:.82rem;
+      color:var(--muted);
+      line-height:1.25;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+    .chip{
+      font-size:.72rem;
+      padding:3px 8px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:#1e3a8a;
+      border:1px solid rgba(37,99,235,.25);
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+    }
+    .chip strong{
+      font-weight:600;
+    }
+    .author-block{
+      font-size:.76rem;
+      color:var(--muted);
+      text-align:right;
+      min-width:190px;
+    }
+
+    main{
+      display:grid;
+      grid-template-columns: minmax(0,2.1fr) minmax(260px,1fr);
+      gap:14px;
+      margin-top:6px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      border:1px solid var(--border);
+      box-shadow:0 8px 16px rgba(15,23,42,.04);
+      padding:10px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .card-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:6px;
+      margin-bottom:4px;
+      flex-wrap:wrap;
+    }
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+      font-weight:600;
+    }
+    .card-title .icon{
+      font-size:1.15rem;
+    }
+    .card-sub{
+      font-size:.74rem;
+      color:var(--muted);
+    }
+    .card-body{
+      font-size:.84rem;
+      color:var(--muted);
+    }
+
+    .step-tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .step-tab{
+      flex:1;
+      min-width:110px;
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:4px;
+      cursor:pointer;
+      transition:all .17s ease;
+    }
+    .step-tab span.step-index{
+      width:18px;
+      height:18px;
+      border-radius:999px;
+      background:#1d4ed8;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.7rem;
+      font-weight:600;
+    }
+    .step-tab.active{
+      background:#1d4ed8;
+      color:#e0f2fe;
+      border-color:#1d4ed8;
+      box-shadow:0 6px 15px rgba(37,99,235,.35);
+    }
+    .step-tab.active span.step-index{
+      background:#eff6ff;
+      color:#1d4ed8;
+    }
+
+    .step-panel{
+      display:none;
+      animation:fadeIn .22s ease-out;
+    }
+    .step-panel.active{
+      display:block;
+    }
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(4px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    .info-box{
+      background:#eff6ff;
+      border-radius:12px;
+      padding:8px 9px;
+      border:1px solid #bfdbfe;
+      display:flex;
+      gap:6px;
+      align-items:flex-start;
+      margin-bottom:8px;
+    }
+    .info-box span{
+      font-size:1.1rem;
+    }
+    .info-box p{
+      font-size:.8rem;
+      color:#1e40af;
+      line-height:1.3;
+    }
+
+    .columns-2{
+      display:grid;
+      grid-template-columns: minmax(0,1.05fr) minmax(0,1.05fr);
+      gap:10px;
+      margin-top:6px;
+    }
+    .schema-card{
+      border-radius:14px;
+      border:1px dashed #cbd5f5;
+      padding:8px 9px;
+      background:#f9fafb;
+    }
+    .schema-title{
+      font-size:.86rem;
+      font-weight:600;
+      color:#1d4ed8;
+      margin-bottom:4px;
+    }
+    .schema-sub{
+      font-size:.76rem;
+      color:var(--muted);
+      margin-bottom:6px;
+    }
+    .pill-list{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .pill{
+      padding:4px 8px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      background:#eff6ff;
+      font-size:.75rem;
+      color:#1e3a8a;
+      cursor:pointer;
+      user-select:none;
+      transition:all .15s ease;
+    }
+    .pill.active{
+      background:#1d4ed8;
+      color:#e0f2fe;
+      box-shadow:0 4px 10px rgba(37,99,235,.35);
+      border-color:#1d4ed8;
+    }
+
+    .schema-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.1fr) minmax(0,1.1fr);
+      gap:8px;
+      margin-top:6px;
+    }
+    .schema-col-title{
+      font-size:.8rem;
+      font-weight:600;
+      color:#1e3a8a;
+      margin-bottom:4px;
+    }
+    .schema-item{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      margin-bottom:4px;
+      font-size:.78rem;
+    }
+    .schema-item label{
+      flex:1;
+    }
+    .schema-item select{
+      font-size:.76rem;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      background:#ffffff;
+      min-width:110px;
+    }
+
+    .question-block{
+      margin-top:4px;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+    }
+    .question-block + .question-block{
+      margin-top:6px;
+    }
+    .question-title{
+      font-weight:600;
+      font-size:.84rem;
+      margin-bottom:3px;
+      color:#1e3a8a;
+    }
+    .question-block p{
+      font-size:.8rem;
+      margin-bottom:2px;
+    }
+    .options{
+      margin-top:3px;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      font-size:.8rem;
+    }
+    .options label{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:9px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      padding:7px 12px;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:500;
+      transition:all .16s ease;
+      white-space:nowrap;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,#1d4ed8,#0ea5e9);
+      color:#eff6ff;
+      box-shadow:0 8px 16px rgba(37,99,235,.45);
+    }
+    .btn-primary:hover{
+      box-shadow:0 10px 22px rgba(30,64,175,.6);
+      transform:translateY(-1px);
+    }
+    .btn-outline{
+      background:#ffffff;
+      border:1px solid #cbd5f5;
+      color:#1e3a8a;
+    }
+    .btn-outline:hover{
+      background:#eff6ff;
+    }
+
+    .status{
+      margin-top:7px;
+      border-radius:12px;
+      padding:6px 8px;
+      font-size:.78rem;
+      display:flex;
+      gap:6px;
+      align-items:flex-start;
+    }
+    .status span.icon{
+      font-size:1rem;
+    }
+    .status-info{
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e3a8a;
+    }
+    .status-ok{
+      background:#ecfdf5;
+      border:1px solid #6ee7b7;
+      color:#166534;
+    }
+    .status-warn{
+      background:#fef9c3;
+      border:1px solid #facc15;
+      color:#92400e;
+    }
+
+    .right-column{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.8rem;
+      margin-bottom:4px;
+    }
+    .student-row input{
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.8rem;
+      width:100%;
+    }
+
+    .avatar-card{
+      display:flex;
+      gap:9px;
+      align-items:flex-start;
+    }
+    .avatar-circle{
+      flex-shrink:0;
+      width:56px;
+      height:56px;
+      border-radius:999px;
+      background:radial-gradient(circle at 30% 20%,#e0f2fe,#1d4ed8);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      border:2px solid #bfdbfe;
+      box-shadow:0 6px 14px rgba(15,23,42,.35);
+    }
+    .avatar-circle img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#4b5563;
+    }
+    .avatar-text strong{
+      display:block;
+      color:#1e3a8a;
+      margin-bottom:3px;
+    }
+    .avatar-steps{
+      margin-top:4px;
+      padding-left:15px;
+      font-size:.78rem;
+      color:#374151;
+    }
+    .avatar-steps li{
+      margin-bottom:2px;
+    }
+    .badge-step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      background:#1d4ed8;
+      color:#eff6ff;
+      font-size:.66rem;
+      margin-right:3px;
+    }
+
+    .pda-text{
+      font-size:.78rem;
+      color:#374151;
+      line-height:1.35;
+      max-height:120px;
+      overflow:auto;
+    }
+
+    audio{
+      width:100%;
+      margin-top:4px;
+    }
+
+    .corner-logo{
+      position:fixed;
+      right:10px;
+      bottom:10px;
+      width:70px;
+      opacity:.9;
+      z-index:40;
+    }
+
+    .print-note{
+      font-size:.72rem;
+      color:#9ca3af;
+      margin-top:4px;
+    }
+
+    @media(max-width:860px){
+      main{
+        grid-template-columns:1fr;
+      }
+      .author-block{
+        text-align:left;
+      }
+      .corner-logo{
+        width:56px;
+      }
+    }
+    @media(max-width:600px){
+      .oda-shell{
+        padding:14px 10px 16px;
+        border-radius:16px;
+      }
+      header{
+        flex-direction:column;
+        align-items:flex-start;
+      }
+    }
+
+    /* estilos para hoja de resultados impresa */
+    .result-good{
+      color:#1d4ed8;
+      font-weight:600;
+    }
+    .result-need{
+      color:#b91c1c;
+      font-weight:600;
+    }
+
+    /* copyright */
+    .copyright{
+      margin-top:4px;
+      font-size:.7rem;
+      color:#9ca3af;
+      text-align:right;
+    }
+  </style>
+</head>
+<body>
+  <div class="oda-shell">
+    <header>
+      <div class="logo-block">
+        <img src="sep_logo.png" alt="SEP">
+      </div>
+      <div class="title-block">
+        <h1>ODA – Sistema inmunológico: las defensas de nuestro cuerpo</h1>
+        <p>Fase 5 · Sexto grado · Campo formativo: Saberes y Pensamiento Científico</p>
+        <div class="chips">
+          <span class="chip">Contenido: <strong>Estructura y funcionamiento del cuerpo humano</strong></span>
+          <span class="chip">PDA: <strong>Sistema inmunológico y defensa del cuerpo</strong></span>
+          <span class="chip">Ejes articuladores: Vida saludable · Pensamiento crítico · Interculturalidad crítica</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong><br>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- COLUMNA IZQUIERDA -->
+      <section>
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧭</span>
+              <span>Ruta de trabajo</span>
+            </div>
+            <div class="card-sub">Sigue los pasos en orden</div>
+          </div>
+          <div class="card-body">
+            <div class="step-tabs">
+              <button class="step-tab active" data-step="explora">
+                <span class="step-index">1</span>
+                <span>Explora las defensas</span>
+                <span>👁️</span>
+              </button>
+              <button class="step-tab" data-step="esquemas">
+                <span class="step-index">2</span>
+                <span>Esquemas interactivos</span>
+                <span>🧬</span>
+              </button>
+              <button class="step-tab" data-step="evalua">
+                <span class="step-index">3</span>
+                <span>Evalúate</span>
+                <span>✅</span>
+              </button>
+            </div>
+
+            <!-- PANEL 1 -->
+            <div class="step-panel active" id="panel-explora">
+              <div class="info-box">
+                <span>💡</span>
+                <p>Antes de resolver actividades, lee con atención cómo participa el sistema inmunológico en la defensa del cuerpo.</p>
+              </div>
+              <p style="font-size:.83rem; margin-bottom:6px;">
+                El <strong>sistema inmunológico</strong> está formado por células, tejidos y órganos que trabajan juntos para proteger el cuerpo cuando entran <strong>virus</strong>, <strong>bacterias</strong> u otros agentes que causan enfermedades.
+              </p>
+              <div class="columns-2">
+                <div class="schema-card">
+                  <div class="schema-title">1. Niveles de defensa</div>
+                  <div class="schema-sub">Haz clic en los elementos que creas que forman parte de las defensas.</div>
+                  <div class="pill-list" id="pillDefenseList">
+                    <span class="pill" data-type="defensa">Piel</span>
+                    <span class="pill" data-type="defensa">Lágrimas</span>
+                    <span class="pill" data-type="defensa">Moco nasal</span>
+                    <span class="pill" data-type="no-defensa">Refresco</span>
+                    <span class="pill" data-type="defensa">Ácidos del estómago</span>
+                    <span class="pill" data-type="no-defensa">Televisión</span>
+                    <span class="pill" data-type="defensa">Pelillos de la nariz</span>
+                  </div>
+                  <p style="font-size:.76rem; margin-top:6px; color:#4b5563;">
+                    <strong>Observa:</strong> algunas defensas son <em>barreras físicas</em> (como la piel) y otras son <em>sustancias</em> (como los ácidos del estómago).
+                  </p>
+                </div>
+                <div class="schema-card">
+                  <div class="schema-title">2. ¿Qué pasa cuando entra un germen?</div>
+                  <div class="schema-sub">Ordena mentalmente estas etapas mientras lees.</div>
+                  <ol style="font-size:.78rem; color:#374151; margin-left:16px; display:flex; flex-direction:column; gap:2px;">
+                    <li>Un germen entra al cuerpo (por la nariz, boca o una herida).</li>
+                    <li>El sistema inmunológico lo reconoce como algo extraño.</li>
+                    <li>Algunas células, como los <strong>macrófagos</strong>, lo “comen” o lo destruyen.</li>
+                    <li>Otras células, como los <strong>linfocitos</strong>, producen <strong>anticuerpos</strong>.</li>
+                    <li>Si el mismo germen vuelve a entrar, el cuerpo lo recuerda y responde más rápido.</li>
+                  </ol>
+                </div>
+              </div>
+            </div>
+
+            <!-- PANEL 2: ESQUEMAS -->
+            <div class="step-panel" id="panel-esquemas">
+              <div class="info-box">
+                <span>🧬</span>
+                <p>Completa los esquemas para reconocer <strong>células</strong> y <strong>órganos</strong> del sistema inmunológico y cómo se relacionan.</p>
+              </div>
+              <div class="schema-card">
+                <div class="schema-title">Esquema 1. ¿Célula o órgano?</div>
+                <div class="schema-sub">Clasifica cada elemento del sistema inmunológico.</div>
+                <div class="schema-grid">
+                  <div>
+                    <div class="schema-col-title">Elemento</div>
+                    <div class="schema-item">
+                      <label>Macrófagos</label>
+                      <select data-correct="célula">
+                        <option value="">Selecciona...</option>
+                        <option value="célula">Célula</option>
+                        <option value="órgano">Órgano</option>
+                      </select>
+                    </div>
+                    <div class="schema-item">
+                      <label>Linfocitos B</label>
+                      <select data-correct="célula">
+                        <option value="">Selecciona...</option>
+                        <option value="célula">Célula</option>
+                        <option value="órgano">Órgano</option>
+                      </select>
+                    </div>
+                    <div class="schema-item">
+                      <label>Linfocitos T</label>
+                      <select data-correct="célula">
+                        <option value="">Selecciona...</option>
+                        <option value="célula">Célula</option>
+                        <option value="órgano">Órgano</option>
+                      </select>
+                    </div>
+                    <div class="schema-item">
+                      <label>Anticuerpos</label>
+                      <select data-correct="célula">
+                        <option value="">Selecciona...</option>
+                        <option value="célula">Célula / molécula</option>
+                        <option value="órgano">Órgano</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <div class="schema-col-title">Órganos relacionados</div>
+                    <div class="schema-item">
+                      <label>Ganglios linfáticos</label>
+                      <select data-correct="órgano">
+                        <option value="">Selecciona...</option>
+                        <option value="célula">Célula</option>
+                        <option value="órgano">Órgano</option>
+                      </select>
+                    </div>
+                    <div class="schema-item">
+                      <label>Médula ósea</label>
+                      <select data-correct="órgano">
+                        <option value="">Selecciona...</option>
+                        <option value="célula">Célula</option>
+                        <option value="órgano">Órgano</option>
+                      </select>
+                    </div>
+                    <div class="schema-item">
+                      <label>Bazo</label>
+                      <select data-correct="órgano">
+                        <option value="">Selecciona...</option>
+                        <option value="célula">Célula</option>
+                        <option value="órgano">Órgano</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="schema-card" style="margin-top:8px;">
+                <div class="schema-title">Esquema 2. Defensa ante una infección</div>
+                <div class="schema-sub">Relaciona cada acción con el tipo de célula que participa principalmente.</div>
+                <div class="question-block">
+                  <div class="question-title">Acción 1</div>
+                  <p>“Rodean al germen y lo destruyen como si se lo comieran”.</p>
+                  <div class="options">
+                    <label><input type="radio" name="acc1" value="macrófagos"> Macrófagos</label>
+                    <label><input type="radio" name="acc1" value="linfocitos"> Linfocitos</label>
+                  </div>
+                </div>
+                <div class="question-block">
+                  <div class="question-title">Acción 2</div>
+                  <p>“Producen anticuerpos especiales contra un germen”.</p>
+                  <div class="options">
+                    <label><input type="radio" name="acc2" value="linfocitosB"> Linfocitos B</label>
+                    <label><input type="radio" name="acc2" value="macrófagos"> Macrófagos</label>
+                  </div>
+                </div>
+                <div class="question-block">
+                  <div class="question-title">Acción 3</div>
+                  <p>“Recuerdan al germen para responder más rápido la próxima vez”.</p>
+                  <div class="options">
+                    <label><input type="radio" name="acc3" value="memoria"> Células de memoria</label>
+                    <label><input type="radio" name="acc3" value="piel"> Células de la piel</label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckSchemas">🔎 Comprobar esquemas</button>
+              </div>
+              <div id="statusSchemas" class="status status-info">
+                <span class="icon">ℹ️</span>
+                <div>Llena todas las casillas y selecciona una opción en cada acción. Después haz clic en <strong>“Comprobar esquemas”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- PANEL 3: EVALÚA -->
+            <div class="step-panel" id="panel-evalua">
+              <div class="info-box">
+                <span>✅</span>
+                <p>Responde el cuestionario para revisar qué tanto comprendes la participación del sistema inmunológico.</p>
+              </div>
+              <div class="question-block">
+                <div class="question-title">1. ¿Cuál es la función principal del sistema inmunológico?</div>
+                <div class="options">
+                  <label><input type="radio" name="q1" value="a"> Transportar oxígeno a todas las células.</label>
+                  <label><input type="radio" name="q1" value="b"> Defender al cuerpo de infecciones y enfermedades.</label>
+                  <label><input type="radio" name="q1" value="c"> Controlar los movimientos del cuerpo.</label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="question-title">2. ¿Qué enunciado describe mejor a los anticuerpos?</div>
+                <div class="options">
+                  <label><input type="radio" name="q2" value="a"> Son gérmenes que enferman al cuerpo.</label>
+                  <label><input type="radio" name="q2" value="b"> Son sustancias producidas por el cuerpo para reconocer y atacar gérmenes.</label>
+                  <label><input type="radio" name="q2" value="c"> Son partes de los pulmones que ayudan a respirar.</label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="question-title">3. ¿Qué hacen las vacunas?</div>
+                <div class="options">
+                  <label><input type="radio" name="q3" value="a"> Evitan que el corazón lata más rápido.</label>
+                  <label><input type="radio" name="q3" value="b"> Enseñan al sistema inmunológico a reconocer ciertos gérmenes.</label>
+                  <label><input type="radio" name="q3" value="c"> Sustituyen por completo a las defensas del cuerpo.</label>
+                </div>
+              </div>
+              <div class="question-block">
+                <div class="question-title">4. ¿Cuál de estas acciones <strong>favorece</strong> la salud del sistema inmunológico?</div>
+                <div class="options">
+                  <label><input type="radio" name="q4" value="a"> Dormir poco y consumir muchos refrescos azucarados.</label>
+                  <label><input type="radio" name="q4" value="b"> Mantener higiene, alimentarse de forma saludable y hacer actividad física.</label>
+                  <label><input type="radio" name="q4" value="c"> No vacunarse para “fortalecer” el cuerpo.</label>
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckQuiz">📊 Comprobar cuestionario</button>
+              </div>
+              <div id="statusQuiz" class="status status-info">
+                <span class="icon">ℹ️</span>
+                <div>Marca una opción en cada pregunta y luego haz clic en <strong>“Comprobar cuestionario”</strong> para ver tu resultado.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <aside class="right-column">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧾</span>
+              <span>Datos del alumno y reportes</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir resultados</button>
+              <button class="btn btn-outline" id="btnPrintActivity">📄 Imprimir actividad</button>
+            </div>
+            <p class="print-note">
+              La hoja de resultados marcará en <span class="result-good">azul</span> los aciertos y en <span class="result-need">rojo</span> las áreas por mejorar.
+            </p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🏫</span>
+              <span>Avatar guía – Instrucciones</span>
+            </div>
+          </div>
+          <div class="card-body avatar-card">
+            <div class="avatar-circle">
+              <img src="avatar_guia.png" alt="Avatar del maestro Martín">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, soy el maestro Martín.</strong>
+              <p>Te acompañaré a descubrir cómo se defiende tu cuerpo con ayuda del sistema inmunológico.</p>
+              <ol class="avatar-steps">
+                <li><span class="badge-step">1</span> En <strong>“Explora las defensas”</strong> lee la explicación y observa los ejemplos.</li>
+                <li><span class="badge-step">2</span> En <strong>“Esquemas interactivos”</strong> clasifica células y órganos, y completa las acciones.</li>
+                <li><span class="badge-step">3</span> En <strong>“Evalúate”</strong> responde el cuestionario para revisar tus aprendizajes.</li>
+                <li><span class="badge-step">4</span> Cuando termines, escribe tu nombre y <strong>imprime tus resultados y la actividad</strong>.</li>
+              </ol>
+              <audio controls>
+                <source src="inserta_tu_audio_aqui.mp3" type="audio/mpeg">
+                Tu navegador no soporta el elemento de audio.
+              </audio>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎯</span>
+              <span>PDA (SEP, 2024) – Texto literal</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="pda-text">
+              Explica la participación del sistema inmunológico en la defensa y protección del cuerpo humano ante infecciones y enfermedades, algunas de las células y órganos que lo conforman, sin profundizar en características y funciones específicas. Describe los beneficios y practica acciones para fortalecer y cuidar el sistema inmunológico: vacunación, higiene, alimentación saludable, consumo de agua simple potable, descanso, actividades físicas y recreativas. Argumenta la importancia de las vacunas como aportes científicos y tecnológicos para prevenir enfermedades transmisibles y de la Cartilla Nacional de Salud para dar seguimiento a su estado de salud, así como de prácticas culturales para prevenirlas. Explica los factores que ponen en riesgo la salud y aquellos que la favorecen al analizar diversas situaciones y propone acciones para reducir la propagación de enfermedades transmisibles en los entornos familiar, escolar y comunitario.
+            </div>
+          </div>
+        </div>
+
+        <div class="copyright">
+          © 2025 · Profe Martín Reta · ODA – Saberes y Pensamiento Científico (Sistema inmunológico).
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <img src="escudo_escuela.png" alt="Escudo de la escuela" class="corner-logo">
+
+  <script>
+    // Navegación de pasos
+    const tabs = document.querySelectorAll(".step-tab");
+    const panels = {
+      explora: document.getElementById("panel-explora"),
+      esquemas: document.getElementById("panel-esquemas"),
+      evalua: document.getElementById("panel-evalua")
+    };
+    tabs.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        tabs.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        const step = btn.getAttribute("data-step");
+        Object.keys(panels).forEach(k=>panels[k].classList.remove("active"));
+        panels[step].classList.add("active");
+      });
+    });
+
+    // Esquema 1 – pills (solo visual)
+    document.querySelectorAll("#pillDefenseList .pill").forEach(pill=>{
+      pill.addEventListener("click",()=>{
+        pill.classList.toggle("active");
+      });
+    });
+
+    const resultsData = {
+      schemas:null,
+      quiz:null
+    };
+
+    // Comprobar esquemas
+    const statusSchemas = document.getElementById("statusSchemas");
+    document.getElementById("btnCheckSchemas").addEventListener("click",()=>{
+      const selects = document.querySelectorAll('#panel-esquemas select');
+      let total = selects.length;
+      let answered = 0;
+      let correct = 0;
+
+      selects.forEach(sel=>{
+        if(sel.value!==""){
+          answered++;
+          if(sel.value.toLowerCase() === sel.dataset.correct.toLowerCase()){
+            correct++;
+          }
+        }
+      });
+
+      let acc1 = document.querySelector('input[name="acc1"]:checked');
+      let acc2 = document.querySelector('input[name="acc2"]:checked');
+      let acc3 = document.querySelector('input[name="acc3"]:checked');
+      let totalAcc = 3;
+      let answeredAcc = 0;
+      let correctAcc = 0;
+
+      if(acc1){answeredAcc++; if(acc1.value==="macrófagos") correctAcc++;}
+      if(acc2){answeredAcc++; if(acc2.value==="linfocitosB") correctAcc++;}
+      if(acc3){answeredAcc++; if(acc3.value==="memoria") correctAcc++;}
+
+      const totalItems = total + totalAcc;
+      const totalAnswered = answered + answeredAcc;
+      const totalCorrect = correct + correctAcc;
+
+      resultsData.schemas = {
+        total: totalItems,
+        answered: totalAnswered,
+        correct: totalCorrect
+      };
+
+      statusSchemas.className = "status";
+      if(totalAnswered < totalItems){
+        statusSchemas.classList.add("status-warn");
+        statusSchemas.innerHTML = '<span class="icon">⚠️</span><div>Te faltan elementos por completar. Responde todas las casillas y acciones para obtener tu resultado completo.</div>';
+      }else{
+        const pct = Math.round((totalCorrect/totalItems)*100);
+        statusSchemas.classList.add("status-ok");
+        statusSchemas.innerHTML = '<span class="icon">✅</span><div>Has completado los esquemas. Respuestas correctas: <strong>'+totalCorrect+'/'+totalItems+'</strong> ('+pct+'%).</div>';
+      }
+    });
+
+    // Comprobar cuestionario
+    const statusQuiz = document.getElementById("statusQuiz");
+    document.getElementById("btnCheckQuiz").addEventListener("click",()=>{
+      const answers = {
+        q1:"b",
+        q2:"b",
+        q3:"b",
+        q4:"b"
+      };
+      let total = 4;
+      let answered = 0;
+      let correct = 0;
+      Object.keys(answers).forEach(q=>{
+        const sel = document.querySelector('input[name="'+q+'"]:checked');
+        if(sel){
+          answered++;
+          if(sel.value===answers[q]) correct++;
+        }
+      });
+
+      resultsData.quiz = {
+        total: total,
+        answered: answered,
+        correct: correct
+      };
+
+      statusQuiz.className = "status";
+      if(answered < total){
+        statusQuiz.classList.add("status-warn");
+        statusQuiz.innerHTML = '<span class="icon">⚠️</span><div>Te faltan preguntas por responder. Marca una opción en cada pregunta.</div>';
+      }else{
+        const pct = Math.round((correct/total)*100);
+        statusQuiz.classList.add("status-ok");
+        statusQuiz.innerHTML = '<span class="icon">✅</span><div>Has completado el cuestionario. Respuestas correctas: <strong>'+correct+'/'+total+'</strong> ('+pct+'%).</div>';
+      }
+    });
+
+    // Imprimir resultados
+    document.getElementById("btnPrintResults").addEventListener("click",()=>{
+      const name = document.getElementById("studentName").value || "Sin nombre";
+      const today = new Date();
+      const dateStr = today.toLocaleDateString("es-MX",{
+        year:"numeric",month:"2-digit",day:"2-digit"
+      });
+
+      let schemas = resultsData.schemas;
+      let quiz = resultsData.quiz;
+
+      const win = window.open("","_blank","width=900,height=700");
+      win.document.write(`
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>Resultados – Sistema inmunológico</title>
+          <style>
+            body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:24px;background:#f3f4f6;color:#111827;}
+            h1{font-size:1.25rem;margin-bottom:4px;color:#1f2937;}
+            h2{font-size:1rem;margin-top:16px;margin-bottom:4px;color:#1d4ed8;}
+            .meta{font-size:.85rem;color:#4b5563;margin-bottom:10px;}
+            .box{background:#ffffff;border-radius:12px;border:1px solid #e5e7eb;padding:10px 12px;margin-top:8px;}
+            .good{color:#1d4ed8;font-weight:600;}
+            .need{color:#b91c1c;font-weight:600;}
+            ul{font-size:.9rem;color:#374151;margin-left:18px;}
+            .badge{display:inline-block;padding:2px 8px;border-radius:999px;font-size:.75rem;}
+            .badge-ok{background:#d1fae5;color:#166534;}
+            .badge-mid{background:#fef9c3;color:#92400e;}
+            .badge-low{background:#fee2e2;color:#b91c1c;}
+            .footer{margin-top:16px;font-size:.75rem;color:#9ca3af;text-align:right;}
+          </style>
+        </head>
+        <body>
+          <h1>Resultados de la ODA – Sistema inmunológico</h1>
+          <div class="meta">
+            Alumno(a): <strong>${name}</strong><br>
+            Fecha: ${dateStr}<br>
+            Campo formativo: Saberes y Pensamiento Científico – Sexto grado
+          </div>
+
+          <h2>1. Esquemas interactivos</h2>
+          <div class="box">
+      `);
+
+      if(!schemas){
+        win.document.write(`<p>No se registró información. <span class="need">El alumno no ha comprobado los esquemas.</span></p>`);
+      }else{
+        const pct = Math.round((schemas.correct/schemas.total)*100);
+        let badgeClass = "badge-ok";
+        if(pct<75 && pct>=50) badgeClass="badge-mid";
+        if(pct<50) badgeClass="badge-low";
+        win.document.write(`
+          <p>Resultado: <span class="good">${schemas.correct}/${schemas.total}</span> aciertos (${pct}%) 
+          <span class="badge ${badgeClass}">${pct>=75?"Adecuado":(pct>=50?"En proceso":"Requiere apoyo")}</span></p>
+          <ul>
+            <li class="${pct>=75?"good":"need"}">Identificación de células y órganos del sistema inmunológico.</li>
+            <li class="${pct>=75?"good":"need"}">Comprensión básica de cómo actúan las defensas ante una infección.</li>
+          </ul>
+        `);
+      }
+
+      win.document.write(`
+          </div>
+          <h2>2. Cuestionario “Evalúate”</h2>
+          <div class="box">
+      `);
+
+      if(!quiz){
+        win.document.write(`<p>No se registró información. <span class="need">El alumno no ha comprobado el cuestionario.</span></p>`);
+      }else{
+        const pctQ = Math.round((quiz.correct/quiz.total)*100);
+        let badgeClassQ = "badge-ok";
+        if(pctQ<75 && pctQ>=50) badgeClassQ="badge-mid";
+        if(pctQ<50) badgeClassQ="badge-low";
+        win.document.write(`
+          <p>Resultado: <span class="good">${quiz.correct}/${quiz.total}</span> aciertos (${pctQ}%) 
+          <span class="badge ${badgeClassQ}">${pctQ>=75?"Adecuado":(pctQ>=50?"En proceso":"Requiere apoyo")}</span></p>
+          <ul>
+            <li class="${pctQ>=75?"good":"need"}">Comprende la función del sistema inmunológico en la defensa del cuerpo.</li>
+            <li class="${pctQ>=75?"good":"need"}">Reconoce el papel de las vacunas y los buenos hábitos para cuidar la salud.</li>
+          </ul>
+        `);
+      }
+
+      win.document.write(`
+          </div>
+          <h2>3. Observaciones del docente</h2>
+          <div class="box">
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+          </div>
+          <div class="footer">
+            ODA – Sistema inmunológico · Profe Martín Reta · Saberes y Pensamiento Científico (Fase 5)
+          </div>
+          <script>window.print();<\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    });
+
+    // Imprimir actividad (distinta a las actividades internas)
+    document.getElementById("btnPrintActivity").addEventListener("click",()=>{
+      const name = document.getElementById("studentName").value || "________________";
+      const win = window.open("","_blank","width=900,height=700");
+      win.document.write(`
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>Actividad imprimible – Sistema inmunológico</title>
+          <style>
+            body{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;padding:24px;background:#ffffff;color:#111827;}
+            h1{font-size:1.25rem;margin-bottom:4px;color:#1f2937;}
+            h2{font-size:1rem;margin-top:16px;margin-bottom:4px;color:#1d4ed8;}
+            .meta{font-size:.9rem;color:#4b5563;margin-bottom:10px;}
+            ol{font-size:.9rem;color:#111827;margin-left:18px;}
+            .line{border-bottom:1px solid #9ca3af;margin:6px 0 8px;}
+            table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:4px;}
+            td,th{border:1px solid #9ca3af;padding:6px 8px;vertical-align:top;}
+          </style>
+        </head>
+        <body>
+          <h1>Actividad imprimible – Defensores del cuerpo humano</h1>
+          <div class="meta">
+            Nombre del alumno(a): ${name}<br>
+            Grado: 6.º · Campo formativo: Saberes y Pensamiento Científico
+          </div>
+
+          <h2>1. Completa las oraciones</h2>
+          <ol>
+            <li>El sistema inmunológico se encarga de ________________________________________________________.</li>
+            <div class="line"></div>
+            <li>Los <strong>macrófagos</strong> ayudan a defender el cuerpo porque ____________________________________________.</li>
+            <div class="line"></div>
+            <li>Las vacunas son importantes porque ____________________________________________________________.</li>
+            <div class="line"></div>
+            <li>Una acción que favorece la salud de mi sistema inmunológico es ______________________________________.</li>
+            <div class="line"></div>
+          </ol>
+
+          <h2>2. Relaciona con una línea</h2>
+          <p>En tu cuaderno o sobre esta hoja, traza una línea para unir cada elemento con su función.</p>
+          <table>
+            <tr>
+              <th>Elemento</th>
+              <th>Función</th>
+            </tr>
+            <tr>
+              <td>
+                a) Macrófagos<br><br>
+                b) Vacunas<br><br>
+                c) Higiene diaria<br><br>
+                d) Cartilla Nacional de Salud
+              </td>
+              <td>
+                1) Registro donde se anotan las vacunas y revisiones de salud.<br><br>
+                2) Células que rodean y destruyen gérmenes que entran al cuerpo.<br><br>
+                3) Ayudan a que el cuerpo “aprenda” a defenderse de ciertos gérmenes.<br><br>
+                4) Lavarse las manos, bañarse y cepillarse los dientes para evitar infecciones.
+              </td>
+            </tr>
+          </table>
+
+          <h2>3. Dibuja</h2>
+          <p>En el espacio de abajo, dibuja una escena donde el sistema inmunológico está defendiendo al cuerpo (por ejemplo, macrófagos enfrentando a un virus o linfocitos produciendo anticuerpos).</p>
+          <div style="border:1px solid #9ca3af;height:200px;margin-top:6px;"></div>
+
+          <script>window.print();<\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    });
+  </script>
+</body>
+</html>

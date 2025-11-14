@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Sistemas de numeración decimal, maya y romano (6.º, PDA 3) – Dinámica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#1d4ed8;
+      --primary-soft:#dbeafe;
+      --accent:#0ea5e9;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --card:#ffffff;
+      --shadow:0 16px 35px rgba(15,23,42,.18);
+      --error:#b91c1c;
+      --success:#15803d;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#e0f2fe 0,#eff6ff 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:12% 16%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1180px;
+      background:radial-gradient(circle at top left,#dbeafe 0,#ffffff 45%,#eff6ff 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #bfdbfe;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.3fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #dbeafe;
+    }
+    @media(max-width:900px){
+      header{grid-template-columns:1fr;text-align:center;}
+      .author-block{text-align:center;}
+    }
+    .logo-left img{
+      max-height:60px;
+      width:auto;
+      display:block;
+    }
+    @media(max-width:900px){
+      .logo-left{display:flex;justify-content:center;}
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.22rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-block h1 .icon{font-size:1.45rem;}
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      margin-top:3px;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.78rem;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#eff6ff;
+      border:1px solid #dbeafe;
+    }
+    .chip .dot{
+      width:7px;height:7px;border-radius:999px;background:#22c55e;
+    }
+    .author-block{
+      font-size:.82rem;
+      color:var(--muted);
+      text-align:right;
+    }
+
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);
+      gap:10px;
+      margin-top:2px;
+    }
+    @media(max-width:900px){
+      main{grid-template-columns:1fr;}
+    }
+    .left-column,.right-column{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      box-shadow:0 8px 20px rgba(15,23,42,.06);
+      overflow:hidden;
+    }
+    .card-header{
+      padding:8px 12px 6px;
+      border-bottom:1px solid #e5e7eb;
+      background:linear-gradient(90deg,#dbeafe,#eff6ff);
+    }
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+      font-weight:600;
+      color:#0f172a;
+    }
+    .card-title .icon{font-size:1.05rem;}
+    .card-body{
+      padding:8px 12px 10px;
+      font-size:.84rem;
+    }
+
+    .objective-list{
+      padding-left:18px;
+      margin:6px 0;
+    }
+    .objective-list li{margin-bottom:3px;}
+
+    .timeline{
+      margin-top:6px;
+      border-radius:12px;
+      border:1px dashed #bfdbfe;
+      background:#eff6ff;
+      padding:6px 8px;
+      font-size:.8rem;
+    }
+    .timeline-item{
+      display:flex;
+      gap:6px;
+      margin-bottom:3px;
+    }
+    .timeline-label{
+      font-weight:600;
+      color:#1d4ed8;
+      min-width:97px;
+    }
+
+    .module-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .module-button{
+      flex:1 1 120px;
+      border-radius:999px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      padding:5px 8px;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      cursor:pointer;
+      transition:.15s;
+    }
+    .module-button span.icon{font-size:.95rem;}
+    .module-button.active{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+      box-shadow:0 0 0 1px rgba(37,99,235,.6);
+    }
+
+    .module-panel{display:none;}
+    .module-panel.active{display:block;}
+
+    .status{
+      margin-top:6px;
+      border-radius:10px;
+      padding:6px 8px;
+      display:flex;
+      gap:6px;
+      font-size:.8rem;
+      align-items:flex-start;
+    }
+    .status span{font-size:1rem;}
+    .status-info{
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e3a8a;
+    }
+    .status-success{
+      background:#dcfce7;
+      border:1px solid #22c55e;
+      color:#166534;
+    }
+    .status-error{
+      background:#fee2e2;
+      border:1px solid #f97373;
+      color:#991b1b;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      padding:5px 10px;
+      font-size:.8rem;
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn-primary{background:var(--primary);color:#fff;}
+    .btn-secondary{background:#e5e7eb;color:#111827;}
+    .btn-outline{
+      background:#fff;
+      border:1px solid #cbd5f5;
+      color:#1e3a8a;
+    }
+
+    .systems-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:4px;
+      font-size:.8rem;
+    }
+    .systems-table th,.systems-table td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      text-align:left;
+      vertical-align:top;
+    }
+    .systems-table th{
+      background:#eff6ff;
+      text-align:center;
+    }
+    .systems-table td strong{color:#1d4ed8;}
+
+    .options-list{
+      list-style:none;
+      padding-left:0;
+      margin:6px 0;
+      font-size:.8rem;
+    }
+    .options-list li{margin-bottom:4px;}
+    .options-list label{
+      display:flex;
+      align-items:flex-start;
+      gap:4px;
+      cursor:pointer;
+    }
+
+    .task-block{
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:6px 8px;
+      margin-top:4px;
+      background:#f9fafb;
+      font-size:.8rem;
+    }
+    .task-title{
+      font-weight:600;
+      margin-bottom:2px;
+      color:#1e3a8a;
+    }
+
+    .convert-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:4px;
+      font-size:.8rem;
+    }
+    .convert-table th,.convert-table td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      text-align:center;
+    }
+    .convert-table th{
+      background:#eff6ff;
+      font-weight:600;
+    }
+    .convert-input{
+      width:120px;
+      max-width:100%;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.78rem;
+      text-align:center;
+      font-family:monospace;
+    }
+
+    .mayan-option{
+      display:inline-block;
+      border-radius:10px;
+      border:1px solid #cbd5f5;
+      padding:4px 6px;
+      background:#fff;
+      font-size:.78rem;
+      min-width:80px;
+    }
+    .mayan-line{
+      display:block;
+      margin:1px 0;
+      text-align:center;
+      font-family:"Segoe UI Symbol","Noto Sans",system-ui;
+    }
+
+    .compare-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:4px;
+      font-size:.78rem;
+    }
+    .compare-table th,.compare-table td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      text-align:center;
+    }
+    .compare-table th{
+      background:#eff6ff;
+    }
+    .compare-table select{
+      width:90px;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.75rem;
+    }
+
+    .student-card .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      margin-bottom:6px;
+    }
+    .student-card input[type="text"]{
+      padding:5px 7px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.82rem;
+      width:100%;
+    }
+
+    .avatar-card{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .avatar-circle{
+      width:120px;
+      height:auto;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:18px;
+      overflow:visible;
+      flex-shrink:0;
+    }
+    .avatar-circle img{
+      width:100%;
+      height:auto;
+      object-fit:contain;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#374151;
+    }
+    .avatar-steps{
+      margin:4px 0;
+      padding-left:18px;
+    }
+    .avatar-steps li{margin-bottom:3px;}
+    .badge-step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      background:#1d4ed8;
+      color:#fff;
+      font-size:.7rem;
+      margin-right:4px;
+    }
+
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #dbeafe;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+
+  <div class="wrapper">
+    <header>
+      <div class="logo-left">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🔢🏛️</span>
+          <span>Sistemas de numeración: decimal, maya y romano – 6.º, PDA 3</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Estudio de los números.</strong><br>
+          PDA 6.º: <strong>Identifica semejanzas y diferencias entre el sistema de numeración decimal y otros sistemas como el maya y el romano.</strong><br>
+          <span class="phase-label">Pensamiento Matemático · Fase 5 · 6.º grado</span>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Campo formativo: Saberes y Pensamiento Matemático</span>
+          <span class="chip">Proyecto: <strong>Números que cuentan historias (6.º)</strong></span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong><br>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- COLUMNA IZQUIERDA -->
+      <section class="left-column">
+        <!-- Propósito -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎯</span>
+              <span>Propósito de la ODA</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Al finalizar esta ODA, las y los estudiantes serán capaces de:
+            <ul class="objective-list">
+              <li>Reconocer características del sistema decimal, maya y romano.</li>
+              <li>Identificar semejanzas y diferencias entre estos sistemas (base, símbolos, forma de agrupar).</li>
+              <li>Leer y escribir algunos números en los tres sistemas (especialmente hasta centenas o miles).</li>
+              <li>Valorar la diversidad de formas de representar cantidades en distintas culturas.</li>
+            </ul>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-label">1. Exploro</div>
+                <div>Observo y comparo cómo escribe cada cultura los números.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">2. Represento</div>
+                <div>Relaciono un mismo número en diferentes sistemas.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">3. Comparo</div>
+                <div>Identifico semejanzas y diferencias.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">4. Aplico</div>
+                <div>Resuelvo situaciones donde aparecen estos sistemas.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulos -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧩</span>
+              <span>Módulos de trabajo</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="module-nav">
+              <button class="module-button active" data-module="explora">
+                <span class="icon">👀</span> Conozco los sistemas
+              </button>
+              <button class="module-button" data-module="representa">
+                <span class="icon">✏️</span> Represento números
+              </button>
+              <button class="module-button" data-module="compara">
+                <span class="icon">⚖️</span> Semejanzas y diferencias
+              </button>
+              <button class="module-button" data-module="aplica">
+                <span class="icon">📚</span> Números en contexto
+              </button>
+            </div>
+
+            <!-- Panel 1: Explora -->
+            <div id="panel-explora" class="module-panel active">
+              <p>Observa las características principales de cada sistema de numeración.</p>
+              <table class="systems-table">
+                <thead>
+                  <tr>
+                    <th>Sistema</th>
+                    <th>Base</th>
+                    <th>Características</th>
+                    <th>Ejemplo de número</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Decimal</strong></td>
+                    <td>10</td>
+                    <td>Usa 10 dígitos (0–9). Es posicional: el lugar de cada cifra indica unidades, decenas, centenas, etc.</td>
+                    <td>2 345</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Maya</strong></td>
+                    <td>20 (vigesimal)</td>
+                    <td>Usa puntos (•) para 1, barras (▬) para 5 y una concha (○) para el 0. Es posicional, con niveles verticales.</td>
+                    <td>
+                      <div class="mayan-option">
+                        <span class="mayan-line">• • •</span>
+                        <span class="mayan-line">▬</span>
+                        <span style="font-size:.7rem;">(ejemplo)</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td><strong>Romano</strong></td>
+                    <td>No posicional</td>
+                    <td>Usa letras: I(1), V(5), X(10), L(50), C(100), D(500), M(1000). No tiene símbolo para el 0.</td>
+                    <td>MCMLXXXVIII (1988)</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="task-block">
+                <div class="task-title">Actividad rápida</div>
+                <ol class="options-list">
+                  <li>
+                    <div><strong>1)</strong> ¿Cuál sistema <strong>usa letras</strong> para representar números?</div>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ex1" value="a"> Decimal</label></li>
+                      <li><label><input type="radio" name="ex1" value="b"> Maya</label></li>
+                      <li><label><input type="radio" name="ex1" value="c"> Romano</label></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div><strong>2)</strong> ¿Cuál sistema <strong>usa puntos y barras</strong> y es de base 20?</div>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ex2" value="a"> Decimal</label></li>
+                      <li><label><input type="radio" name="ex2" value="b"> Maya</label></li>
+                      <li><label><input type="radio" name="ex2" value="c"> Romano</label></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div><strong>3)</strong> ¿Cuál sistema <strong>usa el 0</strong> como símbolo y es de base 10?</div>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ex3" value="a"> Decimal</label></li>
+                      <li><label><input type="radio" name="ex3" value="b"> Maya</label></li>
+                      <li><label><input type="radio" name="ex3" value="c"> Romano</label></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div><strong>4)</strong> ¿Cuál sistema <strong>no es posicional</strong> (el lugar no cambia el valor del símbolo)?</div>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="ex4" value="a"> Decimal</label></li>
+                      <li><label><input type="radio" name="ex4" value="b"> Maya</label></li>
+                      <li><label><input type="radio" name="ex4" value="c"> Romano</label></li>
+                    </ul>
+                  </li>
+                </ol>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckExplora">📝 Revisar respuestas</button>
+                <button class="btn btn-secondary" id="btnResetExplora">↩️ Empezar de nuevo</button>
+              </div>
+              <div id="statusExplora" class="status status-info">
+                <span>ℹ️</span>
+                <div>Responde las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 2: Representa -->
+            <div id="panel-representa" class="module-panel">
+              <p>Relaciona la misma cantidad en sistema decimal, romano y maya (simplificado).</p>
+
+              <table class="convert-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Decimal</th>
+                    <th>Escribe en romano</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>18</td>
+                    <td><input type="text" class="convert-input" id="rom1" placeholder="ej. XVIII"></td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>27</td>
+                    <td><input type="text" class="convert-input" id="rom2" placeholder="ej. XXVII"></td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>49</td>
+                    <td><input type="text" class="convert-input" id="rom3" placeholder="ej. XLIX"></td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="task-block">
+                <div class="task-title">Elige la representación maya correcta</div>
+                <ol class="options-list">
+                  <li>
+                    <div><strong>5)</strong> ¿Cuál representación maya corresponde aproximademente al número <strong>7</strong>?</div>
+                    <ul class="options-list">
+                      <li>
+                        <label>
+                          <input type="radio" name="maya1" value="a">
+                          <span class="mayan-option">
+                            <span class="mayan-line">• • • • • • •</span>
+                          </span>
+                        </label>
+                      </li>
+                      <li>
+                        <label>
+                          <input type="radio" name="maya1" value="b">
+                          <span class="mayan-option">
+                            <span class="mayan-line">▬</span>
+                            <span class="mayan-line">• •</span>
+                          </span>
+                        </label>
+                      </li>
+                      <li>
+                        <label>
+                          <input type="radio" name="maya1" value="c">
+                          <span class="mayan-option">
+                            <span class="mayan-line">• •</span>
+                          </span>
+                        </label>
+                      </li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div><strong>6)</strong> ¿Cuál representación maya se acerca al número <strong>15</strong>?</div>
+                    <ul class="options-list">
+                      <li>
+                        <label>
+                          <input type="radio" name="maya2" value="a">
+                          <span class="mayan-option">
+                            <span class="mayan-line">▬ ▬ ▬</span>
+                          </span>
+                        </label>
+                      </li>
+                      <li>
+                        <label>
+                          <input type="radio" name="maya2" value="b">
+                          <span class="mayan-option">
+                            <span class="mayan-line">▬ ▬</span>
+                            <span class="mayan-line">• • • • •</span>
+                          </span>
+                        </label>
+                      </li>
+                      <li>
+                        <label>
+                          <input type="radio" name="maya2" value="c">
+                          <span class="mayan-option">
+                            <span class="mayan-line">▬ ▬</span>
+                            <span class="mayan-line">•</span>
+                          </span>
+                        </label>
+                      </li>
+                    </ul>
+                  </li>
+                </ol>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckRepresenta">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetRepresenta">↩️ Limpiar</button>
+              </div>
+              <div id="statusRepresenta" class="status status-info">
+                <span>ℹ️</span>
+                <div>Escribe los números romanos y elige la representación maya correcta. Luego haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 3: Compara -->
+            <div id="panel-compara" class="module-panel">
+              <p>Analiza las siguientes afirmaciones y elige la opción que mejor las describe.</p>
+
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>#</th>
+                    <th>Afirmación</th>
+                    <th>Respuesta</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>1</td>
+                    <td>Es un sistema <strong>posicional de base 10</strong>.</td>
+                    <td>
+                      <select id="cmp1">
+                        <option value="">--</option>
+                        <option value="dec">Decimal</option>
+                        <option value="maya">Maya</option>
+                        <option value="rom">Romano</option>
+                        <option value="dec-maya">Decimal y maya</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>2</td>
+                    <td>Utiliza símbolos como I, V, X, L, C, D, M.</td>
+                    <td>
+                      <select id="cmp2">
+                        <option value="">--</option>
+                        <option value="dec">Decimal</option>
+                        <option value="maya">Maya</option>
+                        <option value="rom">Romano</option>
+                        <option value="dec-maya">Decimal y maya</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>3</td>
+                    <td>Utiliza un símbolo especial para el <strong>cero</strong>.</td>
+                    <td>
+                      <select id="cmp3">
+                        <option value="">--</option>
+                        <option value="dec">Solo decimal</option>
+                        <option value="maya">Solo maya</option>
+                        <option value="rom">Solo romano</option>
+                        <option value="dec-maya">Decimal y maya</option>
+                      </select>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>4</td>
+                    <td>Es más práctico para realizar operaciones escritas (sumar, restar).</td>
+                    <td>
+                      <select id="cmp4">
+                        <option value="">--</option>
+                        <option value="dec">Principalmente decimal</option>
+                        <option value="maya">Principalmente maya</option>
+                        <option value="rom">Principalmente romano</option>
+                      </select>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <div class="task-block">
+                <div class="task-title">Verdadero o falso</div>
+                <ol class="options-list">
+                  <li>
+                    <div><strong>1)</strong> “En el sistema romano el lugar de la letra no cambia su valor.”</div>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="vf1" value="v"> Verdadero</label></li>
+                      <li><label><input type="radio" name="vf1" value="f"> Falso</label></li>
+                    </ul>
+                  </li>
+                  <li>
+                    <div><strong>2)</strong> “En el sistema maya y en el decimal se pueden escribir cantidades muy grandes usando pocas cifras.”</div>
+                    <ul class="options-list">
+                      <li><label><input type="radio" name="vf2" value="v"> Verdadero</label></li>
+                      <li><label><input type="radio" name="vf2" value="f"> Falso</label></li>
+                    </ul>
+                  </li>
+                </ol>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckCompara">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetCompara">↩️ Limpiar</button>
+              </div>
+              <div id="statusCompara" class="status status-info">
+                <span>ℹ️</span>
+                <div>Completa todas las respuestas y haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 4: Aplica -->
+            <div id="panel-aplica" class="module-panel">
+              <p>Resuelve los siguientes problemas donde aparecen diferentes sistemas de numeración.</p>
+              <ol class="options-list">
+                <li>
+                  <div>
+                    <strong>1)</strong> En la fachada de una iglesia aparece el año <strong>MDCCLXXVI</strong>.  
+                    ¿A qué sistema de numeración pertenece y qué ventaja tiene frente al sistema decimal?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ap1" value="a"> Sistema maya; es más fácil para sumar.</label></li>
+                    <li><label><input type="radio" name="ap1" value="b"> Sistema romano; se usa mucho para fechas, pero no es tan práctico para operar.</label></li>
+                    <li><label><input type="radio" name="ap1" value="c"> Sistema decimal; se usa solo en monumentos antiguos.</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>2)</strong> En una zona arqueológica observas un número maya con un nivel superior con <strong>• •</strong> y un nivel inferior con <strong>▬ •</strong>.  
+                    ¿Qué interpretación es más razonable?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ap2" value="a"> Representa una cantidad en base 10 como en el sistema decimal.</label></li>
+                    <li><label><input type="radio" name="ap2" value="b"> Representa una cantidad en base 20, donde el nivel superior agrupa veintenas.</label></li>
+                    <li><label><input type="radio" name="ap2" value="c"> Representa una suma sin orden, no importa el nivel.</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>3)</strong> ¿En cuál de los siguientes casos <strong>es más conveniente</strong> usar el sistema decimal y no el romano?</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ap3" value="a"> Para hacer una suma larga con muchos números.</label></li>
+                    <li><label><input type="radio" name="ap3" value="b"> Para escribir el año de construcción de un edificio.</label></li>
+                    <li><label><input type="radio" name="ap3" value="c"> Para numerar capítulos de un libro importante.</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>4)</strong> ¿Cuál afirmación muestra mejor una <strong>semejanza</strong> entre el sistema decimal y el maya?</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ap4" value="a"> Ambos usan letras para escribir los números.</label></li>
+                    <li><label><input type="radio" name="ap4" value="b"> En ambos el valor de la cifra depende de la posición (son posicionales).</label></li>
+                    <li><label><input type="radio" name="ap4" value="c"> En ambos se usan barras y puntos.</label></li>
+                  </ul>
+                </li>
+              </ol>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckAplica">📝 Revisar respuestas</button>
+                <button class="btn btn-secondary" id="btnResetAplica">↩️ Empezar de nuevo</button>
+              </div>
+              <div id="statusAplica" class="status status-info">
+                <span>ℹ️</span>
+                <div>Responde todas las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <section class="right-column">
+        <!-- Datos del alumno -->
+        <div class="card student-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🎓</span>
+              <span>Datos del alumno y controles</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir resultados</button>
+              <button class="btn btn-outline" id="btnPrintActivity">📄 Actividad para imprimir</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar guía -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🏫</span>
+              <span>Avatar guía – Instrucciones</span>
+            </div>
+          </div>
+          <div class="card-body avatar-card">
+            <div class="avatar-circle" aria-hidden="true">
+              <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, soy el maestro Martín Reta.</strong> Hoy conoceremos cómo diferentes culturas escriben los números.
+              <ol class="avatar-steps">
+                <li><span class="badge-step">1</span> En <strong>“Conozco los sistemas”</strong> ves cómo funciona cada sistema.</li>
+                <li><span class="badge-step">2</span> En <strong>“Represento números”</strong> escribes la misma cantidad en otro sistema.</li>
+                <li><span class="badge-step">3</span> En <strong>“Semejanzas y diferencias”</strong> comparas características.</li>
+                <li><span class="badge-step">4</span> En <strong>“Números en contexto”</strong> decides qué sistema se usa y para qué sirve.</li>
+              </ol>
+              <button class="btn btn-primary" id="btnPlayVoice">🔊 Escucha las instrucciones</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sugerencias docente -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📌</span>
+              <span>Sugerencias de uso en el aula</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="objective-list">
+              <li>Relaciona el tema con Historia y Cultura: ¿quiénes usaban el sistema maya y el romano?</li>
+              <li>Pide que expliquen <strong>por qué</strong> un sistema es más práctico para operar que otro.</li>
+              <li>Invita al grupo a inventar “mensajes secretos” usando números romanos o mayas.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© 2025. Elaborado por <strong>Mtro. Martín Reta</strong> – Escuela Primaria “Gral. Lázaro Cárdenas”.</div>
+      <div class="project">Proyecto “Números que cuentan historias” · ODA 6.º: Sistemas de numeración (PDA 3).</div>
+    </footer>
+  </div>
+
+  <script>
+    // Utilidades
+    function parseRoman(str){
+      if(!str)return NaN;
+      const s=str.toUpperCase().trim();
+      const vals={I:1,V:5,X:10,L:50,C:100,D:500,M:1000};
+      let total=0,prev=0;
+      for(let i=s.length-1;i>=0;i--){
+        const v=vals[s[i]]||0;
+        if(v<prev){total-=v;}else{total+=v;}
+        prev=v;
+      }
+      return total;
+    }
+    function parseNumberStr(str){
+      if(!str)return NaN;
+      const clean=str.replace(/\s/g,"").replace(/,/g,"");
+      return parseInt(clean,10);
+    }
+
+    // Navegación de módulos
+    const moduleButtons=document.querySelectorAll(".module-button");
+    const panels={
+      explora:document.getElementById("panel-explora"),
+      representa:document.getElementById("panel-representa"),
+      compara:document.getElementById("panel-compara"),
+      aplica:document.getElementById("panel-aplica")
+    };
+    moduleButtons.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const mod=btn.dataset.module;
+        moduleButtons.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        Object.keys(panels).forEach(k=>panels[k].classList.remove("active"));
+        panels[mod].classList.add("active");
+      });
+    });
+
+    let lastExploraScore=null,
+        lastRepresentaScore=null,
+        lastComparaScore=null,
+        lastAplicaScore=null;
+
+    // ---------- Panel 1: Explora ----------
+    const statusExplora=document.getElementById("statusExplora");
+    const exCorrect={ex1:"c",ex2:"b",ex3:"a",ex4:"c"};
+
+    document.getElementById("btnCheckExplora").addEventListener("click",()=>{
+      let total=4,correct=0,unanswered=0,msg=[];
+      Object.keys(exCorrect).forEach(key=>{
+        const num=key.replace("ex","");
+        const ans=document.querySelector('input[name="'+key+'"]:checked');
+        if(!ans){unanswered++;return;}
+        if(ans.value===exCorrect[key]){
+          correct++;msg.push("Pregunta "+num+": ✅ correcta.");
+        }else{
+          msg.push("Pregunta "+num+": revisa la tabla de características.");
+        }
+      });
+      if(unanswered>0){
+        statusExplora.className="status status-info";
+        statusExplora.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> pregunta(s) por responder.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastExploraScore={correct,total,percent};
+      if(percent>=75){
+        statusExplora.className="status status-success";
+        statusExplora.innerHTML="<span>✅</span><div>Respondiste correctamente <strong>"+correct+" de "+total+"</strong> ("+percent+"%).<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusExplora.className="status status-error";
+        statusExplora.innerHTML="<span>📘</span><div>Respondiste correctamente <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Puedes volver a leer la tabla y reintentar.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+
+    document.getElementById("btnResetExplora").addEventListener("click",()=>{
+      Object.keys(exCorrect).forEach(key=>{
+        document.querySelectorAll('input[name="'+key+'"]').forEach(r=>r.checked=false);
+      });
+      lastExploraScore=null;
+      statusExplora.className="status status-info";
+      statusExplora.innerHTML="<span>ℹ️</span><div>Responde las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>";
+    });
+
+    // ---------- Panel 2: Representa ----------
+    const statusRepresenta=document.getElementById("statusRepresenta");
+    const romanExpected={rom1:18,rom2:27,rom3:49};
+    const mayaCorrect={maya1:"b",maya2:"c"}; // 7 ≈ barra + 2 puntos; 15 ≈ 2 barras + 1 punto (10+5)
+
+    document.getElementById("btnCheckRepresenta").addEventListener("click",()=>{
+      let total=5,correct=0,unanswered=0,msg=[];
+
+      // Romanos
+      ["rom1","rom2","rom3"].forEach((id,idx)=>{
+        const inp=document.getElementById(id);
+        const val=parseRoman(inp.value);
+        const target=romanExpected[id];
+        if(!inp.value.trim()){unanswered++;return;}
+        if(val===target){
+          correct++;msg.push("Número romano "+(idx+1)+": ✅ correcto.");
+        }else{
+          msg.push("Número romano "+(idx+1)+": revisa la combinación de símbolos.");
+        }
+      });
+
+      // Mayas
+      Object.keys(mayaCorrect).forEach((name,idx)=>{
+        const ans=document.querySelector('input[name="'+name+'"]:checked');
+        const num = name==="maya1" ? 7 : 6; // solo para el mensaje
+        if(!ans){unanswered++;return;}
+        if(ans.value===mayaCorrect[name]){
+          correct++;msg.push("Representación maya "+(idx+1)+": ✅ correcta.");
+        }else{
+          msg.push("Representación maya "+(idx+1)+": revisa la forma de agrupar con barras y puntos.");
+        }
+      });
+
+      if(unanswered>0){
+        statusRepresenta.className="status status-info";
+        statusRepresenta.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> respuesta(s) por completar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastRepresentaScore={correct,total,percent};
+      if(percent>=70){
+        statusRepresenta.className="status status-success";
+        statusRepresenta.innerHTML="<span>✅</span><div>Lograste <strong>"+correct+" de "+total+"</strong> respuestas correctas ("+percent+"%).<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusRepresenta.className="status status-error";
+        statusRepresenta.innerHTML="<span>📘</span><div>Lograste <strong>"+correct+" de "+total+"</strong> respuestas correctas ("+percent+"%). Puedes practicar de nuevo la escritura romana y maya.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+
+    document.getElementById("btnResetRepresenta").addEventListener("click",()=>{
+      ["rom1","rom2","rom3"].forEach(id=>document.getElementById(id).value="");
+      Object.keys(mayaCorrect).forEach(name=>{
+        document.querySelectorAll('input[name="'+name+'"]').forEach(r=>r.checked=false);
+      });
+      lastRepresentaScore=null;
+      statusRepresenta.className="status status-info";
+      statusRepresenta.innerHTML="<span>ℹ️</span><div>Escribe los números romanos y elige la representación maya correcta. Luego haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // ---------- Panel 3: Compara ----------
+    const statusCompara=document.getElementById("statusCompara");
+    const cmpCorrect={cmp1:"dec",cmp2:"rom",cmp3:"dec-maya",cmp4:"dec"};
+    const vfCorrect={vf1:"v",vf2:"v"};
+
+    document.getElementById("btnCheckCompara").addEventListener("click",()=>{
+      let total=6,correct=0,unanswered=0,msg=[];
+      // Selects
+      Object.keys(cmpCorrect).forEach((id,idx)=>{
+        const sel=document.getElementById(id);
+        const v=sel.value;
+        if(!v){unanswered++;return;}
+        if(v===cmpCorrect[id]){
+          correct++;msg.push("Afirmación "+(idx+1)+": ✅ correcta.");
+        }else{
+          msg.push("Afirmación "+(idx+1)+": revisa qué sistemas cumplen esa condición.");
+        }
+      });
+      // V/F
+      Object.keys(vfCorrect).forEach((name,idx)=>{
+        const ans=document.querySelector('input[name="'+name+'"]:checked');
+        if(!ans){unanswered++;return;}
+        if(ans.value===vfCorrect[name]){
+          correct++;msg.push("V/F "+(idx+1)+": ✅ correcto.");
+        }else{
+          msg.push("V/F "+(idx+1)+": revisa la explicación de los sistemas.");
+        }
+      });
+      if(unanswered>0){
+        statusCompara.className="status status-info";
+        statusCompara.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> respuesta(s) por completar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastComparaScore={correct,total,percent};
+      if(percent>=70){
+        statusCompara.className="status status-success";
+        statusCompara.innerHTML="<span>✅</span><div>Lograste <strong>"+correct+" de "+total+"</strong> respuestas correctas ("+percent+"%). Estás identificando bien semejanzas y diferencias.<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusCompara.className="status status-error";
+        statusCompara.innerHTML="<span>📘</span><div>Lograste <strong>"+correct+" de "+total+"</strong> respuestas correctas ("+percent+"%). Puedes revisar la tabla comparativa y reintentar.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+
+    document.getElementById("btnResetCompara").addEventListener("click",()=>{
+      Object.keys(cmpCorrect).forEach(id=>document.getElementById(id).value="");
+      Object.keys(vfCorrect).forEach(name=>{
+        document.querySelectorAll('input[name="'+name+'"]').forEach(r=>r.checked=false);
+      });
+      lastComparaScore=null;
+      statusCompara.className="status status-info";
+      statusCompara.innerHTML="<span>ℹ️</span><div>Completa todas las respuestas y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // ---------- Panel 4: Aplica ----------
+    const statusAplica=document.getElementById("statusAplica");
+    const aplicaCorrect={ap1:"b",ap2:"b",ap3:"a",ap4:"b"};
+
+    document.getElementById("btnCheckAplica").addEventListener("click",()=>{
+      let total=4,correct=0,unanswered=0,msg=[];
+      Object.keys(aplicaCorrect).forEach(q=>{
+        const ans=document.querySelector('input[name="'+q+'"]:checked');
+        const num=q.replace("ap","");
+        if(!ans){unanswered++;return;}
+        if(ans.value===aplicaCorrect[q]){
+          correct++;msg.push("Pregunta "+num+": ✅ correcta.");
+        }else{
+          msg.push("Pregunta "+num+": revisa qué sistema es más conveniente o qué característica se menciona.");
+        }
+      });
+      if(unanswered>0){
+        statusAplica.className="status status-info";
+        statusAplica.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> pregunta(s) por responder.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastAplicaScore={correct,total,percent};
+      if(correct>=3){
+        statusAplica.className="status status-success";
+        statusAplica.innerHTML="<span>✅</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Buen uso de los sistemas en contexto.<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusAplica.className="status status-error";
+        statusAplica.innerHTML="<span>📘</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Puedes volver a los otros módulos y luego regresar a este.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+
+    document.getElementById("btnResetAplica").addEventListener("click",()=>{
+      Object.keys(aplicaCorrect).forEach(q=>{
+        document.querySelectorAll('input[name="'+q+'"]').forEach(r=>r.checked=false);
+      });
+      lastAplicaScore=null;
+      statusAplica.className="status status-info";
+      statusAplica.innerHTML="<span>ℹ️</span><div>Responde todas las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>";
+    });
+
+    // ---------- Voz instrucciones ----------
+    const btnPlayVoice=document.getElementById("btnPlayVoice");
+    const instructionsText="Hola, soy el maestro Martin Reta. En esta actividad vas a comparar el sistema decimal con el sistema maya y el sistema romano. Primero conoceras sus caracteristicas principales. Despues representarás algunos numeros en otros sistemas. Luego identificaras semejanzas y diferencias y, al final, resolveras problemas donde aparecen estos sistemas de numeracion.";
+
+    function speakInstructions(){
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no permite la lectura en voz alta. Puedes leer las instrucciones en pantalla.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(instructionsText);
+      u.lang="es-MX";
+      const voices=window.speechSynthesis.getVoices();
+      let chosen=null;
+      if(voices && voices.length){
+        chosen=voices.find(v=>v.lang.startsWith("es") && /Hombre|Male|Miguel|Diego|Jorge|Antonio|Carlos/i.test(v.name))
+               || voices.find(v=>v.lang.startsWith("es"))
+               || voices[0];
+      }
+      if(chosen)u.voice=chosen;
+      window.speechSynthesis.speak(u);
+    }
+
+    btnPlayVoice.addEventListener("click",()=>{
+      const voices=window.speechSynthesis.getVoices();
+      if(!voices || !voices.length){
+        window.speechSynthesis.onvoiceschanged=speakInstructions;
+        window.speechSynthesis.getVoices();
+      }else{
+        speakInstructions();
+      }
+    });
+
+    // ---------- Imprimir resultados ----------
+    document.getElementById("btnPrintResults").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      if(!lastExploraScore && !lastRepresentaScore && !lastComparaScore && !lastAplicaScore){
+        alert("Primero realiza al menos un módulo para poder imprimir resultados.");
+        return;
+      }
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Resultados del estudiante – Sistemas de numeración</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:4px 0;} .small{font-size:12px;color:#4b5563;} .blue{color:#1d4ed8;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Resultados del estudiante – Sistemas de numeración (Decimal, maya y romano) – PDA 3, 6.º</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta</p>");
+      w.document.write("<p><strong>Proyecto:</strong> Números que cuentan historias (6.º)</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Identifica semejanzas y diferencias entre el sistema de numeración decimal y otros sistemas como el maya y el romano.</p>");
+
+      if(lastExploraScore){
+        w.document.write("<h2>Módulo 1. Conozco los sistemas</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastExploraScore.correct+" de "+lastExploraScore.total+" ("+lastExploraScore.percent+"%)</span></p>");
+      }
+      if(lastRepresentaScore){
+        w.document.write("<h2>Módulo 2. Represento números</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastRepresentaScore.correct+" de "+lastRepresentaScore.total+" ("+lastRepresentaScore.percent+"%)</span></p>");
+      }
+      if(lastComparaScore){
+        w.document.write("<h2>Módulo 3. Semejanzas y diferencias</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastComparaScore.correct+" de "+lastComparaScore.total+" ("+lastComparaScore.percent+"%)</span></p>");
+      }
+      if(lastAplicaScore){
+        w.document.write("<h2>Módulo 4. Números en contexto</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastAplicaScore.correct+" de "+lastAplicaScore.total+" ("+lastAplicaScore.percent+"%)</span></p>");
+      }
+
+      w.document.write("<p class='small'><strong>Observaciones del docente:</strong></p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+
+    // ---------- Actividad para imprimir ----------
+    document.getElementById("btnPrintActivity").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Actividad para imprimir – Sistemas de numeración</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:6px 0;} ol{padding-left:18px;} li{margin-bottom:6px;} .small{font-size:12px;color:#4b5563;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Actividad para imprimir – Sistemas de numeración (decimal, maya y romano)</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta &nbsp;&nbsp;&nbsp; <strong>Proyecto:</strong> Números que cuentan historias (6.º)</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Identifica semejanzas y diferencias entre el sistema de numeración decimal y otros sistemas como el maya y el romano.</p>");
+
+      w.document.write("<h2>Parte A. Identifica el sistema</h2>");
+      w.document.write("<ol>");
+      w.document.write("<li>Escribe a qué sistema pertenece cada ejemplo:<br> a) 2 345 ____________________<br> b) MCMLXXX ____________________<br> c) representación con puntos y barras ____________________</li>");
+      w.document.write("<li>Escribe una semejanza entre el sistema decimal y el maya: ____________________________________________________________</li>");
+      w.document.write("</ol>");
+
+      w.document.write("<h2>Parte B. Números romanos</h2>");
+      w.document.write("<ol>");
+      w.document.write("<li>Escribe en números romanos:<br> a) 12 = ________<br> b) 27 = ________<br> c) 49 = ________</li>");
+      w.document.write("<li>Escribe en sistema decimal:<br> a) XX = ________<br> b) XL = ________<br> c) CIX = ________</li>");
+      w.document.write("</ol>");
+
+      w.document.write("<h2>Parte C. Reflexiona</h2>");
+      w.document.write("<ol>");
+      w.document.write("<li>¿Por qué crees que usamos el sistema decimal en la vida diaria y no el romano para hacer operaciones?</li>");
+      w.document.write("<li>¿Qué ventaja tiene el sistema maya al escribir cantidades grandes?</li>");
+      w.document.write("</ol>");
+
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+  </script>
+</body>
+</html>

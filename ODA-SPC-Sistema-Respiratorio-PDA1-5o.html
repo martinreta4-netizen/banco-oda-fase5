@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ODA - Saberes y Pensamiento Científico - El viaje del aire por mi cuerpo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --azul-oscuro: #0d47a1;
+      --azul-medio: #1976d2;
+      --azul-claro: #e3f2fd;
+      --gris-claro: #f5f5f5;
+      --texto: #123047;
+      --exito: #1565c0;
+      --dificultad: #c62828;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #e3f2fd 0%, #bbdefb 40%, #e3f2fd 100%);
+      color: var(--texto);
+      padding: 16px;
+    }
+
+    .oda-contenedor {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      border: 3px solid var(--azul-medio);
+    }
+
+    header {
+      background: linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio));
+      color: white;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logos img {
+      height: 50px;
+      object-fit: contain;
+      background: white;
+      padding: 4px;
+      border-radius: 8px;
+    }
+
+    .titulo-encabezado {
+      text-align: center;
+      flex: 1;
+    }
+
+    .titulo-encabezado h1 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .titulo-encabezado h2 {
+      font-size: 0.9rem;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+
+    .sub-encabezado {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+
+    .avatar-contenedor {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .avatar-contenedor img {
+      height: 70px;
+      width: auto;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #bbdefb;
+      object-fit: contain;
+    }
+
+    .avatar-texto {
+      font-size: 0.75rem;
+      max-width: 140px;
+    }
+
+    main {
+      padding: 16px 18px 20px 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(260px, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+
+      .avatar-contenedor {
+        display: none;
+      }
+    }
+
+    .tarjeta-presentacion {
+      background: var(--azul-claro);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-left: 5px solid var(--azul-oscuro);
+    }
+
+    .tarjeta-presentacion h2 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+
+    .badge-campo {
+      display: inline-block;
+      background: #ffffffdd;
+      color: var(--azul-oscuro);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      border: 1px solid #bbdefb;
+    }
+
+    .info-programa {
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+    }
+
+    .info-programa strong {
+      color: var(--azul-oscuro);
+    }
+
+    .pda-texto {
+      font-size: 0.75rem;
+      margin-top: 6px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: #ffffffaa;
+      border: 1px dashed var(--azul-medio);
+    }
+
+    .datos-alumno {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 0.78rem;
+    }
+
+    .datos-alumno label {
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .datos-alumno input {
+      border-radius: 999px;
+      border: 1px solid #90caf9;
+      padding: 3px 8px;
+      font-size: 0.78rem;
+      min-width: 130px;
+    }
+
+    .tabs-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .tabs-menu button {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      background: #ffffff;
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .tabs-menu button.activo {
+      background: var(--azul-medio);
+      color: white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .tabs-menu button span.icono {
+      font-size: 0.9rem;
+    }
+
+    .tab-contenido {
+      display: none;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid #e0e0e0;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .tab-contenido.activo {
+      display: block;
+    }
+
+    h3 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--azul-oscuro);
+    }
+
+    p {
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+
+    ul {
+      padding-left: 18px;
+      margin-bottom: 6px;
+    }
+
+    ul li {
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+
+    .bloque {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: var(--gris-claro);
+    }
+
+    .bloque h4 {
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+
+    .etiqueta-ejes {
+      display: inline-block;
+      font-size: 0.72rem;
+      background: #e8f5e9;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      border: 1px solid #c8e6c9;
+    }
+
+    .boton-voz {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      background: #e3f2fd;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+
+    .boton-voz:hover {
+      background: #bbdefb;
+    }
+
+    .columna-derecha {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tarjeta-avatar-lado {
+      background: var(--azul-claro);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #bbdefb;
+    }
+
+    .tarjeta-avatar-lado img {
+      height: 110px;
+      width: auto;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #90caf9;
+      margin-bottom: 6px;
+      object-fit: contain;
+    }
+
+    .tarjeta-avatar-lado p {
+      font-size: 0.77rem;
+    }
+
+    .tarjeta-acciones {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .tarjeta-acciones h3 {
+      margin-bottom: 4px;
+    }
+
+    .tarjeta-acciones button {
+      width: 100%;
+      margin-top: 6px;
+      border-radius: 999px;
+      border: none;
+      padding: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: var(--azul-oscuro);
+      color: white;
+    }
+
+    .tarjeta-acciones button.secundario {
+      background: #ffffff;
+      color: var(--azul-oscuro);
+      border: 1px solid var(--azul-oscuro);
+    }
+
+    .tarjeta-acciones button:hover {
+      filter: brightness(1.05);
+    }
+
+    .tarjeta-notas {
+      background: #fafafa;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px dashed #b0bec5;
+    }
+
+    .tarjeta-notas textarea {
+      width: 100%;
+      min-height: 80px;
+      border-radius: 10px;
+      border: 1px solid #cfd8dc;
+      padding: 6px;
+      font-size: 0.8rem;
+      resize: vertical;
+    }
+
+    .modelo-respiratorio {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+      gap: 10px;
+      align-items: center;
+    }
+
+    @media (max-width: 700px) {
+      .modelo-respiratorio {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .animacion-pulmones {
+      background: linear-gradient(to top, #e3f2fd, #ffffff);
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid #bbdefb;
+      position: relative;
+      min-height: 190px;
+      overflow: hidden;
+    }
+
+    .animacion-pulmones h4 {
+      text-align: center;
+      margin-bottom: 6px;
+    }
+
+    .torso {
+      position: absolute;
+      inset: 32px 30px 35px 30px;
+      border-radius: 30px;
+      border: 2px solid #90caf9;
+      background: rgba(227, 242, 253, 0.8);
+    }
+
+    .pulmon {
+      position: absolute;
+      width: 60px;
+      height: 80px;
+      border-radius: 60px 60px 40px 40px;
+      background: #bbdefb;
+      border: 2px solid #90caf9;
+      bottom: 48px;
+      transition: all 0.5s ease;
+    }
+
+    .pulmon.izquierdo {
+      left: 50%;
+      transform: translateX(-80px);
+    }
+
+    .pulmon.derecho {
+      right: 50%;
+      transform: translateX(80px);
+    }
+
+    .traquea {
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 60px;
+      background: repeating-linear-gradient(
+        to bottom,
+        #90caf9,
+        #90caf9 4px,
+        #e3f2fd 4px,
+        #e3f2fd 8px
+      );
+      border-radius: 10px;
+      border: 2px solid #64b5f6;
+    }
+
+    .diafragma {
+      position: absolute;
+      left: 18px;
+      right: 18px;
+      height: 18px;
+      bottom: 40px;
+      border-radius: 999px 999px 0 0;
+      background: #64b5f6;
+      transition: all 0.5s ease;
+    }
+
+    .animacion-pulmones.inhalar .pulmon {
+      height: 96px;
+      bottom: 55px;
+      background: #90caf9;
+    }
+
+    .animacion-pulmones.inhalar .diafragma {
+      bottom: 32px;
+    }
+
+    .controles-respiracion {
+      position: absolute;
+      bottom: 6px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 6px;
+    }
+
+    .controles-respiracion button {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      padding: 3px 8px;
+      background: #ffffff;
+      font-size: 0.7rem;
+      cursor: pointer;
+    }
+
+    .controles-respiracion button.activo {
+      background: var(--azul-medio);
+      color: white;
+    }
+
+    .actividad-pregunta {
+      margin-bottom: 10px;
+      padding: 8px;
+      background: #fafafa;
+      border-radius: 10px;
+      border: 1px solid #e0e0e0;
+    }
+
+    .actividad-pregunta p {
+      margin-bottom: 4px;
+      font-weight: 600;
+      font-size: 0.8rem;
+    }
+
+    .actividad-opciones label {
+      display: block;
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+      cursor: pointer;
+    }
+
+    .retroalimentacion {
+      font-size: 0.78rem;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+
+    .retro-ok {
+      color: var(--exito);
+    }
+
+    .retro-mal {
+      color: var(--dificultad);
+    }
+
+    .lista-auto {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 6px;
+    }
+
+    .item-auto {
+      padding: 6px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      font-size: 0.78rem;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .item-auto input {
+      margin-top: 2px;
+    }
+
+    .item-auto span {
+      flex: 1;
+    }
+
+    .logro {
+      color: var(--exito);
+      font-weight: 600;
+    }
+
+    .dificultad {
+      color: var(--dificultad);
+      font-weight: 600;
+    }
+
+    .imprimible {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px dashed #b0bec5;
+      margin-bottom: 8px;
+    }
+
+    .imprimible h4 {
+      text-align: center;
+      margin-bottom: 4px;
+      font-size: 0.88rem;
+      color: var(--azul-oscuro);
+    }
+
+    .imprimible p,
+    .imprimible li {
+      font-size: 0.78rem;
+    }
+
+    .copyright {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #607d8b;
+      padding: 6px 10px 10px 10px;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+    }
+
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .oda-contenedor {
+        border: none;
+        box-shadow: none;
+      }
+      .tarjeta-acciones,
+      .tarjeta-notas,
+      .tabs-menu,
+      .boton-voz,
+      .controles-respiracion button,
+      .no-imprimir,
+      .avatar-contenedor,
+      .tarjeta-avatar-lado {
+        display: none !important;
+      }
+      .tab-contenido {
+        max-height: none;
+        overflow: visible;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="oda-contenedor">
+    <header>
+      <div class="logos">
+        <img src="sep_logo.png" alt="Logo SEP" />
+      </div>
+
+      <div class="titulo-encabezado">
+        <h1>Saberes y Pensamiento Científico – Fase 5</h1>
+        <h2>El viaje del aire por mi cuerpo</h2>
+        <div class="sub-encabezado">
+          Contenido: <strong>Estructura y funcionamiento del cuerpo humano: sistemas circulatorio, respiratorio e inmunológico, y su relación con la salud ambiental, así como acciones para su cuidado.</strong>
+        </div>
+      </div>
+
+      <div class="avatar-contenedor">
+        <img src="avatar_guia.png" alt="Avatar guía" />
+        <div class="avatar-texto">
+          <strong>Hola, soy tu guía.</strong><br />
+          Hoy vamos a seguir el camino del aire por tu cuerpo y a cuidar tus pulmones.
+        </div>
+      </div>
+
+      <div class="logos">
+        <img src="escudo_escuela.png" alt="Escudo escuela" />
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="tarjeta-presentacion">
+          <div class="badge-campo">Campo formativo: Saberes y Pensamiento Científico</div>
+          <h2>Quinto grado · Sistema respiratorio</h2>
+          <div class="info-programa">
+            <strong>PDA (5.º):</strong><br />
+            Describe y representa mediante modelos, la relación de la nariz, tráquea y pulmones, como parte del sistema respiratorio, con el intercambio de gases.
+          </div>
+
+          <div class="pda-texto" id="texto-intro">
+            <strong>Propósito de la ODA:</strong>
+            Que las niñas y los niños comprendan por dónde entra y sale el aire de su cuerpo,
+            identifiquen la nariz, la tráquea y los pulmones, y utilicen un modelo real y uno animado
+            para representar el intercambio de gases cuando respiramos.
+          </div>
+
+          <button class="boton-voz no-imprimir" onclick="leerTexto('texto-intro')">
+            🔊 Escuchar la consigna inicial
+          </button>
+
+          <div class="datos-alumno">
+            <div>
+              <label for="nombre-alumno">Nombre del alumno(a):</label>
+              <input type="text" id="nombre-alumno" placeholder="Escribe tu nombre" />
+            </div>
+            <div>
+              <label for="grado-grupo">Grado y grupo:</label>
+              <input type="text" id="grado-grupo" placeholder="5.º / 6.º" />
+            </div>
+            <div>
+              <label for="fecha">Fecha:</label>
+              <input type="text" id="fecha" placeholder="dd/mm/aaaa" />
+            </div>
+          </div>
+        </div>
+
+        <nav class="tabs-menu no-imprimir">
+          <button class="activo" data-tab="inicio">
+            <span class="icono">🏁</span> Inicio
+          </button>
+          <button data-tab="explora">
+            <span class="icono">🔍</span> Explora
+          </button>
+          <button data-tab="modelo">
+            <span class="icono">🫁</span> Modelos
+          </button>
+          <button data-tab="practica">
+            <span class="icono">✏️</span> Practica
+          </button>
+          <button data-tab="evalua">
+            <span class="icono">📊</span> Evalúo mi aprendizaje
+          </button>
+          <button data-tab="imprimibles">
+            <span class="icono">🖨️</span> Imprimibles
+          </button>
+        </nav>
+
+        <!-- INICIO -->
+        <section id="inicio" class="tab-contenido activo">
+          <h3>1. Bienvenida al viaje del aire</h3>
+          <div class="bloque">
+            <h4>¿Qué aprenderás?</h4>
+            <p>
+              En esta ODA conocerás el camino que sigue el aire desde que entra por tu
+              nariz hasta que llega a tus pulmones. Usaremos un <strong>modelo real</strong>
+              que puedes construir con materiales sencillos y un <strong>modelo animado</strong>
+              dentro de esta misma página.
+            </p>
+          </div>
+
+          <div class="bloque">
+            <h4>Ejes articuladores presentes</h4>
+            <span class="etiqueta-ejes">Vida saludable</span>
+            <span class="etiqueta-ejes">Cuidado del medio ambiente</span>
+            <span class="etiqueta-ejes">Pensamiento crítico</span>
+            <span class="etiqueta-ejes">Inclusión</span>
+            <p>
+              Reflexionarás sobre cómo <strong>el aire que respiras</strong> y tus
+              <strong>hábitos de vida</strong> afectan la salud de tus pulmones,
+              especialmente si hay polvo, humo de quema de basura o tabaco en el lugar
+              donde vives.
+            </p>
+          </div>
+
+          <div class="bloque">
+            <h4>Acuerdo de aula</h4>
+            <ul>
+              <li>Escuchamos con respeto las opiniones de nuestras compañeras y compañeros.</li>
+              <li>Levantamos la mano para participar y hacemos preguntas si algo no nos queda claro.</li>
+              <li>Cuidamos nuestro cuerpo: no imitamos conductas de riesgo (como fumar).</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- EXPLORA -->
+        <section id="explora" class="tab-contenido">
+          <h3>2. Explora: “El camino del aire”</h3>
+
+          <button class="boton-voz" onclick="leerTexto('texto-explora')">
+            🔊 Escuchar la lectura
+          </button>
+
+          <div class="bloque" id="texto-explora">
+            <h4>Lectura guiada</h4>
+            <p>
+              Imagina que eres una pequeña molécula de oxígeno que viaja en el aire.
+              Cuando una niña o un niño respira por la <strong>nariz</strong>, tú entras
+              junto con muchas otras moléculas. La nariz calienta el aire, lo limpia con
+              sus vellos y lo humedece para que llegue suave a los pulmones.
+            </p>
+            <p>
+              Después pasas por la <strong>faringe</strong> y la
+              <strong>laringe</strong>, como si fueran pasillos. Enseguida entras a un
+              tubo más grueso llamado <strong>tráquea</strong>. La tráquea está formada
+              por anillos de cartílago que la mantienen abierta para que el aire siempre
+              tenga un camino libre.
+            </p>
+            <p>
+              La tráquea se divide en dos <strong>bronquios</strong>, uno que va al
+              pulmón derecho y otro al pulmón izquierdo. Cada bronquio se divide en
+              muchos caminos más pequeños llamados <strong>bronquiolos</strong>.
+            </p>
+            <p>
+              Al final de los bronquiolos hay unos pequeños “racimos de uvas” muy
+              especiales, llamados <strong>alvéolos</strong>. Ahí es donde ocurre la
+              magia: el oxígeno pasa a la sangre y el dióxido de carbono sale de la
+              sangre para ser expulsado cuando <strong>exhalas</strong>.
+            </p>
+            <p>
+              Todo este viaje sucede gracias al movimiento de tus pulmones y al
+              <strong>diafragma</strong>, un músculo que se contrae y se relaja para
+              ayudarte a inhalar y exhalar aire.
+            </p>
+          </div>
+
+          <div class="bloque">
+            <h4>Piensa y comenta</h4>
+            <ul>
+              <li>¿Qué pasaría si el aire que entra por tu nariz está lleno de humo o polvo?</li>
+              <li>¿Qué acciones puedes hacer en tu casa y escuela para cuidar el aire que respiras?</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- MODELOS -->
+        <section id="modelo" class="tab-contenido">
+          <h3>3. Modelos del sistema respiratorio</h3>
+
+          <div class="modelo-respiratorio">
+            <div class="bloque">
+              <h4>3.1 Modelo real: “Pulmones con botella y globos”</h4>
+              <p><strong>Materiales:</strong></p>
+              <ul>
+                <li>1 botella de plástico transparente (cortada por la parte de abajo)</li>
+                <li>3 globos (dos del mismo color y otro diferente)</li>
+                <li>1 liguita o cinta adhesiva</li>
+                <li>Tijeras (usar con supervisión de una persona adulta)</li>
+              </ul>
+              <p><strong>Pasos:</strong></p>
+              <ol style="padding-left:18px; font-size:0.8rem; margin-top:4px;">
+                <li>Coloca dos globos en la boca de la botella: serán los <strong>pulmones</strong>. Asegúralos con la liguita.</li>
+                <li>Corta la parte de abajo de la botella (hazlo con ayuda de un adulto).</li>
+                <li>Con el tercer globo, corta la parte del “pico” y estira el globo para tapar la abertura de abajo de la botella. Será el <strong>diafragma</strong>.</li>
+                <li>Cuando jalas hacia abajo el globo de abajo (diafragma), los globos de dentro se inflan: es como <strong>inhalar</strong>.</li>
+                <li>Cuando sueltas el globo de abajo, los globos se desinflan: es como <strong>exhalar</strong>.</li>
+              </ol>
+              <p style="margin-top:4px;">
+                Observa cómo cambia el tamaño de los globos y relaciona este movimiento con tu propia respiración.
+              </p>
+            </div>
+
+            <div class="animacion-pulmones" id="animacion-pulmones">
+              <h4>3.2 Modelo animado: inhalar y exhalar</h4>
+              <div class="torso"></div>
+              <div class="traquea"></div>
+              <div class="pulmon izquierdo"></div>
+              <div class="pulmon derecho"></div>
+              <div class="diafragma"></div>
+              <div class="controles-respiracion">
+                <button id="btn-exhalar" class="activo" onclick="setRespiracion('exhalar')">Exhalar</button>
+                <button id="btn-inhalar" onclick="setRespiracion('inhalar')">Inhalar</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bloque" style="margin-top:10px;">
+            <h4>Relaciona el modelo con tu cuerpo</h4>
+            <ul>
+              <li>La botella representa el <strong>tórax</strong>.</li>
+              <li>Los globos internos representan los <strong>pulmones</strong>.</li>
+              <li>El globo de abajo representa el <strong>diafragma</strong>.</li>
+              <li>La boca de la botella y la parte superior representan la <strong>tráquea</strong>.</li>
+            </ul>
+            <p>
+              Mientras juegas con el modelo, repite en voz alta: <em>nariz → tráquea → pulmones → intercambio de gases</em>.
+            </p>
+          </div>
+        </section>
+
+        <!-- PRACTICA -->
+        <section id="practica" class="tab-contenido">
+          <h3>4. Practica lo aprendido</h3>
+
+          <button class="boton-voz" onclick="leerTexto('consigna-practica')">
+            🔊 Escuchar instrucciones de la actividad
+          </button>
+
+          <div class="bloque" id="consigna-practica">
+            <h4>Instrucciones generales</h4>
+            <p>
+              Responde las siguientes actividades. Puedes usar tu modelo de botella y
+              globos o el modelo animado para ayudarte. Al terminar, comenta tus
+              respuestas con tu maestra, maestro o con un compañero.
+            </p>
+          </div>
+
+          <div class="actividad-pregunta">
+            <p>4.1 Opción múltiple</p>
+            <p style="font-weight:400;">
+              ¿Por dónde entra primero el aire cuando respiras de manera normal?
+            </p>
+            <div class="actividad-opciones">
+              <label>
+                <input type="radio" name="p1" value="a" onchange="revisarP1(this.value)" />
+                a) Por los pulmones
+              </label>
+              <label>
+                <input type="radio" name="p1" value="b" onchange="revisarP1(this.value)" />
+                b) Por el corazón
+              </label>
+              <label>
+                <input type="radio" name="p1" value="c" onchange="revisarP1(this.value)" />
+                c) Por la nariz o la boca
+              </label>
+            </div>
+            <div id="retro-p1" class="retroalimentacion"></div>
+          </div>
+
+          <div class="actividad-pregunta">
+            <p>4.2 Relaciona con una línea (puedes hacerlo en tu cuaderno)</p>
+            <p style="font-weight:400;">
+              Une cada parte del sistema respiratorio con la función que le corresponde.
+            </p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:0.8rem; margin-top:4px;">
+              <div>
+                <strong>Partes</strong>
+                <ul>
+                  <li>a) Nariz</li>
+                  <li>b) Tráquea</li>
+                  <li>c) Pulmones</li>
+                </ul>
+              </div>
+              <div>
+                <strong>Funciones</strong>
+                <ul>
+                  <li>1) Calienta, limpia y humedece el aire.</li>
+                  <li>2) Lleva el aire hacia los bronquios.</li>
+                  <li>3) Realizan el intercambio de gases con la sangre.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="actividad-pregunta">
+            <p>4.3 Completa las oraciones</p>
+            <ol style="padding-left:18px; font-size:0.8rem;">
+              <li>
+                El aire entra por la ________, baja por la ________ y llega a los
+                ________.
+              </li>
+              <li>
+                En los alvéolos, el ________ pasa a la sangre y el dióxido de carbono
+                se elimina al ________.
+              </li>
+            </ol>
+          </div>
+
+          <div class="actividad-pregunta">
+            <p>4.4 Verdadero (V) o Falso (F)</p>
+            <ol style="padding-left:18px; font-size:0.8rem;">
+              <li>La tráquea es un tubo que lleva el aire hacia los pulmones. ( )</li>
+              <li>Los pulmones bombean sangre a todo el cuerpo. ( )</li>
+              <li>El diafragma ayuda en los movimientos de inhalar y exhalar. ( )</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- EVALÚO -->
+        <section id="evalua" class="tab-contenido">
+          <h3>5. Evalúo mi aprendizaje</h3>
+          <div class="bloque">
+            <h4>Autoevaluación</h4>
+            <p>
+              Marca con una ✓ lo que consideras que ya haces bien y señala con un
+              círculo lo que aún necesitas practicar.
+            </p>
+            <div class="lista-auto">
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Puedo señalar en mi cuerpo dónde están la nariz, la tráquea y los pulmones.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Logro explicar con mis palabras el camino que sigue el aire hasta llegar a los pulmones.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Utilizo el modelo de botella y globos para mostrar qué ocurre al inhalar y exhalar.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Relación el cuidado del aire y del ambiente con la salud de mis pulmones.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bloque">
+            <h4>Diálogo con mi maestra o maestro</h4>
+            <p>Comenta con tu docente:</p>
+            <ul>
+              <li><span class="logro">Lo que ya dominas</span> sobre el camino del aire.</li>
+              <li><span class="dificultad">Lo que se te dificulta</span> y necesitas reforzar.</li>
+              <li>Qué otras actividades te gustaría hacer para seguir aprendiendo del sistema respiratorio.</li>
+            </ul>
+          </div>
+        </section>
+
+        <!-- IMPRIMIBLES -->
+        <section id="imprimibles" class="tab-contenido">
+          <h3>6. Material para imprimir</h3>
+
+          <div class="imprimible" id="actividad-impresa">
+            <h4>Actividad para imprimir – El viaje del aire por mi cuerpo</h4>
+            <p><strong>Nombre del alumno(a): _______________________   Grado y grupo: _________</strong></p>
+            <p><strong>Instrucciones:</strong> Responde en el espacio indicado. Usa letra clara.</p>
+
+            <p style="margin-top:6px;"><strong>1. Completa el diagrama.</strong></p>
+            <p>Escribe el nombre de cada parte del sistema respiratorio en el lugar que indique tu maestro(a):</p>
+            <ul>
+              <li>Nariz</li>
+              <li>Tráquea</li>
+              <li>Pulmones</li>
+            </ul>
+            <p>(En la impresión, la maestra o maestro puede dibujar el croquis del sistema respiratorio al lado.)</p>
+
+            <p style="margin-top:6px;"><strong>2. Relaciona con líneas.</strong></p>
+            <p>Une cada parte con su función.</p>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; font-size:0.78rem; margin-top:4px;">
+              <div>
+                <strong>Partes</strong>
+                <ul>
+                  <li>a) Nariz</li>
+                  <li>b) Tráquea</li>
+                  <li>c) Pulmones</li>
+                </ul>
+              </div>
+              <div>
+                <strong>Funciones</strong>
+                <ul>
+                  <li>( ) Calienta, limpia y humedece el aire.</li>
+                  <li>( ) Realizan el intercambio de gases con la sangre.</li>
+                  <li>( ) Lleva el aire hasta los bronquios.</li>
+                </ul>
+              </div>
+            </div>
+
+            <p style="margin-top:6px;"><strong>3. Verdadero (V) o Falso (F).</strong></p>
+            <ol style="padding-left:18px; font-size:0.78rem;">
+              <li>La nariz ayuda a filtrar el polvo del aire que respiramos. (   )</li>
+              <li>El aire llega primero a los pulmones y luego a la tráquea. (   )</li>
+              <li>El diafragma participa en los movimientos de inhalar y exhalar. (   )</li>
+            </ol>
+
+            <p style="margin-top:6px;"><strong>4. Escribe.</strong></p>
+            <p>Explica con tus palabras cómo viaja el aire desde la nariz hasta los pulmones.</p>
+            <p style="margin-top:2px;">______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+          </div>
+
+          <div class="imprimible" id="resultados-impresos">
+            <h4>Hoja de resultados – Sistema respiratorio</h4>
+            <p><strong>Nombre del alumno(a): ______________________  Grado y grupo: _________</strong></p>
+            <p><strong>PDA trabajado (5.º):</strong> Describe y representa mediante modelos, la relación de la nariz, tráquea y pulmones, como parte del sistema respiratorio, con el intercambio de gases.</p>
+
+            <p style="margin-top:6px;"><strong>Logros observados (marcar en azul):</strong></p>
+            <ul style="margin-left:16px; margin-top:2px;">
+              <li>Identifica en su propio cuerpo la nariz, la tráquea y los pulmones.</li>
+              <li>Explica con claridad el camino del aire hasta los pulmones.</li>
+              <li>Utiliza el modelo (botella y globos) para representar la inhalación y exhalación.</li>
+              <li>Relaciona la calidad del aire y los hábitos de vida con la salud respiratoria.</li>
+            </ul>
+
+            <p style="margin-top:6px;"><strong>Dificultades detectadas (marcar en rojo):</strong></p>
+            <ul style="margin-left:16px; margin-top:2px;">
+              <li>Confunde el orden de las partes del sistema respiratorio.</li>
+              <li>Le cuesta explicar qué es el intercambio de gases.</li>
+              <li>Presenta poca participación o dificultades para manipular el modelo.</li>
+            </ul>
+
+            <p style="margin-top:6px;"><strong>Observaciones de la maestra o maestro:</strong></p>
+            <p>______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+
+            <p style="margin-top:6px;"><strong>Compromisos de mejora del alumno(a):</strong></p>
+            <p>______________________________________________________________________________</p>
+            <p>______________________________________________________________________________</p>
+          </div>
+
+          <p class="no-imprimir" style="font-size:0.78rem; margin-top:4px;">
+            Usa los botones del panel derecho para imprimir solo la <strong>actividad</strong> o solo la
+            <strong>hoja de resultados</strong>.
+          </p>
+        </section>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <aside class="columna-derecha">
+        <div class="tarjeta-avatar-lado">
+          <img src="avatar_guia.png" alt="Avatar guía" />
+          <p>
+            <strong>Tip del guía:</strong><br />
+            Respira profundo por la nariz y siente cómo se llenan tus pulmones. Luego
+            suelta el aire despacio. Hazlo tres veces antes de empezar la actividad.
+          </p>
+        </div>
+
+        <div class="tarjeta-acciones">
+          <h3>Impresiones rápidas</h3>
+          <button onclick="imprimirSeccion('actividad-impresa')">
+            🖨️ Imprimir actividad para el alumno
+          </button>
+          <button class="secundario" onclick="imprimirSeccion('resultados-impresos')">
+            🖨️ Imprimir hoja de resultados
+          </button>
+        </div>
+
+        <div class="tarjeta-notas">
+          <h3>Notas para el docente</h3>
+          <p style="font-size:0.75rem; margin-bottom:4px;">
+            Puedes anotar acuerdos, adaptaciones o ideas para mejorar esta ODA con tus grupos.
+          </p>
+          <textarea placeholder="Ejemplo: usar ejemplos de humo de leña, quema de basura o polvo del camino del ejido para contextualizar el cuidado del sistema respiratorio."></textarea>
+        </div>
+      </aside>
+    </main>
+
+    <div class="copyright">
+      © 2025. Autor: Martín Reta (docente) en co-creación con ChatGPT (OpenAI).
+      Uso estrictamente educativo y sin fines de lucro.
+    </div>
+  </div>
+
+  <script>
+    // --- Cambio de pestañas ---
+    document.querySelectorAll(".tabs-menu button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tabId = btn.getAttribute("data-tab");
+
+        document
+          .querySelectorAll(".tabs-menu button")
+          .forEach((b) => b.classList.remove("activo"));
+        btn.classList.add("activo");
+
+        document
+          .querySelectorAll(".tab-contenido")
+          .forEach((sec) => sec.classList.remove("activo"));
+        document.getElementById(tabId).classList.add("activo");
+      });
+    });
+
+    // --- Voz (masculina, donde sea posible) ---
+    function leerTexto(idElemento) {
+      const elemento = document.getElementById(idElemento);
+      if (!elemento) return;
+
+      const texto = elemento.innerText || elemento.textContent;
+      if (!("speechSynthesis" in window)) {
+        alert("Lo siento, tu navegador no soporta lectura en voz alta.");
+        return;
+      }
+
+      window.speechSynthesis.cancel();
+
+      const mensaje = new SpeechSynthesisUtterance(texto);
+      mensaje.lang = "es-MX";
+
+      const voces = window.speechSynthesis.getVoices();
+      const vozMasculina =
+        voces.find(
+          (v) =>
+            v.lang.startsWith("es") &&
+            (v.name.toLowerCase().includes("male") ||
+              v.name.toLowerCase().includes("hombre") ||
+              v.name.toLowerCase().includes("miguel") ||
+              v.name.toLowerCase().includes("diego"))
+        ) ||
+        voces.find((v) => v.lang.startsWith("es")) ||
+        null;
+
+      if (vozMasculina) {
+        mensaje.voice = vozMasculina;
+      }
+
+      window.speechSynthesis.speak(mensaje);
+    }
+
+    // algunos navegadores necesitan este "truco" para cargar las voces
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+
+    // --- Modelo animado: inhalar / exhalar ---
+    function setRespiracion(estado) {
+      const cont = document.getElementById("animacion-pulmones");
+      const btnInhalar = document.getElementById("btn-inhalar");
+      const btnExhalar = document.getElementById("btn-exhalar");
+
+      if (!cont) return;
+
+      if (estado === "inhalar") {
+        cont.classList.add("inhalar");
+        btnInhalar.classList.add("activo");
+        btnExhalar.classList.remove("activo");
+      } else {
+        cont.classList.remove("inhalar");
+        btnExhalar.classList.add("activo");
+        btnInhalar.classList.remove("activo");
+      }
+    }
+
+    // --- Retroalimentación simple para P1 ---
+    function revisarP1(valor) {
+      const retro = document.getElementById("retro-p1");
+      if (!retro) return;
+
+      if (valor === "c") {
+        retro.textContent = "✔ Correcto: el aire entra por la nariz o la boca y luego va a la tráquea.";
+        retro.className = "retroalimentacion retro-ok";
+      } else {
+        retro.textContent = "✘ Revisa la lectura: primero entra por la nariz o la boca, no directamente a los pulmones ni al corazón.";
+        retro.className = "retroalimentacion retro-mal";
+      }
+    }
+
+    // --- Impresión de secciones ---
+    function imprimirSeccion(idSeccion) {
+      const seccion = document.getElementById(idSeccion);
+      if (!seccion) return;
+
+      const ventana = window.open("", "_blank");
+      ventana.document.write("<html><head><title>Imprimir</title>");
+      ventana.document.write(
+        '<meta charset="UTF-8"><style>body{font-family:Segoe UI,system-ui,sans-serif;font-size:12px;padding:12px;} h4{text-align:center;margin-bottom:6px;} ul,ol{padding-left:18px;}</style>'
+      );
+      ventana.document.write("</head><body>");
+      ventana.document.write(seccion.innerHTML);
+      ventana.document.write("</body></html>");
+      ventana.document.close();
+      ventana.focus();
+      ventana.print();
+      ventana.close();
+    }
+  </script>
+</body>
+</html>

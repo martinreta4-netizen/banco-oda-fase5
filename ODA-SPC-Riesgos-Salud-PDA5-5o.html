@@ -1,0 +1,1034 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ODA - SPC - Cuidamos nuestra salud (PDA 5)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --azul-oscuro: #0d47a1;
+      --azul-medio: #1976d2;
+      --azul-claro: #e3f2fd;
+      --gris-claro: #f5f5f5;
+      --texto: #123047;
+      --exito: #1565c0;
+      --dificultad: #c62828;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top, #e3f2fd 0%, #bbdefb 40%, #e3f2fd 100%);
+      color: var(--texto);
+      padding: 16px;
+    }
+    .oda-contenedor {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      border: 3px solid var(--azul-medio);
+    }
+    header {
+      background: linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio));
+      color: white;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logos img {
+      height: 50px;
+      object-fit: contain;
+      background: white;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .titulo-encabezado {
+      text-align: center;
+      flex: 1;
+    }
+    .titulo-encabezado h1 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .titulo-encabezado h2 {
+      font-size: 0.9rem;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+    .sub-encabezado {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+    .avatar-contenedor {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .avatar-contenedor img {
+      height: 70px;
+      width: auto;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #bbdefb;
+      object-fit: contain;
+    }
+    .avatar-texto {
+      font-size: 0.75rem;
+      max-width: 140px;
+    }
+    main {
+      padding: 16px 18px 20px 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(260px, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .avatar-contenedor {
+        display: none;
+      }
+    }
+    .tarjeta-presentacion {
+      background: var(--azul-claro);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-left: 5px solid var(--azul-oscuro);
+    }
+    .tarjeta-presentacion h2 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+    .badge-campo {
+      display: inline-block;
+      background: #ffffffdd;
+      color: var(--azul-oscuro);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      border: 1px solid #bbdefb;
+    }
+    .info-programa {
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+    }
+    .info-programa strong {
+      color: var(--azul-oscuro);
+    }
+    .pda-texto {
+      font-size: 0.75rem;
+      margin-top: 6px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: #ffffffaa;
+      border: 1px dashed var(--azul-medio);
+    }
+    .datos-alumno {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 0.78rem;
+    }
+    .datos-alumno label {
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .datos-alumno input {
+      border-radius: 999px;
+      border: 1px solid #90caf9;
+      padding: 3px 8px;
+      font-size: 0.78rem;
+      min-width: 130px;
+    }
+    .tabs-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .tabs-menu button {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      background: #ffffff;
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+    .tabs-menu button.activo {
+      background: var(--azul-medio);
+      color: white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .tabs-menu button span.icono {
+      font-size: 0.9rem;
+    }
+    .tab-contenido {
+      display: none;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid #e0e0e0;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+    .tab-contenido.activo {
+      display: block;
+    }
+    h3 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--azul-oscuro);
+    }
+    p {
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    ul {
+      padding-left: 18px;
+      margin-bottom: 6px;
+    }
+    ul li {
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+    .bloque {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: var(--gris-claro);
+    }
+    .bloque h4 {
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+    .etiqueta-ejes {
+      display: inline-block;
+      font-size: 0.72rem;
+      background: #e8f5e9;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      border: 1px solid #c8e6c9;
+    }
+    .boton-voz {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      background: #e3f2fd;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .boton-voz:hover {
+      background: #bbdefb;
+    }
+    .columna-derecha {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tarjeta-avatar-lado {
+      background: var(--azul-claro);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #bbdefb;
+    }
+    .tarjeta-avatar-lado img {
+      height: 110px;
+      width: auto;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #90caf9;
+      margin-bottom: 6px;
+      object-fit: contain;
+    }
+    .tarjeta-avatar-lado p {
+      font-size: 0.77rem;
+    }
+    .tarjeta-acciones {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+    }
+    .tarjeta-acciones h3 {
+      margin-bottom: 4px;
+    }
+    .tarjeta-acciones button {
+      width: 100%;
+      margin-top: 6px;
+      border-radius: 999px;
+      border: none;
+      padding: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: var(--azul-oscuro);
+      color: white;
+    }
+    .tarjeta-acciones button.secundario {
+      background: #ffffff;
+      color: var(--azul-oscuro);
+      border: 1px solid var(--azul-oscuro);
+    }
+    .tarjeta-acciones button:hover {
+      filter: brightness(1.05);
+    }
+    .tarjeta-notas {
+      background: #fafafa;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px dashed #b0bec5;
+    }
+    .tarjeta-notas textarea {
+      width: 100%;
+      min-height: 80px;
+      border-radius: 10px;
+      border: 1px solid #cfd8dc;
+      padding: 6px;
+      font-size: 0.8rem;
+      resize: vertical;
+    }
+    .actividad-bloque {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+    }
+    .actividad-bloque p.titulo {
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.82rem;
+    }
+    .tabla-conductas {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 0.78rem;
+    }
+    .tabla-conductas th, .tabla-conductas td {
+      border: 1px solid #cfd8dc;
+      padding: 4px 6px;
+      text-align: center;
+    }
+    .tabla-conductas th {
+      background: #e3f2fd;
+      font-weight: 600;
+    }
+    .tabla-conductas td.descripcion {
+      text-align: left;
+    }
+    .retro-fila {
+      font-size: 0.75rem;
+      margin-top: 3px;
+      text-align: left;
+    }
+    .retro-ok {
+      color: var(--exito);
+      font-weight: 600;
+    }
+    .retro-mal {
+      color: var(--dificultad);
+      font-weight: 600;
+    }
+    label {
+      font-size: 0.78rem;
+    }
+    textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #cfd8dc;
+      padding: 6px;
+      font-size: 0.8rem;
+      resize: vertical;
+      min-height: 50px;
+    }
+    .lista-auto {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 6px;
+    }
+    .item-auto {
+      padding: 6px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      font-size: 0.78rem;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+    .item-auto input {
+      margin-top: 2px;
+    }
+    .item-auto span { flex: 1; }
+    .logro {
+      color: var(--exito);
+      font-weight: 600;
+    }
+    .dificultad {
+      color: var(--dificultad);
+      font-weight: 600;
+    }
+    .imprimible {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px dashed #b0bec5;
+      margin-bottom: 8px;
+    }
+    .imprimible h4 {
+      text-align: center;
+      margin-bottom: 4px;
+      font-size: 0.88rem;
+      color: var(--azul-oscuro);
+    }
+    .imprimible p,
+    .imprimible li {
+      font-size: 0.78rem;
+    }
+    .copyright {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #607d8b;
+      padding: 6px 10px 10px 10px;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+    }
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .oda-contenedor {
+        border: none;
+        box-shadow: none;
+      }
+      .tarjeta-acciones,
+      .tarjeta-notas,
+      .tabs-menu,
+      .boton-voz,
+      .no-imprimir,
+      .avatar-contenedor,
+      .tarjeta-avatar-lado {
+        display: none !important;
+      }
+      .tab-contenido {
+        max-height: none;
+        overflow: visible;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="oda-contenedor">
+    <header>
+      <div class="logos">
+        <img src="sep_logo.png" alt="Logo SEP" />
+      </div>
+      <div class="titulo-encabezado">
+        <h1>Saberes y Pensamiento Científico – Fase 5</h1>
+        <h2>Cuidamos nuestra salud</h2>
+        <div class="sub-encabezado">
+          Contenido: <strong>Estructura y funcionamiento del cuerpo humano: sistemas circulatorio, respiratorio e inmunológico, y su relación con la salud ambiental, así como acciones para su cuidado.</strong>
+        </div>
+      </div>
+      <div class="avatar-contenedor">
+        <img src="avatar_guia.png" alt="Avatar guía" />
+        <div class="avatar-texto">
+          <strong>Hola, soy tu guía.</strong><br />
+          Hoy hablaremos de los riesgos y de las acciones que protegen tu salud y la de tu comunidad.
+        </div>
+      </div>
+      <div class="logos">
+        <img src="escudo_escuela.png" alt="Escudo escuela" />
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="tarjeta-presentacion">
+          <div class="badge-campo">Campo formativo: Saberes y Pensamiento Científico</div>
+          <h2>Quinto grado · Factores de riesgo y cuidado de la salud</h2>
+          <div class="info-programa">
+            <strong>PDA (5.º – 5):</strong><br />
+            Explica los factores que ponen en riesgo la salud y aquellos que la favorecen, y propone acciones para reducir la propagación de enfermedades transmisibles en los entornos familiar, escolar y comunitario.
+          </div>
+          <div class="pda-texto" id="texto-intro-p5">
+            <strong>Propósito de la ODA:</strong>
+            Que las niñas y los niños identifiquen conductas que ponen en riesgo su salud y conductas que la protegen, distingan factores ambientales que favorecen o dificultan el bienestar, y propongan acciones concretas para prevenir enfermedades en su familia, escuela y comunidad.
+          </div>
+          <button class="boton-voz no-imprimir" onclick="leerTexto('texto-intro-p5')">
+            🔊 Escuchar la consigna inicial
+          </button>
+          <div class="datos-alumno">
+            <div>
+              <label for="nombre-alumno">Nombre del alumno(a):</label>
+              <input type="text" id="nombre-alumno" placeholder="Escribe tu nombre" />
+            </div>
+            <div>
+              <label for="grado-grupo">Grado y grupo:</label>
+              <input type="text" id="grado-grupo" placeholder="5.º / 6.º" />
+            </div>
+            <div>
+              <label for="fecha">Fecha:</label>
+              <input type="text" id="fecha" placeholder="dd/mm/aaaa" />
+            </div>
+          </div>
+        </div>
+
+        <nav class="tabs-menu no-imprimir">
+          <button class="activo" data-tab="inicio">
+            <span class="icono">🏁</span> Inicio
+          </button>
+          <button data-tab="explora">
+            <span class="icono">🔍</span> Explora
+          </button>
+          <button data-tab="actividades">
+            <span class="icono">✏️</span> Actividades en línea
+          </button>
+          <button data-tab="evalua">
+            <span class="icono">📊</span> Evalúo mi aprendizaje
+          </button>
+          <button data-tab="imprimibles">
+            <span class="icono">🖨️</span> Imprimibles
+          </button>
+        </nav>
+
+        <!-- INICIO -->
+        <section id="inicio" class="tab-contenido activo">
+          <h3>1. Bienvenida: riesgos y cuidados</h3>
+          <div class="bloque">
+            <h4>¿Qué aprenderás?</h4>
+            <p>
+              Reconocerás <strong>factores de riesgo</strong> que pueden afectar tu salud
+              (como el humo, la falta de higiene o la mala alimentación) y
+              <strong>factores que la protegen</strong> (como el lavado de manos, la ventilación
+              del salón y las vacunas).
+            </p>
+            <p>
+              Responderás todas las actividades <strong>dentro de esta ODA</strong>, sin usar el cuaderno,
+              para que tu maestra o maestro pueda revisar tu trabajo de forma más clara.
+            </p>
+          </div>
+          <div class="bloque">
+            <h4>Ejes articuladores presentes</h4>
+            <span class="etiqueta-ejes">Vida saludable</span>
+            <span class="etiqueta-ejes">Inclusión</span>
+            <span class="etiqueta-ejes">Interculturalidad crítica</span>
+            <p>
+              Reflexionarás sobre cómo las condiciones del lugar donde vives y estudias
+              influyen en tu salud, y cómo todas las personas, sin importar su origen,
+              merecen entornos limpios y cuidados.
+            </p>
+          </div>
+        </section>
+
+        <!-- EXPLORA -->
+        <section id="explora" class="tab-contenido">
+          <h3>2. Explora: ¿qué cuida y qué daña nuestra salud?</h3>
+          <button class="boton-voz" onclick="leerTexto('texto-explora-p5')">
+            🔊 Escuchar la lectura
+          </button>
+          <div class="bloque" id="texto-explora-p5">
+            <h4>Lectura guiada</h4>
+            <p>
+              La salud de una persona no depende solo de su cuerpo. También influyen su
+              familia, su escuela, su comunidad y el ambiente en el que vive.
+            </p>
+            <p>
+              Un <strong>factor de riesgo</strong> es algo que aumenta la posibilidad de enfermar.
+              Por ejemplo: respirar <strong>humo de tabaco o de quema de basura</strong>, no lavarse las
+              manos antes de comer, beber agua contaminada, dormir muy poco o compartir
+              vasos y cubiertos sin lavar.
+            </p>
+            <p>
+              Un <strong>factor protector</strong> es algo que ayuda a mantener y mejorar la salud.
+              Por ejemplo: <strong>lavarse las manos</strong> con agua y jabón, ventilar el salón,
+              cubrirse la boca al toser, vacunarse, comer frutas y verduras, hacer actividad
+              física y descansar lo suficiente.
+            </p>
+            <p>
+              Algunas enfermedades se transmiten de una persona a otra a través de gotitas
+              de saliva, manos sucias o superficies contaminadas. Para reducir su propagación,
+              es importante combinar varias acciones de cuidado, tanto en la familia como en la
+              escuela y la comunidad.
+            </p>
+          </div>
+        </section>
+
+        <!-- ACTIVIDADES EN LÍNEA -->
+        <section id="actividades" class="tab-contenido">
+          <h3>3. Actividades dentro de la ODA</h3>
+
+          <!-- 3.1 Tabla de conductas -->
+          <div class="actividad-bloque">
+            <p class="titulo">3.1 Semáforo de salud: ¿riesgo o protección?</p>
+            <p>
+              Lee cada conducta y marca si consideras que es
+              <strong>Riesgo</strong>, <strong>Neutra</strong> o <strong>Protege</strong> la salud.
+              Después, revisa la retroalimentación que aparece debajo de cada fila.
+            </p>
+            <table class="tabla-conductas">
+              <thead>
+                <tr>
+                  <th>Conducta</th>
+                  <th>Riesgo</th>
+                  <th>Neutra</th>
+                  <th>Protege</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="descripcion">1. Lavarse las manos antes de comer.</td>
+                  <td><input type="radio" name="fila1" value="riesgo" onchange="revisarFila(1, 'protege')" /></td>
+                  <td><input type="radio" name="fila1" value="neutra" onchange="revisarFila(1, 'protege')" /></td>
+                  <td><input type="radio" name="fila1" value="protege" onchange="revisarFila(1, 'protege')" /></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="retro-fila1" class="retro-fila"></div>
+
+            <table class="tabla-conductas" style="margin-top:8px;">
+              <tbody>
+                <tr>
+                  <td class="descripcion">2. Compartir la misma botella de agua con varias personas.</td>
+                  <td><input type="radio" name="fila2" value="riesgo" onchange="revisarFila(2, 'riesgo')" /></td>
+                  <td><input type="radio" name="fila2" value="neutra" onchange="revisarFila(2, 'riesgo')" /></td>
+                  <td><input type="radio" name="fila2" value="protege" onchange="revisarFila(2, 'riesgo')" /></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="retro-fila2" class="retro-fila"></div>
+
+            <table class="tabla-conductas" style="margin-top:8px;">
+              <tbody>
+                <tr>
+                  <td class="descripcion">3. Cubrirse la boca con el antebrazo al toser o estornudar.</td>
+                  <td><input type="radio" name="fila3" value="riesgo" onchange="revisarFila(3, 'protege')" /></td>
+                  <td><input type="radio" name="fila3" value="neutra" onchange="revisarFila(3, 'protege')" /></td>
+                  <td><input type="radio" name="fila3" value="protege" onchange="revisarFila(3, 'protege')" /></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="retro-fila3" class="retro-fila"></div>
+
+            <table class="tabla-conductas" style="margin-top:8px;">
+              <tbody>
+                <tr>
+                  <td class="descripcion">4. Dejar la basura tirada en el patio de la escuela.</td>
+                  <td><input type="radio" name="fila4" value="riesgo" onchange="revisarFila(4, 'riesgo')" /></td>
+                  <td><input type="radio" name="fila4" value="neutra" onchange="revisarFila(4, 'riesgo')" /></td>
+                  <td><input type="radio" name="fila4" value="protege" onchange="revisarFila(4, 'riesgo')" /></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="retro-fila4" class="retro-fila"></div>
+
+            <table class="tabla-conductas" style="margin-top:8px;">
+              <tbody>
+                <tr>
+                  <td class="descripcion">5. Ventilar el salón abriendo ventanas y puertas.</td>
+                  <td><input type="radio" name="fila5" value="riesgo" onchange="revisarFila(5, 'protege')" /></td>
+                  <td><input type="radio" name="fila5" value="neutra" onchange="revisarFila(5, 'protege')" /></td>
+                  <td><input type="radio" name="fila5" value="protege" onchange="revisarFila(5, 'protege')" /></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="retro-fila5" class="retro-fila"></div>
+
+            <table class="tabla-conductas" style="margin-top:8px;">
+              <tbody>
+                <tr>
+                  <td class="descripcion">6. Faltar frecuentemente a las vacunas recomendadas.</td>
+                  <td><input type="radio" name="fila6" value="riesgo" onchange="revisarFila(6, 'riesgo')" /></td>
+                  <td><input type="radio" name="fila6" value="neutra" onchange="revisarFila(6, 'riesgo')" /></td>
+                  <td><input type="radio" name="fila6" value="protege" onchange="revisarFila(6, 'riesgo')" /></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="retro-fila6" class="retro-fila"></div>
+          </div>
+
+          <!-- 3.2 Escenarios -->
+          <div class="actividad-bloque">
+            <p class="titulo">3.2 Escenarios: ¿qué harías tú?</p>
+
+            <p style="font-size:0.8rem; margin-bottom:4px;"><strong>Escenario A:</strong></p>
+            <p style="font-size:0.78rem;">
+              En tu salón, varias personas tienen gripe. Algunos compañeros tosen sin cubrirse
+              la boca y otros comparten la misma botella de agua. Tú quieres cuidar tu salud y
+              la de los demás. ¿Qué es lo más adecuado que podrías hacer?
+            </p>
+            <label style="display:block; margin-bottom:3px;">
+              <input type="radio" name="escA" value="a" onchange="revisarEscenario('A', this.value)" />
+              a) No decir nada y seguir compartiendo la botella para no quedar mal.
+            </label>
+            <label style="display:block; margin-bottom:3px;">
+              <input type="radio" name="escA" value="b" onchange="revisarEscenario('A', this.value)" />
+              b) Dejar de compartir la botella, recordar cubrirse al toser y sugerir lavarse las manos.
+            </label>
+            <label style="display:block; margin-bottom:3px;">
+              <input type="radio" name="escA" value="c" onchange="revisarEscenario('A', this.value)" />
+              c) Faltar a la escuela varios días aunque te sientas bien.
+            </label>
+            <div id="retro-escA" class="retro-fila"></div>
+
+            <p style="font-size:0.8rem; margin:8px 0 4px 0;"><strong>Escenario B:</strong></p>
+            <p style="font-size:0.78rem;">
+              En tu comunidad, algunas personas tiran basura en la calle y queman plásticos.
+              El humo entra a las casas y a la escuela. ¿Qué acción ayuda más a cuidar la salud?
+            </p>
+            <label style="display:block; margin-bottom:3px;">
+              <input type="radio" name="escB" value="a" onchange="revisarEscenario('B', this.value)" />
+              a) Ignorar el problema porque “siempre ha sido así”.
+            </label>
+            <label style="display:block; margin-bottom:3px;">
+              <input type="radio" name="escB" value="b" onchange="revisarEscenario('B', this.value)" />
+              b) Comentar con tu maestra o maestro y proponer una campaña para no tirar basura y evitar quemarla.
+            </label>
+            <label style="display:block; margin-bottom:3px;">
+              <input type="radio" name="escB" value="c" onchange="revisarEscenario('B', this.value)" />
+              c) Seguir tirando basura porque “todos lo hacen”.
+            </label>
+            <div id="retro-escB" class="retro-fila"></div>
+          </div>
+
+          <!-- 3.3 Mi plan de tres acciones -->
+          <div class="actividad-bloque">
+            <p class="titulo">3.3 Mi plan de tres acciones de cuidado</p>
+            <p style="font-size:0.78rem; margin-bottom:4px;">
+              Escribe una acción concreta que puedas realizar en cada espacio para prevenir
+              enfermedades y cuidar la salud:
+            </p>
+            <p style="font-size:0.78rem;">En mi <strong>familia</strong> haré lo siguiente:</p>
+            <textarea id="plan-familia" placeholder="Ejemplo: lavarnos las manos antes de comer, no compartir cepillos de dientes, etc."></textarea>
+
+            <p style="font-size:0.78rem; margin-top:4px;">En mi <strong>escuela</strong> haré lo siguiente:</p>
+            <textarea id="plan-escuela" placeholder="Ejemplo: no compartir botellas, mantener limpio mi lugar, cubrirme al toser."></textarea>
+
+            <p style="font-size:0.78rem; margin-top:4px;">En mi <strong>comunidad</strong> haré lo siguiente:</p>
+            <textarea id="plan-comunidad" placeholder="Ejemplo: participar en jornadas de limpieza, no quemar basura, etc."></textarea>
+          </div>
+        </section>
+
+        <!-- EVALÚO -->
+        <section id="evalua" class="tab-contenido">
+          <h3>4. Evalúo mi aprendizaje</h3>
+          <div class="bloque">
+            <h4>Autoevaluación dentro de la ODA</h4>
+            <p>Marca con una ✓ lo que consideras que ya lograste.</p>
+            <div class="lista-auto">
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Distingo entre conductas que son un riesgo y conductas que protegen la salud.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Identifico factores de riesgo en mi familia, escuela o comunidad.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Propongo acciones concretas para prevenir enfermedades transmisibles.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Comprendo que mis decisiones pueden cuidar o dañar la salud de otras personas.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bloque">
+            <h4>Reflexión corta</h4>
+            <p style="font-size:0.78rem; margin-bottom:2px;">
+              Escribe una idea que hayas aprendido hoy y que quieras compartir con tu familia.
+            </p>
+            <textarea id="p5-reflexion" placeholder="Ejemplo: la importancia de ventilar la casa, no compartir botellas, etc."></textarea>
+          </div>
+        </section>
+
+        <!-- IMPRIMIBLES -->
+        <section id="imprimibles" class="tab-contenido">
+          <h3>5. Material para imprimir</h3>
+
+          <div class="imprimible" id="actividad-impresa-p5">
+            <h4>Actividad para imprimir – Cuidamos nuestra salud</h4>
+            <p><strong>Nombre del alumno(a): _______________________   Grado y grupo: _________</strong></p>
+            <p><strong>Instrucciones:</strong> Contesta todo directamente en esta hoja.</p>
+
+            <p style="margin-top:6px;"><strong>1. Semáforo de salud</strong></p>
+            <p>Marca con una X si cada conducta es <strong>Riesgo</strong>, <strong>Neutra</strong> o <strong>Protege</strong> la salud.</p>
+            <table class="tabla-conductas">
+              <thead>
+                <tr>
+                  <th>Conducta</th>
+                  <th>Riesgo</th>
+                  <th>Neutra</th>
+                  <th>Protege</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="descripcion">Lavarse las manos antes de comer.</td>
+                  <td>___</td><td>___</td><td>___</td>
+                </tr>
+                <tr>
+                  <td class="descripcion">Compartir la misma botella de agua.</td>
+                  <td>___</td><td>___</td><td>___</td>
+                </tr>
+                <tr>
+                  <td class="descripcion">Cubrirse la boca al toser o estornudar.</td>
+                  <td>___</td><td>___</td><td>___</td>
+                </tr>
+                <tr>
+                  <td class="descripcion">Dejar la basura tirada en el patio.</td>
+                  <td>___</td><td>___</td><td>___</td>
+                </tr>
+                <tr>
+                  <td class="descripcion">Ventilar el salón abriendo ventanas.</td>
+                  <td>___</td><td>___</td><td>___</td>
+                </tr>
+                <tr>
+                  <td class="descripcion">Faltar frecuentemente a las vacunas.</td>
+                  <td>___</td><td>___</td><td>___</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p style="margin-top:6px;"><strong>2. Escenarios</strong></p>
+            <p style="font-size:0.78rem;"><strong>Escenario A:</strong> En tu salón varias personas tienen gripe… ¿Qué es lo más adecuado?</p>
+            <p>a) No decir nada y seguir compartiendo la botella.</p>
+            <p>b) Dejar de compartir la botella, recordar cubrirse al toser y sugerir lavarse las manos.</p>
+            <p>c) Faltar a la escuela varios días aunque te sientas bien.</p>
+            <p>Respuesta: _________</p>
+
+            <p style="font-size:0.78rem; margin-top:4px;"><strong>Escenario B:</strong> En tu comunidad se quema basura… ¿Qué acción ayuda más?</p>
+            <p>a) Ignorar el problema.</p>
+            <p>b) Proponer una campaña para no tirar basura y evitar quemarla.</p>
+            <p>c) Seguir tirando basura porque “todos lo hacen”.</p>
+            <p>Respuesta: _________</p>
+
+            <p style="margin-top:6px;"><strong>3. Mi plan de tres acciones</strong></p>
+            <p>En mi familia haré lo siguiente:</p>
+            <p>__________________________________________________________________________</p>
+            <p>En mi escuela haré lo siguiente:</p>
+            <p>__________________________________________________________________________</p>
+            <p>En mi comunidad haré lo siguiente:</p>
+            <p>__________________________________________________________________________</p>
+          </div>
+
+          <div class="imprimible" id="resultados-impresos-p5">
+            <h4>Hoja de resultados – Factores de riesgo y cuidado de la salud</h4>
+            <p><strong>Nombre del alumno(a): ______________________  Grado y grupo: _________</strong></p>
+            <p><strong>PDA trabajado (5.º – 5):</strong> Explica factores de riesgo y protección de la salud y propone acciones para reducir la propagación de enfermedades transmisibles.</p>
+
+            <p style="margin-top:6px;"><strong>Logros observados (marcar en azul):</strong></p>
+            <ul style="margin-left:16px; margin-top:2px;">
+              <li>Identifica conductas que ponen en riesgo la salud.</li>
+              <li>Reconoce conductas y condiciones que protegen la salud.</li>
+              <li>Resuelve escenarios eligiendo acciones de prevención adecuadas.</li>
+              <li>Propone acciones concretas para familia, escuela y comunidad.</li>
+            </ul>
+
+            <p style="margin-top:6px;"><strong>Dificultades detectadas (marcar en rojo):</strong></p>
+            <ul style="margin-left:16px; margin-top:2px;">
+              <li>Confunde factores de riesgo con factores protectores.</li>
+              <li>Presenta ideas erróneas sobre la prevención de enfermedades transmisibles.</li>
+              <li>Requiere apoyo para proponer acciones realistas en su contexto.</li>
+            </ul>
+
+            <p style="margin-top:6px;"><strong>Observaciones de la maestra o maestro:</strong></p>
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+
+            <p style="margin-top:6px;"><strong>Compromisos de mejora del alumno(a):</strong></p>
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+          </div>
+
+          <p class="no-imprimir" style="font-size:0.78rem; margin-top:4px;">
+            Usa los botones del panel derecho para imprimir solo la <strong>actividad</strong> o solo la
+            <strong>hoja de resultados</strong>.
+          </p>
+        </section>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <aside class="columna-derecha">
+        <div class="tarjeta-avatar-lado">
+          <img src="avatar_guia.png" alt="Avatar guía" />
+          <p>
+            <strong>Tip del guía:</strong><br />
+            Pequeños cambios, como lavarte las manos y no compartir botellas,
+            pueden evitar que muchas personas se enfermen.
+          </p>
+        </div>
+
+        <div class="tarjeta-acciones">
+          <h3>Impresiones rápidas</h3>
+          <button onclick="imprimirSeccion('actividad-impresa-p5')">
+            🖨️ Imprimir actividad para el alumno
+          </button>
+          <button class="secundario" onclick="imprimirSeccion('resultados-impresos-p5')">
+            🖨️ Imprimir hoja de resultados
+          </button>
+        </div>
+
+        <div class="tarjeta-notas">
+          <h3>Notas para el docente</h3>
+          <p style="font-size:0.75rem; margin-bottom:4px;">
+            Anota ejemplos de riesgos y acciones de cuidado que surjan en el grupo
+            para retomarlos en otros proyectos.
+          </p>
+          <textarea placeholder="Ejemplo: presencia de humo de leña, agua almacenada, campañas de limpieza en la comunidad, etc."></textarea>
+        </div>
+      </aside>
+    </main>
+
+    <div class="copyright">
+      © 2025. Autor: Martín Reta (docente) en co-creación con ChatGPT (OpenAI).
+      Uso estrictamente educativo y sin fines de lucro.
+    </div>
+  </div>
+
+  <script>
+    // Cambio de pestañas
+    document.querySelectorAll(".tabs-menu button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tabId = btn.getAttribute("data-tab");
+        document
+          .querySelectorAll(".tabs-menu button")
+          .forEach((b) => b.classList.remove("activo"));
+        btn.classList.add("activo");
+        document
+          .querySelectorAll(".tab-contenido")
+          .forEach((sec) => sec.classList.remove("activo"));
+        document.getElementById(tabId).classList.add("activo");
+      });
+    });
+
+    // Voz
+    function leerTexto(idElemento) {
+      const elemento = document.getElementById(idElemento);
+      if (!elemento) return;
+      const texto = elemento.innerText || elemento.textContent;
+      if (!("speechSynthesis" in window)) {
+        alert("Lo siento, tu navegador no soporta lectura en voz alta.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const mensaje = new SpeechSynthesisUtterance(texto);
+      mensaje.lang = "es-MX";
+      const voces = window.speechSynthesis.getVoices();
+      const vozMasculina =
+        voces.find(
+          (v) =>
+            v.lang.startsWith("es") &&
+            (v.name.toLowerCase().includes("male") ||
+              v.name.toLowerCase().includes("hombre") ||
+              v.name.toLowerCase().includes("miguel") ||
+              v.name.toLowerCase().includes("diego"))
+        ) ||
+        voces.find((v) => v.lang.startsWith("es")) ||
+        null;
+      if (vozMasculina) {
+        mensaje.voice = vozMasculina;
+      }
+      window.speechSynthesis.speak(mensaje);
+    }
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+
+    // Revisión de filas (semáforo)
+    function revisarFila(num, correcta) {
+      const seleccion = document.querySelector('input[name="fila' + num + '"]:checked');
+      const retro = document.getElementById("retro-fila" + num);
+      if (!seleccion || !retro) return;
+
+      if (seleccion.value === correcta) {
+        retro.textContent = "✔ Buena elección: esa conducta " +
+          (correcta === "riesgo" ? "representa un riesgo para la salud." : "protege la salud.");
+        retro.className = "retro-fila retro-ok";
+      } else {
+        retro.textContent = "✘ Revisa: piensa si esa conducta favorece o perjudica la salud.";
+        retro.className = "retro-fila retro-mal";
+      }
+    }
+
+    // Revisión de escenarios
+    function revisarEscenario(letra, valor) {
+      const retro = document.getElementById("retro-esc" + letra);
+      if (!retro) return;
+
+      if (letra === "A") {
+        if (valor === "b") {
+          retro.textContent = "✔ Correcto: dejas de compartir la botella y recuerdas medidas de higiene.";
+          retro.className = "retro-fila retro-ok";
+        } else {
+          retro.textContent = "✘ Piensa cómo tus acciones pueden ayudar a evitar contagios.";
+          retro.className = "retro-fila retro-mal";
+        }
+      } else if (letra === "B") {
+        if (valor === "b") {
+          retro.textContent = "✔ Correcto: proponer una campaña es una acción que cuida la salud de todos.";
+          retro.className = "retro-fila retro-ok";
+        } else {
+          retro.textContent = "✘ Ignorar o repetir la conducta no ayuda a reducir los riesgos.";
+          retro.className = "retro-fila retro-mal";
+        }
+      }
+    }
+
+    // Impresión de secciones
+    function imprimirSeccion(idSeccion) {
+      const seccion = document.getElementById(idSeccion);
+      if (!seccion) return;
+      const ventana = window.open("", "_blank");
+      ventana.document.write("<html><head><title>Imprimir</title>");
+      ventana.document.write(
+        '<meta charset="UTF-8"><style>body{font-family:Segoe UI,system-ui,sans-serif;font-size:12px;padding:12px;} h4{text-align:center;margin-bottom:6px;} table{border-collapse:collapse;width:100%;} th,td{border:1px solid #999;padding:4px;} ul,ol{padding-left:18px;}</style>'
+      );
+      ventana.document.write("</head><body>");
+      ventana.document.write(seccion.innerHTML);
+      ventana.document.write("</body></html>");
+      ventana.document.close();
+      ventana.focus();
+      ventana.print();
+      ventana.close();
+    }
+  </script>
+</body>
+</html>

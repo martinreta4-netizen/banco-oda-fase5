@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Cuidamos nuestra salud y prevenimos enfermedades (PDA 4)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#1d4ed8;
+      --primary-soft:#dbeafe;
+      --accent:#0ea5e9;
+      --bg:#f3f4f6;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --shadow:0 16px 35px rgba(15,23,42,.14);
+    }
+    *{box-sizing:border-box;margin:0;padding:0;}
+    body{
+      font-family:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#e0f2fe 0,#eff6ff 38%,#e5e7eb 100%);
+      color:var(--text);
+      min-height:100vh;
+      padding:16px;
+      display:flex;
+      justify-content:center;
+    }
+    .oda-shell{
+      width:100%;
+      max-width:1160px;
+      background:rgba(255,255,255,.92);
+      border-radius:20px;
+      box-shadow:var(--shadow);
+      border:1px solid rgba(148,163,184,.35);
+      backdrop-filter:blur(10px);
+      padding:18px 18px 22px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+    header{
+      display:flex;flex-wrap:wrap;justify-content:space-between;
+      align-items:center;gap:10px;border-bottom:1px solid var(--border);
+      padding-bottom:10px;
+    }
+    .logo-block img{height:50px;width:auto;object-fit:contain;}
+    .title-block{flex:1;min-width:220px;}
+    .title-block h1{font-size:1.15rem;color:#0f172a;margin-bottom:4px;}
+    .title-block p{font-size:.82rem;color:var(--muted);line-height:1.25;}
+    .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px;}
+    .chip{
+      font-size:.72rem;
+      padding:3px 8px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:#1e3a8a;
+      border:1px solid rgba(37,99,235,.25);
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+    }
+    .chip strong{font-weight:600;}
+    .author-block{font-size:.76rem;color:var(--muted);text-align:right;min-width:190px;}
+
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,2.1fr) minmax(260px,1fr);
+      gap:14px;
+      margin-top:6px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:16px;
+      border:1px solid var(--border);
+      box-shadow:0 8px 16px rgba(15,23,42,.04);
+      padding:10px 12px;
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+      font-weight:600;
+    }
+    .card-title .icon{font-size:1.15rem;}
+    .card-sub{font-size:.74rem;color:var(--muted);}
+    .card-body{font-size:.84rem;color:var(--muted);}
+
+    .step-tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .step-tab{
+      flex:1;
+      min-width:110px;
+      border-radius:999px;
+      padding:6px 10px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:4px;
+      cursor:pointer;
+      transition:all .17s ease;
+    }
+    .step-tab span.step-index{
+      width:18px;height:18px;border-radius:999px;
+      background:#1d4ed8;color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-size:.7rem;font-weight:600;
+    }
+    .step-tab.active{
+      background:#1d4ed8;
+      color:#e0f2fe;
+      border-color:#1d4ed8;
+      box-shadow:0 6px 15px rgba(37,99,235,.35);
+    }
+    .step-tab.active span.step-index{
+      background:#eff6ff;
+      color:#1d4ed8;
+    }
+    .step-panel{display:none;animation:fadeIn .22s ease-out;}
+    .step-panel.active{display:block;}
+    @keyframes fadeIn{
+      from{opacity:0;transform:translateY(4px);}
+      to{opacity:1;transform:translateY(0);}
+    }
+
+    .info-box{
+      background:#eff6ff;
+      border-radius:12px;
+      padding:8px 9px;
+      border:1px solid #bfdbfe;
+      display:flex;
+      gap:6px;
+      align-items:flex-start;
+      margin-bottom:8px;
+    }
+    .info-box span{font-size:1.1rem;}
+    .info-box p{
+      font-size:.8rem;
+      color:#1e40af;
+      line-height:1.3;
+    }
+
+    .risk-list{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .risk-item{
+      background:#f9fafb;
+      border:1px dashed #cbd5f5;
+      border-radius:10px;
+      padding:6px 8px;
+      font-size:.8rem;
+      cursor:pointer;
+      transition:all .15s ease;
+    }
+    .risk-item.favor{
+      background:#ecfdf5;
+      border-color:#6ee7b7;
+    }
+    .risk-item.riesgo{
+      background:#fee2e2;
+      border-color:#fca5a5;
+    }
+
+    .question-block{
+      margin-top:4px;
+      padding:6px 8px;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      background:#f9fafb;
+    }
+    .question-title{
+      font-weight:600;
+      font-size:.84rem;
+      margin-bottom:3px;
+      color:#1e3a8a;
+    }
+    .options{
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      font-size:.8rem;
+      margin-top:3px;
+    }
+    .options label{
+      display:flex;
+      align-items:center;
+      gap:4px;
+      cursor:pointer;
+    }
+
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:7px 12px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:500;
+      transition:all .16s ease;
+      white-space:nowrap;
+    }
+    .btn-primary{
+      background:linear-gradient(135deg,#1d4ed8,#0ea5e9);
+      color:#eff6ff;
+      box-shadow:0 8px 16px rgba(37,99,235,.45);
+    }
+    .btn-primary:hover{
+      box-shadow:0 10px 22px rgba(30,64,175,.6);
+      transform:translateY(-1px);
+    }
+
+    .status{
+      margin-top:7px;
+      border-radius:12px;
+      padding:6px 8px;
+      font-size:.78rem;
+    }
+    .status-info{
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e3a8a;
+    }
+    .status-ok{
+      background:#ecfdf5;
+      border:1px solid #6ee7b7;
+      color:#166534;
+    }
+    .status-warn{
+      background:#fef9c3;
+      border:1px solid #facc15;
+      color:#92400e;
+    }
+
+    .right-column{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.8rem;
+      margin-bottom:4px;
+    }
+    .student-row input{
+      width:100%;
+      padding:5px 8px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.8rem;
+    }
+
+    .avatar-card{
+      display:flex;
+      gap:9px;
+      align-items:flex-start;
+    }
+    .avatar-card img{
+      width:100px;
+      height:auto;
+      border-radius:12px;
+      box-shadow:0 6px 14px rgba(15,23,42,.35);
+      flex-shrink:0;
+      object-fit:cover;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#374151;
+    }
+    .avatar-text strong{
+      display:block;
+      color:#1e3a8a;
+      margin-bottom:3px;
+    }
+    .audio-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      align-items:center;
+    }
+    .audio-row small{
+      font-size:.78rem;
+      color:#6b7280;
+    }
+
+    .pda-text{
+      font-size:.78rem;
+      color:#374151;
+      line-height:1.35;
+      max-height:120px;
+      overflow:auto;
+    }
+
+    .corner-logo{
+      position:fixed;
+      right:10px;
+      bottom:10px;
+      width:70px;
+      opacity:.9;
+      z-index:40;
+    }
+
+    .copyright{
+      text-align:right;
+      font-size:.7rem;
+      color:#9ca3af;
+      margin-top:4px;
+    }
+
+    @media(max-width:860px){
+      main{grid-template-columns:1fr;}
+      .author-block{text-align:left;}
+      .corner-logo{width:56px;}
+    }
+    @media(max-width:600px){
+      .oda-shell{padding:14px 10px 16px;border-radius:16px;}
+      header{flex-direction:column;align-items:flex-start;}
+    }
+  </style>
+</head>
+<body>
+  <div class="oda-shell">
+    <header>
+      <div class="logo-block"><img src="sep_logo.png" alt="SEP"></div>
+      <div class="title-block">
+        <h1>ODA – Cuidamos nuestra salud y prevenimos enfermedades</h1>
+        <p>Fase 5 · Sexto grado · Campo formativo: Saberes y Pensamiento Científico</p>
+        <div class="chips">
+          <span class="chip">Contenido: <strong>Cuerpo humano y salud</strong></span>
+          <span class="chip">PDA 4: <strong>Factores de riesgo y prevención</strong></span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong><br>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- COLUMNA IZQUIERDA -->
+      <section>
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">🧭</span>
+            <span>Ruta de trabajo</span>
+          </div>
+          <p class="card-sub">Sigue los pasos en orden para analizar riesgos y proponer acciones de prevención.</p>
+
+          <div class="step-tabs">
+            <button class="step-tab active" data-step="riesgos">
+              <span class="step-index">1</span>
+              <span>Identifica riesgos y cuidados</span>
+              <span>👀</span>
+            </button>
+            <button class="step-tab" data-step="acciones">
+              <span class="step-index">2</span>
+              <span>Propón acciones</span>
+              <span>🧩</span>
+            </button>
+            <button class="step-tab" data-step="evalua">
+              <span class="step-index">3</span>
+              <span>Evalúate</span>
+              <span>✅</span>
+            </button>
+          </div>
+
+          <!-- PANEL 1 -->
+          <div class="step-panel active" id="panel-riesgos">
+            <div class="info-box">
+              <span>💡</span>
+              <p>Haz clic en <strong>“Comprobar selección”</strong> para descubrir qué factores favorecen la salud y cuáles la ponen en riesgo.</p>
+            </div>
+            <p style="font-size:.83rem;margin-bottom:6px;">
+              En nuestra vida diaria realizamos acciones que pueden <strong>cuidar</strong> o <strong>dañar</strong> la salud. Observarlas nos ayuda a tomar mejores decisiones.
+            </p>
+            <div class="risk-list" id="riskList">
+              <div class="risk-item" data-type="favor">Lavar frutas y verduras antes de comerlas.</div>
+              <div class="risk-item" data-type="riesgo">Comer en la calle donde no hay higiene.</div>
+              <div class="risk-item" data-type="favor">Vacunarse según la Cartilla Nacional de Salud.</div>
+              <div class="risk-item" data-type="riesgo">No dormir lo suficiente.</div>
+              <div class="risk-item" data-type="favor">Hacer actividad física con regularidad.</div>
+              <div class="risk-item" data-type="riesgo">Compartir vasos o cubrebocas.</div>
+              <div class="risk-item" data-type="favor">Beber agua simple potable.</div>
+              <div class="risk-item" data-type="riesgo">Fumar o respirar humo de tabaco.</div>
+            </div>
+            <button class="btn btn-primary" id="btnCheckRisks">🔎 Comprobar selección</button>
+            <div id="statusRisks" class="status status-info" style="margin-top:6px;">
+              Haz clic en el botón para ver qué factores favorecen la salud (verde) y cuáles la ponen en riesgo (rojo).
+            </div>
+          </div>
+
+          <!-- PANEL 2 -->
+          <div class="step-panel" id="panel-acciones">
+            <div class="info-box">
+              <span>🧩</span>
+              <p>Elige la acción que mejor ayuda a <strong>prevenir la propagación de enfermedades</strong> en cada situación.</p>
+            </div>
+
+            <div class="question-block">
+              <div class="question-title">1. En la escuela varios compañeros tienen tos y gripa.</div>
+              <div class="options">
+                <label><input type="radio" name="s1" value="a">Ir a clases sin cubrirse al toser.</label>
+                <label><input type="radio" name="s1" value="b">Cubrirse al toser, lavarse las manos y ventilar el salón.</label>
+              </div>
+            </div>
+
+            <div class="question-block">
+              <div class="question-title">2. En tu casa casi nunca se abren las ventanas.</div>
+              <div class="options">
+                <label><input type="radio" name="s2" value="a">Abrir puertas y ventanas para que circule el aire.</label>
+                <label><input type="radio" name="s2" value="b">Mantener todo cerrado todo el día.</label>
+              </div>
+            </div>
+
+            <div class="question-block">
+              <div class="question-title">3. En la comunidad se acumula basura en un terreno baldío.</div>
+              <div class="options">
+                <label><input type="radio" name="s3" value="a">Organizar jornadas de limpieza y pedir apoyo a las autoridades.</label>
+                <label><input type="radio" name="s3" value="b">Ignorar el problema porque “no es mi basura”.</label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="btnCheckActions">🔎 Comprobar acciones</button>
+            <div id="statusActions" class="status status-info" style="margin-top:6px;">
+              Elige una opción en cada situación y luego haz clic en <strong>“Comprobar acciones”</strong>.
+            </div>
+          </div>
+
+          <!-- PANEL 3 -->
+          <div class="step-panel" id="panel-evalua">
+            <div class="info-box">
+              <span>✅</span>
+              <p>Responde el cuestionario y revisa si comprendes los factores que <strong>ponen en riesgo</strong> o <strong>favorecen</strong> tu salud.</p>
+            </div>
+
+            <div class="question-block">
+              <div class="question-title">1. ¿Cuál de estas acciones pone en riesgo tu salud?</div>
+              <div class="options">
+                <label><input type="radio" name="q1" value="a">Fumar frecuentemente.</label>
+                <label><input type="radio" name="q1" value="b">Comer frutas y verduras.</label>
+              </div>
+            </div>
+
+            <div class="question-block">
+              <div class="question-title">2. ¿Qué acción favorece la salud de tu comunidad?</div>
+              <div class="options">
+                <label><input type="radio" name="q2" value="a">Organizar limpieza y participar en campañas de vacunación.</label>
+                <label><input type="radio" name="q2" value="b">No participar en actividades de prevención.</label>
+              </div>
+            </div>
+
+            <div class="question-block">
+              <div class="question-title">3. ¿Por qué es importante reducir la propagación de enfermedades transmisibles?</div>
+              <div class="options">
+                <label><input type="radio" name="q3" value="a">Porque así cuidamos nuestra salud y la de las personas que nos rodean.</label>
+                <label><input type="radio" name="q3" value="b">Porque solo afectan a los animales.</label>
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="btnCheckQuiz">📊 Comprobar cuestionario</button>
+            <div id="statusQuiz" class="status status-info" style="margin-top:6px;">
+              Marca una opción en cada pregunta y luego haz clic en <strong>“Comprobar cuestionario”</strong>.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <aside class="right-column">
+        <div class="card avatar-card">
+          <img src="avatar_guia.png" alt="Avatar del maestro Martín">
+          <div class="avatar-text">
+            <strong>Hola, soy el maestro Martín.</strong>
+            <p>En esta ODA aprenderás a identificar qué cosas pueden poner en riesgo tu salud y cuáles la favorecen, y propondrás acciones para cuidar a tu familia, escuela y comunidad.</p>
+            <ul style="margin-left:16px;font-size:.78rem;">
+              <li>1️⃣ Revisa los factores de riesgo y de cuidado.</li>
+              <li>2️⃣ Elige acciones de prevención en distintas situaciones.</li>
+              <li>3️⃣ Evalúa qué tanto comprendiste.</li>
+              <li>4️⃣ Completa la actividad imprimible.</li>
+            </ul>
+            <div class="audio-row">
+              <button class="btn btn-primary" id="btnPlayVoice">🔊 Escuchar instrucciones</button>
+              <small>Si tu navegador lo permite, escucharás estas instrucciones con voz masculina.</small>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">🧾</span>
+            <span>Datos del alumno</span>
+          </div>
+          <div class="student-row">
+            <label for="studentName" style="font-size:.8rem;color:#4b5563;">Nombre del alumno(a):</label>
+            <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+          </div>
+          <button class="btn btn-primary" id="btnPrintActivity">📄 Imprimir actividad</button>
+        </div>
+
+        <div class="card">
+          <div class="card-title">
+            <span class="icon">🎯</span>
+            <span>PDA 4 – Texto literal SEP (Fase 5)</span>
+          </div>
+          <div class="pda-text">
+            Explica los factores que ponen en riesgo la salud y aquellos que la favorecen al analizar diversas situaciones y propone acciones para reducir la propagación de enfermedades transmisibles en los entornos familiar, escolar y comunitario.
+          </div>
+        </div>
+
+        <div class="copyright">
+          © 2025 · Profe Martín Reta · ODA – Cuidamos nuestra salud (PDA 4)
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <img src="escudo_escuela.png" class="corner-logo" alt="Escudo de la escuela">
+
+  <script>
+    // Tabs
+    const tabs = document.querySelectorAll(".step-tab");
+    const panels = {
+      riesgos: document.getElementById("panel-riesgos"),
+      acciones: document.getElementById("panel-acciones"),
+      evalua: document.getElementById("panel-evalua")
+    };
+    tabs.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        tabs.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        const step = btn.getAttribute("data-step");
+        Object.keys(panels).forEach(k=>panels[k].classList.remove("active"));
+        panels[step].classList.add("active");
+      });
+    });
+
+    // Panel 1: mostrar clasificación de factores
+    const riskItems = document.querySelectorAll("#riskList .risk-item");
+    const statusRisks = document.getElementById("statusRisks");
+    document.getElementById("btnCheckRisks").addEventListener("click",()=>{
+      riskItems.forEach(item=>{
+        item.classList.remove("favor","riesgo");
+        const type = item.dataset.type;
+        if(type==="favor"){ item.classList.add("favor"); }
+        if(type==="riesgo"){ item.classList.add("riesgo"); }
+      });
+      statusRisks.className = "status status-ok";
+      statusRisks.textContent = "Observa: en verde aparecen las acciones que favorecen la salud y en rojo las que la ponen en riesgo.";
+    });
+
+    // Panel 2: acciones de prevención
+    const statusActions = document.getElementById("statusActions");
+    document.getElementById("btnCheckActions").addEventListener("click",()=>{
+      const correct = {s1:"b",s2:"a",s3:"a"};
+      let total = 3, answered = 0, ok = 0;
+      Object.keys(correct).forEach(k=>{
+        const sel = document.querySelector('input[name="'+k+'"]:checked');
+        if(sel){
+          answered++;
+          if(sel.value === correct[k]) ok++;
+        }
+      });
+      statusActions.className = "status";
+      if(answered < total){
+        statusActions.classList.add("status-warn");
+        statusActions.textContent = "Te faltan situaciones por responder. Marca una opción en cada una.";
+      }else{
+        const pct = Math.round(ok/total*100);
+        statusActions.classList.add("status-ok");
+        statusActions.textContent = "Has completado la actividad. Respuestas correctas: "+ok+"/"+total+" ("+pct+"%).";
+      }
+    });
+
+    // Panel 3: cuestionario
+    const statusQuiz = document.getElementById("statusQuiz");
+    document.getElementById("btnCheckQuiz").addEventListener("click",()=>{
+      const answers = {q1:"a",q2:"a",q3:"a"};
+      let total = 3, answered = 0, ok = 0;
+      Object.keys(answers).forEach(k=>{
+        const sel = document.querySelector('input[name="'+k+'"]:checked');
+        if(sel){
+          answered++;
+          if(sel.value === answers[k]) ok++;
+        }
+      });
+      statusQuiz.className = "status";
+      if(answered < total){
+        statusQuiz.classList.add("status-warn");
+        statusQuiz.textContent = "Te faltan preguntas por responder. Marca una opción en cada una.";
+      }else{
+        const pct = Math.round(ok/total*100);
+        statusQuiz.classList.add("status-ok");
+        statusQuiz.textContent = "Has completado el cuestionario. Respuestas correctas: "+ok+"/"+total+" ("+pct+"%).";
+      }
+    });
+
+    // Audio instrucciones (mismo esquema que las ODA anteriores)
+    const btnPlayVoice = document.getElementById("btnPlayVoice");
+    const instructionsText = "Hola, soy el maestro Martin Reta. En esta actividad identificaras factores que ponen en riesgo tu salud y aquellos que la favorecen. Despues, elegirás acciones para prevenir enfermedades en tu familia, escuela y comunidad, y al final responderas un pequeño cuestionario para revisar lo que aprendiste.";
+
+    function speakInstructions(){
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no permite la lectura en voz alta. Puedes leer las instrucciones directamente en pantalla.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u = new SpeechSynthesisUtterance(instructionsText);
+      u.lang = "es-MX";
+      const voices = window.speechSynthesis.getVoices();
+      let chosen = null;
+      if(voices && voices.length){
+        chosen = voices.find(v=>v.lang && v.lang.startsWith("es") && /Hombre|Male|Miguel|Diego|Jorge|Antonio|Carlos/i.test(v.name))
+               || voices.find(v=>v.lang && v.lang.startsWith("es"))
+               || voices[0];
+      }
+      if(chosen){u.voice = chosen;}
+      window.speechSynthesis.speak(u);
+    }
+
+    if(btnPlayVoice){
+      btnPlayVoice.addEventListener("click",()=>{
+        const voices = window.speechSynthesis.getVoices();
+        if(!voices || voices.length === 0){
+          window.speechSynthesis.onvoiceschanged = speakInstructions;
+          window.speechSynthesis.getVoices();
+        }else{
+          speakInstructions();
+        }
+      });
+    }
+
+    // Actividad imprimible (distinta a las actividades internas)
+    document.getElementById("btnPrintActivity").addEventListener("click",()=>{
+      const name = document.getElementById("studentName").value || "________________";
+      const win = window.open("","_blank","width=900,height=700");
+      win.document.write(`
+        <!DOCTYPE html>
+        <html lang="es">
+        <head>
+          <meta charset="UTF-8">
+          <title>Actividad imprimible – Riesgos y cuidados de la salud</title>
+          <style>
+            body{
+              font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+              padding:24px;
+              background:#ffffff;
+              color:#111827;
+            }
+            h1{font-size:1.25rem;margin-bottom:4px;color:#1f2937;}
+            h2{font-size:1rem;margin-top:16px;margin-bottom:4px;color:#1d4ed8;}
+            .meta{font-size:.9rem;color:#4b5563;margin-bottom:10px;}
+            ol{font-size:.9rem;color:#111827;margin-left:18px;}
+            .line{border-bottom:1px solid #9ca3af;margin:6px 0 10px;}
+            p{font-size:.9rem;color:#111827;}
+          </style>
+        </head>
+        <body>
+          <h1>Actividad – Analizo riesgos y propongo acciones</h1>
+          <div class="meta">
+            Nombre del alumno(a): ${name}<br>
+            Grado: 6.º · Campo formativo: Saberes y Pensamiento Científico
+          </div>
+
+          <h2>1. Situaciones</h2>
+          <p>Lee cada situación y escribe un factor de riesgo y una acción para prevenir enfermedades.</p>
+          <ol>
+            <li>En tu salón de clases varias personas tienen tos y gripa.</li>
+          </ol>
+          <p><strong>Factor de riesgo:</strong></p>
+          <div class="line"></div>
+          <p><strong>Acción de prevención:</strong></p>
+          <div class="line"></div>
+
+          <ol start="2">
+            <li>En tu colonia hay agua estancada y basura en una esquina.</li>
+          </ol>
+          <p><strong>Factor de riesgo:</strong></p>
+          <div class="line"></div>
+          <p><strong>Acción de prevención:</strong></p>
+          <div class="line"></div>
+
+          <ol start="3">
+            <li>En casa casi no se lavan las manos antes de comer.</li>
+          </ol>
+          <p><strong>Factor de riesgo:</strong></p>
+          <div class="line"></div>
+          <p><strong>Acción de prevención:</strong></p>
+          <div class="line"></div>
+
+          <h2>2. Mensaje a mi comunidad</h2>
+          <p>Escribe un mensaje corto para invitar a tu comunidad a cuidar su salud y evitar la propagación de enfermedades.</p>
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line"></div>
+
+          <script>window.print();<\/script>
+        </body>
+        </html>
+      `);
+      win.document.close();
+    });
+  </script>
+</body>
+</html>

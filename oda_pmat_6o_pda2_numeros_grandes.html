@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Números naturales hasta billones (6.º, PDA 2) – Dinámica</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#1d4ed8;
+      --primary-soft:#dbeafe;
+      --accent:#0ea5e9;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --card:#ffffff;
+      --shadow:0 16px 35px rgba(15,23,42,.18);
+      --error:#b91c1c;
+      --success:#15803d;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#e0f2fe 0,#eff6ff 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:12% 16%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1180px;
+      background:radial-gradient(circle at top left,#dbeafe 0,#ffffff 45%,#eff6ff 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #bfdbfe;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.3fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #dbeafe;
+    }
+    @media(max-width:900px){
+      header{grid-template-columns:1fr;text-align:center;}
+      .author-block{text-align:center;}
+    }
+    .logo-left img{
+      max-height:60px;
+      width:auto;
+      display:block;
+    }
+    @media(max-width:900px){
+      .logo-left{display:flex;justify-content:center;}
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.22rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-block h1 .icon{font-size:1.45rem;}
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      margin-top:3px;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.78rem;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#eff6ff;
+      border:1px solid #dbeafe;
+    }
+    .chip .dot{
+      width:7px;height:7px;border-radius:999px;background:#22c55e;
+    }
+    .author-block{
+      font-size:.82rem;
+      color:var(--muted);
+      text-align:right;
+    }
+
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);
+      gap:10px;
+      margin-top:2px;
+    }
+    @media(max-width:900px){
+      main{grid-template-columns:1fr;}
+    }
+    .left-column,.right-column{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      box-shadow:0 8px 20px rgba(15,23,42,.06);
+      overflow:hidden;
+    }
+    .card-header{
+      padding:8px 12px 6px;
+      border-bottom:1px solid #e5e7eb;
+      background:linear-gradient(90deg,#dbeafe,#eff6ff);
+    }
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+      font-weight:600;
+      color:#0f172a;
+    }
+    .card-title .icon{font-size:1.05rem;}
+    .card-body{
+      padding:8px 12px 10px;
+      font-size:.84rem;
+    }
+
+    .objective-list{
+      padding-left:18px;
+      margin:6px 0;
+    }
+    .objective-list li{margin-bottom:3px;}
+
+    .timeline{
+      margin-top:6px;
+      border-radius:12px;
+      border:1px dashed #bfdbfe;
+      background:#eff6ff;
+      padding:6px 8px;
+      font-size:.8rem;
+    }
+    .timeline-item{
+      display:flex;
+      gap:6px;
+      margin-bottom:3px;
+    }
+    .timeline-label{
+      font-weight:600;
+      color:#1d4ed8;
+      min-width:97px;
+    }
+
+    .module-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .module-button{
+      flex:1 1 120px;
+      border-radius:999px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      padding:5px 8px;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      cursor:pointer;
+      transition:.15s;
+    }
+    .module-button span.icon{font-size:.95rem;}
+    .module-button.active{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+      box-shadow:0 0 0 1px rgba(37,99,235,.6);
+    }
+
+    .module-panel{display:none;}
+    .module-panel.active{display:block;}
+
+    .status{
+      margin-top:6px;
+      border-radius:10px;
+      padding:6px 8px;
+      display:flex;
+      gap:6px;
+      font-size:.8rem;
+      align-items:flex-start;
+    }
+    .status span{font-size:1rem;}
+    .status-info{
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e3a8a;
+    }
+    .status-success{
+      background:#dcfce7;
+      border:1px solid #22c55e;
+      color:#166534;
+    }
+    .status-error{
+      background:#fee2e2;
+      border:1px solid #f97373;
+      color:#991b1b;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      padding:5px 10px;
+      font-size:.8rem;
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn-primary{background:var(--primary);color:#fff;}
+    .btn-secondary{background:#e5e7eb;color:#111827;}
+    .btn-outline{
+      background:#fff;
+      border:1px solid #cbd5f5;
+      color:#1e3a8a;
+    }
+
+    .options-list{
+      list-style:none;
+      padding-left:0;
+      margin:6px 0;
+      font-size:.8rem;
+    }
+    .options-list li{margin-bottom:4px;}
+    .options-list label{
+      display:flex;
+      align-items:flex-start;
+      gap:4px;
+      cursor:pointer;
+    }
+
+    .sequence-block{
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:6px 8px;
+      margin-top:4px;
+      background:#f9fafb;
+      font-size:.8rem;
+    }
+    .sequence-title{
+      font-weight:600;
+      margin-bottom:2px;
+      color:#1e3a8a;
+    }
+    .type-pill{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 6px;
+      border-radius:999px;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      font-size:.72rem;
+      margin-top:2px;
+    }
+    .sequence-line{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      align-items:center;
+      gap:4px;
+    }
+    .sequence-line span.num{
+      padding:3px 6px;
+      border-radius:999px;
+      background:#e5e7eb;
+      font-family:monospace;
+      font-size:.82rem;
+    }
+    .sequence-line input{
+      width:135px;
+      max-width:45%;
+      padding:3px 5px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.8rem;
+      font-family:monospace;
+    }
+
+    .convert-table, .order-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:4px;
+      font-size:.8rem;
+    }
+    .convert-table th, .convert-table td,
+    .order-table th, .order-table td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      text-align:center;
+    }
+    .convert-table th, .order-table th{
+      background:#eff6ff;
+      font-weight:600;
+    }
+    .convert-input{
+      width:150px;
+      max-width:100%;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.78rem;
+      text-align:center;
+      font-family:monospace;
+    }
+    .compare-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:6px;
+      font-size:.8rem;
+    }
+    .compare-table th, .compare-table td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      text-align:center;
+    }
+    .compare-table th{
+      background:#eff6ff;
+      font-weight:600;
+    }
+    .compare-table select{
+      width:70px;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.78rem;
+    }
+
+    .order-block{
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:6px 8px;
+      margin-top:4px;
+      background:#f9fafb;
+      font-size:.8rem;
+    }
+    .order-block-title{
+      font-weight:600;
+      margin-bottom:2px;
+      color:#1e3a8a;
+    }
+    .order-inputs{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:4px;
+      margin-top:4px;
+    }
+    .order-inputs label{
+      font-size:.76rem;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      align-items:flex-start;
+    }
+    .order-inputs input{
+      width:100%;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.78rem;
+      font-family:monospace;
+    }
+
+    .student-card .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      margin-bottom:6px;
+    }
+    .student-card input[type="text"]{
+      padding:5px 7px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.82rem;
+      width:100%;
+    }
+
+    .avatar-card{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .avatar-circle{
+      width:120px;
+      height:auto;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:18px;
+      overflow:visible;
+      flex-shrink:0;
+    }
+    .avatar-circle img{
+      width:100%;
+      height:auto;
+      object-fit:contain;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#374151;
+    }
+    .avatar-steps{
+      margin:4px 0;
+      padding-left:18px;
+    }
+    .avatar-steps li{margin-bottom:3px;}
+    .badge-step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      background:#1d4ed8;
+      color:#fff;
+      font-size:.7rem;
+      margin-right:4px;
+    }
+
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #dbeafe;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+
+  <div class="wrapper">
+    <header>
+      <div class="logo-left">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🧮</span>
+          <span>Números naturales hasta billones – 6.º, PDA 2 (Dinámica)</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Estudio de los números.</strong><br>
+          PDA 6.º: <strong>Lee, escribe, compara y ordena números naturales hasta billones, usando diferentes representaciones (forma estándar y descomposición) en diversos contextos.</strong><br>
+          <span class="phase-label">Pensamiento Matemático · Fase 5 · 6.º grado</span>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Campo formativo: Saberes y Pensamiento Matemático</span>
+          <span class="chip">Proyecto: <strong>Números que cuentan historias (6.º)</strong></span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong><br>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- COLUMNA IZQUIERDA -->
+      <section class="left-column">
+        <!-- Propósito -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎯</span>
+              <span>Propósito de la ODA</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Al finalizar esta ODA, las y los estudiantes serán capaces de <strong>leer, escribir, descomponer, comparar y ordenar números naturales grandes</strong>
+            (hasta billones) en diferentes situaciones.
+            <ul class="objective-list">
+              <li>Leer y escribir números de hasta 12 cifras usando separación por periodos.</li>
+              <li>Relacionar un número con su <strong>descomposición aditiva</strong>.</li>
+              <li>Comparar y ordenar números grandes usando &gt;, &lt; y =.</li>
+              <li>Interpretar el significado de números grandes en contextos cercanos.</li>
+            </ul>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-label">1. Leo</div>
+                <div>Relaciono escritura con números grandes.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">2. Descompongo</div>
+                <div>Identifico el valor de cada periodo.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">3. Comparo</div>
+                <div>Decido cuál número es mayor o menor.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">4. Aplico</div>
+                <div>Uso números grandes en problemas reales.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulos -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧩</span>
+              <span>Módulos de trabajo</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="module-nav">
+              <button class="module-button active" data-module="lee">
+                <span class="icon">📖</span> Lee y escribe
+              </button>
+              <button class="module-button" data-module="descompone">
+                <span class="icon">🧱</span> Descompone el número
+              </button>
+              <button class="module-button" data-module="compara">
+                <span class="icon">⚖️</span> Compara y ordena
+              </button>
+              <button class="module-button" data-module="aplica">
+                <span class="icon">📝</span> Números en contexto
+              </button>
+            </div>
+
+            <!-- Panel 1: Lee y escribe -->
+            <div id="panel-lee" class="module-panel active">
+              <p>Relaciona la <strong>forma escrita</strong> con el número y escribe números grandes usando separación por periodos.</p>
+              <ol class="options-list">
+                <li>
+                  <div><strong>1)</strong> ¿Cuál número corresponde a:<br>
+                  <em>“ciento veintitrés mil millones cuatrocientos cinco millones doscientos diez mil”</em>?</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="lee1" value="a"> 123 405 210 000</label></li>
+                    <li><label><input type="radio" name="lee1" value="b"> 123 045 210 000</label></li>
+                    <li><label><input type="radio" name="lee1" value="c"> 123 450 210 000</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div><strong>2)</strong> ¿Cuál número corresponde a:<br>
+                  <em>“diez mil millones tres millones cincuenta mil”</em>?</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="lee2" value="a"> 10 003 050 000</label></li>
+                    <li><label><input type="radio" name="lee2" value="b"> 10 030 050 000</label></li>
+                    <li><label><input type="radio" name="lee2" value="c"> 10 300 050 000</label></li>
+                  </ul>
+                </li>
+              </ol>
+
+              <div class="sequence-block">
+                <div class="sequence-title">Escritura de números grandes</div>
+                <div class="type-pill">Escribe el número en forma estándar (con espacios cada tres cifras).</div>
+                <div class="sequence-line">
+                  <span>“quinientos veinte mil millones diecisiete mil” →</span>
+                  <input type="text" id="writeNum1" placeholder="ej. 520 000 017 000">
+                </div>
+                <div class="sequence-line">
+                  <span>“tres mil millones doscientos mil” →</span>
+                  <input type="text" id="writeNum2" placeholder="ej. 3 000 200 000">
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckLee">📝 Revisar respuestas</button>
+                <button class="btn btn-secondary" id="btnResetLee">↩️ Empezar de nuevo</button>
+              </div>
+              <div id="statusLee" class="status status-info">
+                <span>ℹ️</span>
+                <div>Responde las preguntas y completa los números escritos. Luego haz clic en <strong>“Revisar respuestas”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 2: Descompone el número -->
+            <div id="panel-descompone" class="module-panel">
+              <p>Relación entre <strong>forma estándar</strong> y <strong>descomposición aditiva</strong> de números grandes.</p>
+              <table class="convert-table">
+                <thead>
+                  <tr>
+                    <th>Descomposición aditiva</th>
+                    <th>Escribe el número</th>
+                  </tr>
+                </thead>
+                <tbody id="descompTableBody">
+                  <!-- se llena con JS -->
+                </tbody>
+              </table>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnGenDescomp">🔄 Nuevas descomposiciones</button>
+                <button class="btn btn-primary" id="btnCheckDescomp">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetDescomp">↩️ Limpiar</button>
+              </div>
+              <div id="statusDescomp" class="status status-info">
+                <span>ℹ️</span>
+                <div>Escribe el número que corresponde a cada descomposición y haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 3: Compara y ordena -->
+            <div id="panel-compara" class="module-panel">
+              <p>Usa los símbolos <strong>&gt;</strong>, <strong>&lt;</strong> y <strong>=</strong> para comparar y ordena números de menor a mayor.</p>
+
+              <table class="compare-table">
+                <thead>
+                  <tr>
+                    <th>Número A</th>
+                    <th>Signo</th>
+                    <th>Número B</th>
+                  </tr>
+                </thead>
+                <tbody id="compareBody">
+                  <!-- se llena con JS -->
+                </tbody>
+              </table>
+
+              <div class="order-block">
+                <div class="order-block-title">Ordena de menor a mayor</div>
+                <div id="orderListText"></div>
+                <div class="order-inputs" id="orderInputs">
+                  <!-- inputs llenados con JS -->
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnGenCompare">🔄 Nuevos números</button>
+                <button class="btn btn-primary" id="btnCheckCompare">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetCompare">↩️ Limpiar</button>
+              </div>
+              <div id="statusCompare" class="status status-info">
+                <span>ℹ️</span>
+                <div>Completa las comparaciones y el orden. Luego haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 4: Números en contexto -->
+            <div id="panel-aplica" class="module-panel">
+              <p>Resuelve situaciones en las que aparecen números grandes.</p>
+              <ol class="options-list">
+                <li>
+                  <div>
+                    <strong>1)</strong> La población de un país A es de <strong>128 000 000</strong> habitantes y la de un país B es de <strong>135 000 000</strong>.  
+                    ¿Cuál afirmación es correcta?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ap1" value="a"> A tiene más habitantes que B.</label></li>
+                    <li><label><input type="radio" name="ap1" value="b"> B tiene más habitantes que A.</label></li>
+                    <li><label><input type="radio" name="ap1" value="c"> Tienen el mismo número de habitantes.</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>2)</strong> En un año, una plataforma de videos registra <strong>3 450 000 000</strong> de reproducciones.  
+                    Esto se puede leer como:
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ap2" value="a"> tres mil cuatrocientos cincuenta millones</label></li>
+                    <li><label><input type="radio" name="ap2" value="b"> tres mil millones cuatrocientos cincuenta mil</label></li>
+                    <li><label><input type="radio" name="ap2" value="c"> trescientos cuarenta y cinco millones</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>3)</strong> En una campaña de reforestación se plantan:<br>
+                    Región norte: 980 000 000 árboles<br>
+                    Región sur: 1 050 000 000 árboles<br>
+                    Región centro: 999 000 000 árboles<br>
+                    ¿En qué región se plantó la mayor cantidad de árboles?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ap3" value="a"> Norte</label></li>
+                    <li><label><input type="radio" name="ap3" value="b"> Sur</label></li>
+                    <li><label><input type="radio" name="ap3" value="c"> Centro</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div>
+                    <strong>4)</strong> En una tabla aparece el número <strong>7 020 000 000</strong>.  
+                    ¿Cuál de estas opciones <strong>corresponde a una descomposición correcta</strong>?
+                  </div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ap4" value="a"> 7 000 000 000 + 20 000 000</label></li>
+                    <li><label><input type="radio" name="ap4" value="b"> 7 000 000 000 + 2 000 000</label></li>
+                    <li><label><input type="radio" name="ap4" value="c"> 7 020 000 000 + 2 000 000</label></li>
+                  </ul>
+                </li>
+              </ol>
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckAplica">📝 Revisar respuestas</button>
+                <button class="btn btn-secondary" id="btnResetAplica">↩️ Empezar de nuevo</button>
+              </div>
+              <div id="statusAplica" class="status status-info">
+                <span>ℹ️</span>
+                <div>Responde todas las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <section class="right-column">
+        <!-- Datos del alumno -->
+        <div class="card student-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🎓</span>
+              <span>Datos del alumno y controles</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir resultados</button>
+              <button class="btn btn-outline" id="btnPrintActivity">📄 Actividad para imprimir</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar guía -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🏫</span>
+              <span>Avatar guía – Instrucciones</span>
+            </div>
+          </div>
+          <div class="card-body avatar-card">
+            <div class="avatar-circle" aria-hidden="true">
+              <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, soy el maestro Martín Reta.</strong> En esta ODA vamos a jugar con números muy grandes, hasta billones.
+              <ol class="avatar-steps">
+                <li><span class="badge-step">1</span> En <strong>“Lee y escribe”</strong> relacionas la lectura con la escritura de números grandes.</li>
+                <li><span class="badge-step">2</span> En <strong>“Descompone el número”</strong> pasas de la descomposición al número completo.</li>
+                <li><span class="badge-step">3</span> En <strong>“Compara y ordena”</strong> decides qué número es mayor o menor.</li>
+                <li><span class="badge-step">4</span> En <strong>“Números en contexto”</strong> resuelves problemas con poblaciones, producciones y cantidades enormes.</li>
+              </ol>
+              <button class="btn btn-primary" id="btnPlayVoice">🔊 Escucha las instrucciones</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sugerencias docente -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📌</span>
+              <span>Sugerencias de uso en el aula</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="objective-list">
+              <li>Relaciona los números con datos reales: población de países, vistas en videos, dinero recaudado, etc.</li>
+              <li>Pide que expliquen <strong>cómo leyeron</strong> cada número y qué representa cada periodo (miles, millones, miles de millones).</li>
+              <li>Invita a que inventen nuevas descomposiciones y desafíos para sus compañeras y compañeros.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>© 2025. Elaborado por <strong>Mtro. Martín Reta</strong> – Escuela Primaria “Gral. Lázaro Cárdenas”.</div>
+      <div class="project">Proyecto “Números que cuentan historias” · ODA 6.º: Números naturales hasta billones (PDA 2).</div>
+    </footer>
+  </div>
+
+  <script>
+    // Utilidades
+    function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+    function formatBig(n){return n.toLocaleString("es-MX");}
+    function parseNumberStr(str){
+      if(!str)return NaN;
+      const clean=str.replace(/\s/g,"").replace(/,/g,"");
+      return parseInt(clean,10);
+    }
+
+    // Navegación
+    const moduleButtons=document.querySelectorAll(".module-button");
+    const panels={
+      lee:document.getElementById("panel-lee"),
+      descompone:document.getElementById("panel-descompone"),
+      compara:document.getElementById("panel-compara"),
+      aplica:document.getElementById("panel-aplica")
+    };
+    moduleButtons.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const mod=btn.dataset.module;
+        moduleButtons.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        Object.keys(panels).forEach(k=>panels[k].classList.remove("active"));
+        panels[mod].classList.add("active");
+      });
+    });
+
+    let lastLeeScore=null,
+        lastDescompScore=null,
+        lastCompareScore=null,
+        lastAplicaScore=null;
+
+    // -------------------- Panel 1: Lee y escribe --------------------
+    const statusLee=document.getElementById("statusLee");
+    document.getElementById("btnCheckLee").addEventListener("click",()=>{
+      const correctRadios={lee1:"a",lee2:"a"};
+      let total=4,correct=0,unanswered=0,msg=[];
+      // radios
+      ["lee1","lee2"].forEach((q,i)=>{
+        const sel=document.querySelector('input[name="'+q+'"]:checked');
+        if(!sel){unanswered++;return;}
+        if(sel.value===correctRadios[q]){
+          correct++;msg.push("Pregunta de opción múltiple "+(i+1)+": ✅ correcta.");
+        }else{
+          msg.push("Pregunta de opción múltiple "+(i+1)+": revisa la lectura del número.");
+        }
+      });
+      // inputs
+      const input1=document.getElementById("writeNum1");
+      const input2=document.getElementById("writeNum2");
+      const v1=parseNumberStr(input1.value);
+      const v2=parseNumberStr(input2.value);
+      const expected1=parseNumberStr("520000017000"); // 520 000 017 000
+      const expected2=parseNumberStr("3000200000");   // 3 000 200 000
+      if(!input1.value.trim()){unanswered++;}
+      else if(!isNaN(v1) && v1===expected1){
+        correct++;msg.push("Número escrito 1: ✅ correcto.");
+      }else{
+        msg.push("Número escrito 1: revisa los periodos de miles, millones y miles de millones.");
+      }
+      if(!input2.value.trim()){unanswered++;}
+      else if(!isNaN(v2) && v2===expected2){
+        correct++;msg.push("Número escrito 2: ✅ correcto.");
+      }else{
+        msg.push("Número escrito 2: revisa cuántos millones y miles aparecen.");
+      }
+
+      if(unanswered>0){
+        statusLee.className="status status-info";
+        statusLee.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> respuesta(s) por completar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastLeeScore={correct,total,percent};
+      if(percent>=70){
+        statusLee.className="status status-success";
+        statusLee.innerHTML="<span>✅</span><div>Respondiste correctamente <strong>"+correct+" de "+total+"</strong> elementos ("+percent+"%).<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusLee.className="status status-error";
+        statusLee.innerHTML="<span>📘</span><div>Respondiste correctamente <strong>"+correct+" de "+total+"</strong> elementos ("+percent+"%). Puedes revisar la forma de leer y escribir números grandes.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+
+    document.getElementById("btnResetLee").addEventListener("click",()=>{
+      ["lee1","lee2"].forEach(name=>{
+        document.querySelectorAll('input[name="'+name+'"]').forEach(r=>r.checked=false);
+      });
+      document.getElementById("writeNum1").value="";
+      document.getElementById("writeNum2").value="";
+      lastLeeScore=null;
+      statusLee.className="status status-info";
+      statusLee.innerHTML="<span>ℹ️</span><div>Responde las preguntas y completa los números escritos. Luego haz clic en <strong>“Revisar respuestas”</strong>.</div>";
+    });
+
+    // -------------------- Panel 2: Descompone el número --------------------
+    const descompTableBody=document.getElementById("descompTableBody");
+    const statusDescomp=document.getElementById("statusDescomp");
+    let descompData=[];
+    const descompPool=[
+      {expr:"300 000 000 000 + 40 000 000 000 + 5 000 000 000", value:345000000000},
+      {expr:"10 000 000 000 + 200 000 000 + 30 000 000", value:10230000000},
+      {expr:"900 000 000 + 80 000 000 + 4 000 000 + 500 000", value:984500000},
+      {expr:"2 000 000 000 + 7 000 000 + 50 000", value:2007000000+50000},
+      {expr:"1 000 000 000 + 300 000 000 + 20 000 000 + 4 000 000", value:1_324_000_000},
+      {expr:"7 000 000 000 + 20 000 000", value:7020000000}
+    ];
+
+    function shuffle(arr){
+      const a=[...arr];
+      for(let i=a.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [a[i],a[j]]=[a[j],a[i]];
+      }
+      return a;
+    }
+
+    function genDescompRows(){
+      descompData=[];
+      descompTableBody.innerHTML="";
+      const selected=shuffle(descompPool).slice(0,4);
+      selected.forEach((item,idx)=>{
+        const tr=document.createElement("tr");
+        const tdExpr=document.createElement("td");
+        const tdNum=document.createElement("td");
+        tdExpr.textContent=item.expr;
+        const input=document.createElement("input");
+        input.type="text";
+        input.className="convert-input";
+        input.setAttribute("data-row",idx);
+        input.placeholder="Escribe el número";
+        tdNum.appendChild(input);
+        tr.appendChild(tdExpr);
+        tr.appendChild(tdNum);
+        descompTableBody.appendChild(tr);
+        descompData.push({row:idx,value:item.value});
+      });
+    }
+    genDescompRows();
+
+    document.getElementById("btnGenDescomp").addEventListener("click",()=>{
+      genDescompRows();
+      lastDescompScore=null;
+      statusDescomp.className="status status-info";
+      statusDescomp.innerHTML="<span>ℹ️</span><div>Se generaron nuevas descomposiciones. Escríbelas y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    document.getElementById("btnCheckDescomp").addEventListener("click",()=>{
+      let total=descompData.length,correct=0,empty=0;
+      descompData.forEach(info=>{
+        const inp=descompTableBody.querySelector('input[data-row="'+info.row+'"]');
+        const val=parseNumberStr(inp.value);
+        if(!inp.value.trim()){empty++;return;}
+        if(!isNaN(val) && val===info.value)correct++;
+      });
+      if(empty>0){
+        statusDescomp.className="status status-info";
+        statusDescomp.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+empty+"</strong> número(s) por escribir.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastDescompScore={correct,total,percent};
+      if(percent>=70){
+        statusDescomp.className="status status-success";
+        statusDescomp.innerHTML="<span>✅</span><div>Escribiste correctamente <strong>"+correct+" de "+total+"</strong> números ("+percent+"%). Muy buen manejo de la descomposición de números grandes.</div>";
+      }else{
+        statusDescomp.className="status status-error";
+        statusDescomp.innerHTML="<span>📘</span><div>Escribiste correctamente <strong>"+correct+" de "+total+"</strong> números ("+percent+"%). Revisa cuántos ceros tiene cada término de la descomposición.</div>";
+      }
+    });
+
+    document.getElementById("btnResetDescomp").addEventListener("click",()=>{
+      descompTableBody.querySelectorAll("input").forEach(i=>i.value="");
+      lastDescompScore=null;
+      statusDescomp.className="status status-info";
+      statusDescomp.innerHTML="<span>ℹ️</span><div>Escribe el número que corresponde a cada descomposición y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // -------------------- Panel 3: Compara y ordena --------------------
+    const compareBody=document.getElementById("compareBody");
+    const orderListText=document.getElementById("orderListText");
+    const orderInputs=document.getElementById("orderInputs");
+    const statusCompare=document.getElementById("statusCompare");
+    let compareData=[];
+    let orderData=[];
+
+    function randomBigInRange(){
+      // desde 100 millones hasta 20 mil millones aprox
+      const base=100_000_000;
+      const max=20_000_000_000;
+      return randInt(base,max);
+    }
+
+    function genCompareAndOrder(){
+      compareData=[];
+      compareBody.innerHTML="";
+      // Comparaciones
+      for(let i=0;i<4;i++){
+        let a=randomBigInRange();
+        let b=randomBigInRange();
+        // de vez en cuando iguales
+        if(i===0 && Math.random()<0.4){b=a;}
+        const tr=document.createElement("tr");
+        const tdA=document.createElement("td");
+        const tdS=document.createElement("td");
+        const tdB=document.createElement("td");
+        tdA.textContent=formatBig(a);
+        tdB.textContent=formatBig(b);
+        const sel=document.createElement("select");
+        sel.innerHTML='<option value="">--</option><option value=">">&gt;</option><option value="<">&lt;</option><option value="=">=</option>';
+        sel.setAttribute("data-idx",i);
+        tdS.appendChild(sel);
+        tr.appendChild(tdA);tr.appendChild(tdS);tr.appendChild(tdB);
+        compareBody.appendChild(tr);
+        let sign="=";
+        if(a>b)sign=">";
+        else if(a<b)sign="<";
+        compareData.push({a,b,sign});
+      }
+
+      // Orden
+      orderInputs.innerHTML="";
+      orderListText.innerHTML="";
+      orderData=[];
+      const list=[];
+      while(list.length<4){
+        const n=randomBigInRange();
+        if(!list.includes(n))list.push(n);
+      }
+      orderData=list;
+      orderListText.innerHTML="Números: <strong>"+list.map(formatBig).join(" , ")+"</strong>";
+      for(let i=0;i<4;i++){
+        const label=document.createElement("label");
+        label.innerHTML="<span>"+(i+1)+"º lugar (de menor a mayor):</span>";
+        const inp=document.createElement("input");
+        inp.type="text";
+        inp.placeholder="Copia el número";
+        inp.setAttribute("data-pos",i);
+        label.appendChild(inp);
+        orderInputs.appendChild(label);
+      }
+    }
+    genCompareAndOrder();
+
+    document.getElementById("btnGenCompare").addEventListener("click",()=>{
+      genCompareAndOrder();
+      lastCompareScore=null;
+      statusCompare.className="status status-info";
+      statusCompare.innerHTML="<span>ℹ️</span><div>Se generaron nuevos números. Completa las comparaciones y el orden, luego haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    document.getElementById("btnCheckCompare").addEventListener("click",()=>{
+      let total=0,correct=0,empty=0;
+      // Comparaciones
+      compareBody.querySelectorAll("select").forEach(sel=>{
+        total++;
+        const idx=parseInt(sel.getAttribute("data-idx"),10);
+        const v=sel.value;
+        if(!v){empty++;return;}
+        if(v===compareData[idx].sign)correct++;
+      });
+      // Orden
+      const sorted=[...orderData].sort((a,b)=>a-b);
+      orderInputs.querySelectorAll("input").forEach((inp,pos)=>{
+        total++;
+        const val=parseNumberStr(inp.value);
+        if(!inp.value.trim()){empty++;return;}
+        if(!isNaN(val) && val===sorted[pos])correct++;
+      });
+
+      if(empty>0){
+        statusCompare.className="status status-info";
+        statusCompare.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+empty+"</strong> espacio(s) por completar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastCompareScore={correct,total,percent};
+      if(percent>=70){
+        statusCompare.className="status status-success";
+        statusCompare.innerHTML="<span>✅</span><div>Respondiste correctamente <strong>"+correct+" de "+total+"</strong> elementos ("+percent+"%). Excelente comparación y orden de números grandes.</div>";
+      }else{
+        statusCompare.className="status status-error";
+        statusCompare.innerHTML="<span>📘</span><div>Respondiste correctamente <strong>"+correct+" de "+total+"</strong> elementos ("+percent+"%). Vuelve a revisar qué número es mayor y el orden de menor a mayor.</div>";
+      }
+    });
+
+    document.getElementById("btnResetCompare").addEventListener("click",()=>{
+      compareBody.querySelectorAll("select").forEach(s=>s.value="");
+      orderInputs.querySelectorAll("input").forEach(i=>i.value="");
+      lastCompareScore=null;
+      statusCompare.className="status status-info";
+      statusCompare.innerHTML="<span>ℹ️</span><div>Completa las comparaciones y el orden. Luego haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // -------------------- Panel 4: Números en contexto --------------------
+    const statusAplica=document.getElementById("statusAplica");
+    const correctAplica={ap1:"b",ap2:"a",ap3:"b",ap4:"a"};
+
+    document.getElementById("btnCheckAplica").addEventListener("click",()=>{
+      let total=4,correct=0,unanswered=0,msg=[];
+      Object.keys(correctAplica).forEach(q=>{
+        const ans=document.querySelector('input[name="'+q+'"]:checked');
+        const num=q.replace("ap","");
+        if(!ans){unanswered++;return;}
+        if(ans.value===correctAplica[q]){
+          correct++;msg.push("Pregunta "+num+": ✅ correcta.");
+        }else{
+          msg.push("Pregunta "+num+": revisa el significado de los números y compáralos con atención.");
+        }
+      });
+      if(unanswered>0){
+        statusAplica.className="status status-info";
+        statusAplica.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> pregunta(s) por responder.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastAplicaScore={correct,total,percent};
+      if(correct>=3){
+        statusAplica.className="status status-success";
+        statusAplica.innerHTML="<span>✅</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Buen uso de números grandes en contextos reales.<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusAplica.className="status status-error";
+        statusAplica.innerHTML="<span>📘</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Puedes practicar de nuevo en los otros módulos y regresar a este.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+
+    document.getElementById("btnResetAplica").addEventListener("click",()=>{
+      Object.keys(correctAplica).forEach(q=>{
+        document.querySelectorAll('input[name="'+q+'"]').forEach(r=>r.checked=false);
+      });
+      lastAplicaScore=null;
+      statusAplica.className="status status-info";
+      statusAplica.innerHTML="<span>ℹ️</span><div>Responde todas las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>";
+    });
+
+    // -------------------- Voz instrucciones --------------------
+    const btnPlayVoice=document.getElementById("btnPlayVoice");
+    const instructionsText="Hola, soy el maestro Martin Reta. En esta actividad vas a trabajar con numeros naturales muy grandes, hasta billones. Primero relacionaras la forma escrita con los numeros. Despues escribirás numeros a partir de su descomposicion. Luego compararas y ordenaras cantidades grandes. Al final resolveras problemas donde aparecen poblaciones, producciones y otras cantidades enormes.";
+
+    function speakInstructions(){
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no permite la lectura en voz alta. Puedes leer las instrucciones en pantalla.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(instructionsText);
+      u.lang="es-MX";
+      const voices=window.speechSynthesis.getVoices();
+      let chosen=null;
+      if(voices && voices.length){
+        chosen=voices.find(v=>v.lang.startsWith("es") && /Hombre|Male|Miguel|Diego|Jorge|Antonio|Carlos/i.test(v.name))
+               || voices.find(v=>v.lang.startsWith("es"))
+               || voices[0];
+      }
+      if(chosen)u.voice=chosen;
+      window.speechSynthesis.speak(u);
+    }
+
+    btnPlayVoice.addEventListener("click",()=>{
+      const voices=window.speechSynthesis.getVoices();
+      if(!voices || !voices.length){
+        window.speechSynthesis.onvoiceschanged=speakInstructions;
+        window.speechSynthesis.getVoices();
+      }else{
+        speakInstructions();
+      }
+    });
+
+    // -------------------- Imprimir resultados --------------------
+    document.getElementById("btnPrintResults").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      if(!lastLeeScore && !lastDescompScore && !lastCompareScore && !lastAplicaScore){
+        alert("Primero realiza al menos un módulo para poder imprimir resultados.");
+        return;
+      }
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Resultados del estudiante – Números naturales hasta billones</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:4px 0;} .small{font-size:12px;color:#4b5563;} .blue{color:#1d4ed8;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Resultados del estudiante – Números naturales hasta billones (PDA 2, 6.º)</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta</p>");
+      w.document.write("<p><strong>Proyecto:</strong> Números que cuentan historias (6.º)</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Lee, escribe, compara y ordena números naturales hasta billones, usando diferentes representaciones en diversos contextos.</p>");
+
+      if(lastLeeScore){
+        w.document.write("<h2>Módulo 1. Lee y escribe</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastLeeScore.correct+" de "+lastLeeScore.total+" ("+lastLeeScore.percent+"%)</span></p>");
+      }
+      if(lastDescompScore){
+        w.document.write("<h2>Módulo 2. Descompone el número</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastDescompScore.correct+" de "+lastDescompScore.total+" ("+lastDescompScore.percent+"%)</span></p>");
+      }
+      if(lastCompareScore){
+        w.document.write("<h2>Módulo 3. Compara y ordena</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastCompareScore.correct+" de "+lastCompareScore.total+" ("+lastCompareScore.percent+"%)</span></p>");
+      }
+      if(lastAplicaScore){
+        w.document.write("<h2>Módulo 4. Números en contexto</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastAplicaScore.correct+" de "+lastAplicaScore.total+" ("+lastAplicaScore.percent+"%)</span></p>");
+      }
+
+      w.document.write("<p class='small'><strong>Observaciones del docente:</strong></p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+
+    // -------------------- Actividad para imprimir --------------------
+    document.getElementById("btnPrintActivity").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Actividad para imprimir – Números naturales hasta billones</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:6px 0;} ol{padding-left:18px;} li{margin-bottom:6px;} .small{font-size:12px;color:#4b5563;} table{border-collapse:collapse;width:100%;margin-top:6px;} th,td{border:1px solid #e5e7eb;padding:4px 6px;text-align:center;font-size:12px;} th{background:#eff6ff;} .left{text-align:left;font-weight:600;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Actividad para imprimir – Números naturales hasta billones</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta &nbsp;&nbsp;&nbsp; <strong>Proyecto:</strong> Números que cuentan historias (6.º)</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Lee, escribe, compara y ordena números naturales hasta billones, usando diferentes representaciones en diversos contextos.</p>");
+
+      w.document.write("<h2>Parte A. Lee y escribe</h2>");
+      w.document.write("<p>Escribe en número lo que está escrito con palabras.</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>“ciento cuarenta y dos mil millones trescientos diez mil” = ____________________________</li>");
+      w.document.write("<li>“seis mil millones cincuenta mil” = ____________________________</li>");
+      w.document.write("<li>“novecientos noventa y nueve millones ochocientos mil” = ____________________________</li>");
+      w.document.write("</ol>");
+
+      w.document.write("<h2>Parte B. Descomposición aditiva</h2>");
+      w.document.write("<p>Descompón los siguientes números como suma de unidades, decenas, centenas, miles, millones, etc.</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>2 345 000 000 = ____________________________________________</li>");
+      w.document.write("<li>10 020 000 000 = ____________________________________________</li>");
+      w.document.write("<li>7 500 300 000 = ____________________________________________</li>");
+      w.document.write("</ol>");
+
+      w.document.write("<h2>Parte C. Compara y ordena</h2>");
+      w.document.write("<p>Usa &gt;, &lt; o = para comparar.</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>8 900 000 000 _____ 8 890 000 000</li>");
+      w.document.write("<li>3 000 500 000 _____ 3 000 050 000</li>");
+      w.document.write("<li>12 000 000 000 _____ 12 000 000 000</li>");
+      w.document.write("</ol>");
+      w.document.write("<p>Ordena de menor a mayor:</p>");
+      w.document.write("<p>4 500 000 000 ; 4 050 000 000 ; 4 005 000 000 ; 4 050 500 000</p>");
+      w.document.write("<p>______________________________________________</p>");
+
+      w.document.write("<h2>Parte D. Problema</h2>");
+      w.document.write("<p>Resuelve y explica tu procedimiento.</p>");
+      w.document.write("<p>En tres años consecutivos, un canal de video tuvo estas reproducciones:</p>");
+      w.document.write("<p>Año 1: 2 800 000 000 &nbsp;&nbsp; Año 2: 3 100 000 000 &nbsp;&nbsp; Año 3: 3 400 000 000</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>¿En qué año tuvo más reproducciones?</li>");
+      w.document.write("<li>¿Cuántas reproducciones más tuvo en el año 3 que en el año 1?</li>");
+      w.document.write("</ol>");
+
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+  </script>
+</body>
+</html>

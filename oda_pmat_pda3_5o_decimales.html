@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Decimales hasta diezmilésimos (Dinámica)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#1d4ed8;
+      --primary-soft:#dbeafe;
+      --accent:#0ea5e9;
+      --text:#0f172a;
+      --muted:#6b7280;
+      --border:#e5e7eb;
+      --card:#ffffff;
+      --shadow:0 16px 35px rgba(15,23,42,.18);
+      --error:#b91c1c;
+      --success:#15803d;
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#e0f2fe 0,#eff6ff 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    body::before{
+      content:"";
+      position:fixed;
+      inset:12% 16%;
+      background:url("escudo_escuela.png") center/contain no-repeat;
+      opacity:.03;
+      pointer-events:none;
+      z-index:0;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1180px;
+      background:radial-gradient(circle at top left,#dbeafe 0,#ffffff 45%,#eff6ff 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #bfdbfe;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.3fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #dbeafe;
+    }
+    @media(max-width:900px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .author-block{text-align:center;}
+    }
+    .logo-left img{
+      max-height:60px;
+      width:auto;
+      display:block;
+    }
+    @media(max-width:900px){
+      .logo-left{display:flex;justify-content:center;}
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.22rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+    }
+    .title-block h1 .icon{font-size:1.45rem;}
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:var(--primary-soft);
+      color:var(--primary);
+      margin-top:3px;
+    }
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.78rem;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#eff6ff;
+      border:1px solid #dbeafe;
+    }
+    .chip .dot{
+      width:7px;height:7px;border-radius:999px;background:#22c55e;
+    }
+    .author-block{
+      font-size:.82rem;
+      color:var(--muted);
+      text-align:right;
+    }
+
+    main{
+      display:grid;
+      grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);
+      gap:10px;
+      margin-top:2px;
+    }
+    @media(max-width:900px){
+      main{grid-template-columns:1fr;}
+    }
+
+    .left-column,.right-column{
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid #e5e7eb;
+      box-shadow:0 8px 20px rgba(15,23,42,.06);
+      overflow:hidden;
+    }
+    .card-header{
+      padding:8px 12px 6px;
+      border-bottom:1px solid #e5e7eb;
+      background:linear-gradient(90deg,#dbeafe,#eff6ff);
+    }
+    .card-title{
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+      font-weight:600;
+      color:#0f172a;
+    }
+    .card-title .icon{font-size:1.05rem;}
+    .card-body{
+      padding:8px 12px 10px;
+      font-size:.84rem;
+    }
+
+    .objective-list{
+      padding-left:18px;
+      margin:6px 0;
+    }
+    .objective-list li{margin-bottom:3px;}
+
+    .timeline{
+      margin-top:6px;
+      border-radius:12px;
+      border:1px dashed #bfdbfe;
+      background:#eff6ff;
+      padding:6px 8px;
+      font-size:.8rem;
+    }
+    .timeline-item{
+      display:flex;
+      gap:6px;
+      margin-bottom:3px;
+    }
+    .timeline-label{
+      font-weight:600;
+      color:var(--primary);
+      min-width:97px;
+    }
+
+    .module-nav{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-bottom:8px;
+    }
+    .module-button{
+      flex:1 1 120px;
+      border-radius:999px;
+      border:1px solid #bfdbfe;
+      background:#eff6ff;
+      padding:5px 8px;
+      font-size:.78rem;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:5px;
+      cursor:pointer;
+      transition:.15s;
+    }
+    .module-button span.icon{font-size:.95rem;}
+    .module-button.active{
+      background:var(--primary);
+      color:#fff;
+      border-color:var(--primary);
+      box-shadow:0 0 0 1px rgba(37,99,235,.6);
+    }
+
+    .module-panel{display:none;}
+    .module-panel.active{display:block;}
+
+    .status{
+      margin-top:6px;
+      border-radius:10px;
+      padding:6px 8px;
+      display:flex;
+      gap:6px;
+      font-size:.8rem;
+      align-items:flex-start;
+    }
+    .status span{font-size:1rem;}
+    .status-info{
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      color:#1e3a8a;
+    }
+    .status-success{
+      background:#dcfce7;
+      border:1px solid #22c55e;
+      color:#166534;
+    }
+    .status-error{
+      background:#fee2e2;
+      border:1px solid #f97373;
+      color:#991b1b;
+    }
+
+    .btn-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      padding:5px 10px;
+      font-size:.8rem;
+      display:inline-flex;
+      align-items:center;
+      gap:5px;
+      cursor:pointer;
+      white-space:nowrap;
+    }
+    .btn-primary{background:var(--primary);color:#fff;}
+    .btn-secondary{background:#e5e7eb;color:#111827;}
+    .btn-outline{
+      background:#fff;
+      border:1px solid #cbd5f5;
+      color:#1e3a8a;
+    }
+
+    .options-list{
+      list-style:none;
+      padding-left:0;
+      margin:6px 0;
+      font-size:.8rem;
+    }
+    .options-list li{margin-bottom:4px;}
+    .options-list label{
+      display:flex;
+      align-items:flex-start;
+      gap:4px;
+      cursor:pointer;
+    }
+
+    .compare-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:4px;
+      font-size:.8rem;
+    }
+    .compare-table th,
+    .compare-table td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      text-align:center;
+    }
+    .compare-table th{
+      background:#eff6ff;
+      font-weight:600;
+    }
+    .compare-table select{
+      width:80px;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.78rem;
+    }
+
+    .order-block{
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:6px 8px;
+      margin-top:4px;
+      background:#f9fafb;
+      font-size:.8rem;
+    }
+    .order-block-title{
+      font-weight:600;
+      margin-bottom:2px;
+      color:#1e3a8a;
+    }
+    .order-inputs{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:4px;
+      margin-top:4px;
+    }
+    .order-inputs label{
+      font-size:.76rem;
+      display:flex;
+      flex-direction:column;
+      gap:2px;
+      align-items:flex-start;
+    }
+    .order-inputs input{
+      width:100%;
+      padding:3px 4px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.78rem;
+    }
+
+    .student-card .student-row{
+      display:flex;
+      flex-direction:column;
+      gap:3px;
+      margin-bottom:6px;
+    }
+    .student-card input[type="text"]{
+      padding:5px 7px;
+      border-radius:999px;
+      border:1px solid #cbd5f5;
+      font-size:.82rem;
+      width:100%;
+    }
+
+    .avatar-card{
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+    }
+    .avatar-circle{
+      width:120px;
+      height:auto;
+      background:#eff6ff;
+      border:1px solid #bfdbfe;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border-radius:18px;
+      overflow:visible;
+      flex-shrink:0;
+    }
+    .avatar-circle img{
+      width:100%;
+      height:auto;
+      object-fit:contain;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#374151;
+    }
+    .avatar-steps{
+      margin:4px 0;
+      padding-left:18px;
+    }
+    .avatar-steps li{margin-bottom:3px;}
+    .badge-step{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      width:16px;
+      height:16px;
+      border-radius:999px;
+      background:#1d4ed8;
+      color:#fff;
+      font-size:.7rem;
+      margin-right:4px;
+    }
+
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #dbeafe;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+
+  <div class="wrapper">
+    <header>
+      <div class="logo-left">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🧮</span>
+          <span>Decimales hasta diezmilésimos – Pensamiento Matemático (Dinámica)</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Estudio de los números.</strong><br>
+          PDA 5.º: <strong>Lee, escribe y ordena números decimales hasta diezmilésimos en notación decimal y letra, y los interpreta en diferentes contextos.</strong><br>
+          <span class="phase-label">Pensamiento Matemático · Fase 5 · 5.º grado</span>
+        </div>
+        <div class="chips">
+          <span class="chip"><span class="dot"></span>Campo formativo: Saberes y Pensamiento Matemático</span>
+          <span class="chip">Proyecto: <strong>Números que cuentan historias</strong></span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong><br>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <main>
+      <!-- COLUMNA IZQUIERDA -->
+      <section class="left-column">
+        <!-- Propósito -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🎯</span>
+              <span>Propósito de la ODA</span>
+            </div>
+          </div>
+          <div class="card-body">
+            Al finalizar esta ODA, las y los estudiantes serán capaces de <strong>leer, escribir, comparar y ordenar números decimales
+            hasta diezmilésimos</strong>, y de <strong>interpretarlos en situaciones de la vida diaria</strong> (dinero, medidas, recorridos, etc.).
+            <ul class="objective-list">
+              <li>Identificar el valor de la posición de las cifras decimales (décimas, centésimas, milésimas y diezmilésimas).</li>
+              <li>Leer y escribir números decimales en notación decimal y con palabras.</li>
+              <li>Comparar y ordenar decimales usando los signos <strong>&gt;, &lt; y =</strong>.</li>
+              <li>Interpretar decimales en contextos cercanos: precios, distancias, tiempos, mediciones.</li>
+            </ul>
+            <div class="timeline">
+              <div class="timeline-item">
+                <div class="timeline-label">1. Exploro</div>
+                <div>Reconozco cómo se leen y escriben los decimales.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">2. Comparo</div>
+                <div>Uso &gt;, &lt; o = para comparar decimales.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">3. Ordeno</div>
+                <div>Acomodo decimales de menor a mayor.</div>
+              </div>
+              <div class="timeline-item">
+                <div class="timeline-label">4. Aplico</div>
+                <div>Resuelvo situaciones y preguntas con decimales en contexto.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Módulos -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧩</span>
+              <span>Módulos de trabajo</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="module-nav">
+              <button class="module-button active" data-module="explora">
+                <span class="icon">👀</span> Explora los decimales
+              </button>
+              <button class="module-button" data-module="compara">
+                <span class="icon">⚖️</span> Compara decimales
+              </button>
+              <button class="module-button" data-module="ordena">
+                <span class="icon">📊</span> Ordena los decimales
+              </button>
+              <button class="module-button" data-module="evalua">
+                <span class="icon">📝</span> Decimales en contexto
+              </button>
+            </div>
+
+            <!-- Panel 1: Explora -->
+            <div id="panel-explora" class="module-panel active">
+              <p>Lee cada número decimal y elige la opción que corresponde a su lectura correcta.</p>
+              <ol class="options-list">
+                <li>
+                  <div><strong>1)</strong> 3.045</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ex1" value="a"> Tres con cuarenta y cinco centésimas.</label></li>
+                    <li><label><input type="radio" name="ex1" value="b"> Tres enteros con cuarenta y cinco milésimas.</label></li>
+                    <li><label><input type="radio" name="ex1" value="c"> Tres enteros con cuarenta y cinco milésimas y cero décimas.</label></li>
+                    <li><label><input type="radio" name="ex1" value="d"> Tres enteros con cuarenta y cinco milésimas (3 enteros y 45 milésimas).</label></li>
+                  </ul>
+                  <small>Nota: 3.045 = 3 enteros y 45 milésimas.</small>
+                </li>
+                <li>
+                  <div><strong>2)</strong> 0.72</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ex2" value="a"> Cero punto setenta y dos.</label></li>
+                    <li><label><input type="radio" name="ex2" value="b"> Setenta y dos enteros.</label></li>
+                    <li><label><input type="radio" name="ex2" value="c"> Setenta y dos décimas.</label></li>
+                    <li><label><input type="radio" name="ex2" value="d"> Setenta y dos centésimas.</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div><strong>3)</strong> 15.3005</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ex3" value="a"> Quince enteros con tres mil cinco diezmilésimos.</label></li>
+                    <li><label><input type="radio" name="ex3" value="b"> Quince enteros con treinta centésimas y cinco milésimas.</label></li>
+                    <li><label><input type="radio" name="ex3" value="c"> Quince enteros con tres mil cinco diezmilésimos (15 enteros y 3 005 diezmilésimos).</label></li>
+                    <li><label><input type="radio" name="ex3" value="d"> Quince punto trescientos cinco.</label></li>
+                  </ul>
+                </li>
+              </ol>
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckExplora">📝 Revisar respuestas</button>
+                <button class="btn btn-secondary" id="btnResetExplora">↩️ Empezar de nuevo</button>
+              </div>
+              <div id="statusExplora" class="status status-info">
+                <span>ℹ️</span>
+                <div>Elige una respuesta en cada pregunta y haz clic en <strong>“Revisar respuestas”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 2: Compara -->
+            <div id="panel-compara" class="module-panel">
+              <p>Completa las comparaciones con el signo correcto: <strong>&gt;</strong>, <strong>&lt;</strong> o <strong>=</strong>.  
+              Cada vez que presiones “Nuevos decimales”, se generan pares diferentes.</p>
+              <table class="compare-table" id="tableCompare">
+                <thead>
+                  <tr>
+                    <th>Decimal A</th>
+                    <th>Signo</th>
+                    <th>Decimal B</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- se llena por JS -->
+                </tbody>
+              </table>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnGenCompare">🔄 Nuevos decimales</button>
+                <button class="btn btn-primary" id="btnCheckCompare">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetCompare">↩️ Limpiar</button>
+              </div>
+              <div id="statusCompare" class="status status-info">
+                <span>ℹ️</span>
+                <div>Elige un signo en cada fila y luego haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 3: Ordena -->
+            <div id="panel-ordena" class="module-panel">
+              <p>En cada caso, observa la lista de decimales y escríbelos <strong>de menor a mayor</strong>.</p>
+              <div id="orderContainer">
+                <!-- se llena por JS -->
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-secondary" id="btnGenOrder">🔄 Nuevas listas</button>
+                <button class="btn btn-primary" id="btnCheckOrder">✅ Revisar</button>
+                <button class="btn btn-secondary" id="btnResetOrder">↩️ Limpiar</button>
+              </div>
+              <div id="statusOrder" class="status status-info">
+                <span>ℹ️</span>
+                <div>Escribe los decimales de menor a mayor y haz clic en <strong>“Revisar”</strong>.</div>
+              </div>
+            </div>
+
+            <!-- Panel 4: Decimales en contexto -->
+            <div id="panel-evalua" class="module-panel">
+              <p>Responde las preguntas y piensa qué significan los decimales en situaciones de la vida diaria.</p>
+              <ol class="options-list">
+                <li>
+                  <div><strong>1)</strong> En una carrera, Ana recorrió <strong>2.35 km</strong> y Leo recorrió <strong>2.305 km</strong>.  
+                  ¿Quién recorrió <strong>más</strong> distancia?</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ev1" value="a"> Ana</label></li>
+                    <li><label><input type="radio" name="ev1" value="b"> Leo</label></li>
+                    <li><label><input type="radio" name="ev1" value="c"> Recorrieron lo mismo.</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div><strong>2)</strong> En la tienda del ejido, un litro de leche cuesta <strong>$23.80</strong> y un litro de jugo cuesta <strong>$23.805</strong>.  
+                  ¿Cuál de las siguientes afirmaciones es correcta?</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ev2" value="a"> La leche es más cara que el jugo.</label></li>
+                    <li><label><input type="radio" name="ev2" value="b"> El jugo es ligeramente más caro que la leche.</label></li>
+                    <li><label><input type="radio" name="ev2" value="c"> Los dos productos cuestan exactamente lo mismo.</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div><strong>3)</strong> El tiempo que tardó un balón en llegar al suelo fue de <strong>1.6 s</strong>.  
+                  ¿Cuál de los siguientes números representa el mismo tiempo escrito con décimas, centésimas y milésimas?</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ev3" value="a"> 1.60</label></li>
+                    <li><label><input type="radio" name="ev3" value="b"> 1.600</label></li>
+                    <li><label><input type="radio" name="ev3" value="c"> 1.006</label></li>
+                  </ul>
+                </li>
+                <li>
+                  <div><strong>4)</strong> En una regla aparece la medida <strong>0.125 m</strong>.  
+                  ¿Qué afirmación es correcta?</div>
+                  <ul class="options-list">
+                    <li><label><input type="radio" name="ev4" value="a"> Es mayor que 0.2 m.</label></li>
+                    <li><label><input type="radio" name="ev4" value="b"> Es menor que 0.2 m.</label></li>
+                    <li><label><input type="radio" name="ev4" value="c"> Es igual que 0.2 m.</label></li>
+                  </ul>
+                </li>
+              </ol>
+              <div class="btn-row">
+                <button class="btn btn-primary" id="btnCheckEvalua">📝 Revisar respuestas</button>
+                <button class="btn btn-secondary" id="btnResetEvalua">↩️ Empezar de nuevo</button>
+              </div>
+              <div id="statusEvalua" class="status status-info">
+                <span>ℹ️</span>
+                <div>Responde todas las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <section class="right-column">
+        <!-- Datos del alumno -->
+        <div class="card student-card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🎓</span>
+              <span>Datos del alumno y controles</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <div class="student-row">
+              <label for="studentName">Nombre del alumno(a):</label>
+              <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-outline" id="btnPrintResults">🖨️ Imprimir resultados</button>
+              <button class="btn btn-outline" id="btnPrintActivity">📄 Actividad para imprimir</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Avatar guía -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">🧑‍🏫</span>
+              <span>Avatar guía – Instrucciones</span>
+            </div>
+          </div>
+          <div class="card-body avatar-card">
+            <div class="avatar-circle" aria-hidden="true">
+              <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+            </div>
+            <div class="avatar-text">
+              <strong>Hola, soy el maestro Martín Reta.</strong> Hoy trabajaremos con números decimales hasta diezmilésimos.
+              <ol class="avatar-steps">
+                <li><span class="badge-step">1</span> En <strong>“Explora los decimales”</strong> repasas cómo se leen algunos decimales.</li>
+                <li><span class="badge-step">2</span> En <strong>“Compara decimales”</strong> decides cuál es mayor o menor.</li>
+                <li><span class="badge-step">3</span> En <strong>“Ordena los decimales”</strong> los acomodas de menor a mayor.</li>
+                <li><span class="badge-step">4</span> En <strong>“Decimales en contexto”</strong> resuelves situaciones reales.</li>
+              </ol>
+              <button class="btn btn-primary" id="btnPlayVoice">🔊 Escucha las instrucciones</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sugerencias docente -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span class="icon">📌</span>
+              <span>Sugerencias de uso en el aula</span>
+            </div>
+          </div>
+          <div class="card-body">
+            <ul class="objective-list">
+              <li>Relaciona los decimales con <strong>precios, tiempos de juego, distancias en la cancha</strong> o mediciones de laboratorio.</li>
+              <li>Pide que las y los estudiantes expliquen en voz alta <strong>qué significa cada cifra</strong> (décimas, centésimas, milésimas, diezmilésimas).</li>
+              <li>Invita a crear problemas propios con decimales y compartirlos con el grupo.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div>
+        © 2025. Elaborado por <strong>Mtro. Martín Reta</strong> – Escuela Primaria “Gral. Lázaro Cárdenas”.
+      </div>
+      <div class="project">
+        Proyecto “Números que cuentan historias” · ODA: Decimales hasta diezmilésimos (PDA 3).
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function randInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
+    function randDecimal(min,max){
+      const r=Math.random()*(max-min)+min;
+      return parseFloat(r.toFixed(4)); // hasta diezmilésimos
+    }
+
+    // Navegación
+    const moduleButtons=document.querySelectorAll(".module-button");
+    const panels={
+      explora:document.getElementById("panel-explora"),
+      compara:document.getElementById("panel-compara"),
+      ordena:document.getElementById("panel-ordena"),
+      evalua:document.getElementById("panel-evalua")
+    };
+    moduleButtons.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const mod=btn.dataset.module;
+        moduleButtons.forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active");
+        Object.keys(panels).forEach(k=>panels[k].classList.remove("active"));
+        panels[mod].classList.add("active");
+      });
+    });
+
+    let lastExploraScore=null,lastCompareScore=null,lastOrderScore=null,lastEvaluaScore=null;
+
+    // Panel Explora
+    const statusExplora=document.getElementById("statusExplora");
+    document.getElementById("btnCheckExplora").addEventListener("click",()=>{
+      const answers={ex1:"d",ex2:"d",ex3:"c"};
+      let total=3,correct=0,unanswered=0,msg=[];
+      ["ex1","ex2","ex3"].forEach((q,idx)=>{
+        const sel=document.querySelector('input[name="'+q+'"]:checked');
+        if(!sel){unanswered++;return;}
+        if(sel.value===answers[q]){
+          correct++;msg.push("Pregunta "+(idx+1)+": ✅ correcta.");
+        }else{
+          msg.push("Pregunta "+(idx+1)+": revisa con calma cómo se lee ese decimal.");
+        }
+      });
+      if(unanswered>0){
+        statusExplora.className="status status-info";
+        statusExplora.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> pregunta(s) por responder.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastExploraScore={correct,total,percent};
+      if(correct>=2){
+        statusExplora.className="status status-success";
+        statusExplora.innerHTML="<span>✅</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%).<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusExplora.className="status status-error";
+        statusExplora.innerHTML="<span>📘</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Puedes volver a revisar la lectura de los decimales.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+    document.getElementById("btnResetExplora").addEventListener("click",()=>{
+      ["ex1","ex2","ex3"].forEach(name=>{
+        document.querySelectorAll('input[name="'+name+'"]').forEach(r=>r.checked=false);
+      });
+      lastExploraScore=null;
+      statusExplora.className="status status-info";
+      statusExplora.innerHTML="<span>ℹ️</span><div>Elige una respuesta en cada pregunta y haz clic en <strong>“Revisar respuestas”</strong>.</div>";
+    });
+
+    // Panel Compara
+    const tableCompareBody=document.querySelector("#tableCompare tbody");
+    const statusCompare=document.getElementById("statusCompare");
+    let compareData=[];
+    function genCompareRows(){
+      compareData=[];
+      tableCompareBody.innerHTML="";
+      for(let i=0;i<4;i++){
+        let a=randDecimal(0,50);
+        let b=randDecimal(0,50);
+        const tr=document.createElement("tr");
+        const tdA=document.createElement("td");
+        const tdSign=document.createElement("td");
+        const tdB=document.createElement("td");
+        tdA.textContent=a.toFixed(4);
+        tdB.textContent=b.toFixed(4);
+        const sel=document.createElement("select");
+        sel.innerHTML='<option value="">--</option><option value=">">&gt;</option><option value="<">&lt;</option><option value="=">=</option>';
+        sel.setAttribute("data-idx",i);
+        tdSign.appendChild(sel);
+        tr.appendChild(tdA);tr.appendChild(tdSign);tr.appendChild(tdB);
+        tableCompareBody.appendChild(tr);
+        let sign="=";
+        if(a>b)sign=">";
+        else if(a<b)sign="<";
+        compareData.push({a,b,sign});
+      }
+    }
+    genCompareRows();
+
+    document.getElementById("btnGenCompare").addEventListener("click",()=>{
+      genCompareRows();
+      lastCompareScore=null;
+      statusCompare.className="status status-info";
+      statusCompare.innerHTML="<span>ℹ️</span><div>Se han generado nuevos pares de decimales. Completa las comparaciones.</div>";
+    });
+
+    document.getElementById("btnCheckCompare").addEventListener("click",()=>{
+      const selects=tableCompareBody.querySelectorAll("select");
+      let total=compareData.length,correct=0,empty=0;
+      selects.forEach(sel=>{
+        const idx=parseInt(sel.getAttribute("data-idx"),10);
+        const val=sel.value;
+        if(!val){empty++;return;}
+        if(val===compareData[idx].sign)correct++;
+      });
+      if(empty>0){
+        statusCompare.className="status status-info";
+        statusCompare.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+empty+"</strong> comparación(es) por completar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastCompareScore={correct,total,percent};
+      if(percent>=70){
+        statusCompare.className="status status-success";
+        statusCompare.innerHTML="<span>✅</span><div>Respondiste correctamente <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Buen trabajo comparando decimales.</div>";
+      }else{
+        statusCompare.className="status status-error";
+        statusCompare.innerHTML="<span>📘</span><div>Respondiste correctamente <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Revisa cifra por cifra: unidades, décimas, centésimas, milésimas.</div>";
+      }
+    });
+
+    document.getElementById("btnResetCompare").addEventListener("click",()=>{
+      tableCompareBody.querySelectorAll("select").forEach(s=>s.value="");
+      lastCompareScore=null;
+      statusCompare.className="status status-info";
+      statusCompare.innerHTML="<span>ℹ️</span><div>Elige un signo en cada fila y luego haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // Panel Ordena
+    const orderContainer=document.getElementById("orderContainer");
+    const statusOrder=document.getElementById("statusOrder");
+    let orderData=[];
+    function genOrderBlocks(){
+      orderData=[];
+      orderContainer.innerHTML="";
+      for(let i=0;i<3;i++){
+        const nums=[];
+        for(let j=0;j<4;j++){
+          nums.push(randDecimal(0,50));
+        }
+        const sorted=[...nums].sort((a,b)=>a-b);
+        orderData.push({original:nums,sorted});
+        const block=document.createElement("div");
+        block.className="order-block";
+        block.setAttribute("data-idx",i);
+        block.innerHTML="<div class='order-block-title'>Lista "+(i+1)+"</div>"+
+          "<div>Decimales: <strong>"+nums.map(n=>n.toFixed(4)).join(", ")+"</strong></div>";
+        const inputs=document.createElement("div");
+        inputs.className="order-inputs";
+        for(let k=0;k<4;k++){
+          const label=document.createElement("label");
+          label.innerHTML="<span>"+(k+1)+"º lugar:</span>";
+          const inp=document.createElement("input");
+          inp.type="text";
+          inp.setAttribute("data-pos",k);
+          inp.placeholder="Escribe el decimal";
+          label.appendChild(inp);
+          inputs.appendChild(label);
+        }
+        block.appendChild(inputs);
+        orderContainer.appendChild(block);
+      }
+    }
+    genOrderBlocks();
+
+    document.getElementById("btnGenOrder").addEventListener("click",()=>{
+      genOrderBlocks();
+      lastOrderScore=null;
+      statusOrder.className="status status-info";
+      statusOrder.innerHTML="<span>ℹ️</span><div>Se han generado nuevas listas. Escríbelas de menor a mayor.</div>";
+    });
+
+    document.getElementById("btnCheckOrder").addEventListener("click",()=>{
+      const blocks=orderContainer.querySelectorAll(".order-block");
+      let total=0,correct=0,empty=0;
+      blocks.forEach(block=>{
+        const idx=parseInt(block.getAttribute("data-idx"),10);
+        const sorted=orderData[idx].sorted;
+        const inputs=block.querySelectorAll("input");
+        inputs.forEach((inp,pos)=>{
+          total++;
+          const val=inp.value.trim();
+          if(val===""){empty++;return;}
+          const n=parseFloat(val.replace(",",".")); // por si alguien usa coma
+          if(!isNaN(n) && Math.abs(n-sorted[pos])<0.0001)correct++;
+        });
+      });
+      if(empty>0){
+        statusOrder.className="status status-info";
+        statusOrder.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+empty+"</strong> espacio(s) por completar.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastOrderScore={correct,total,percent};
+      if(percent>=70){
+        statusOrder.className="status status-success";
+        statusOrder.innerHTML="<span>✅</span><div>Ordenaste correctamente <strong>"+correct+" de "+total+"</strong> posiciones ("+percent+"%). Excelente manejo del orden de decimales.</div>";
+      }else{
+        statusOrder.className="status status-error";
+        statusOrder.innerHTML="<span>📘</span><div>Ordenaste correctamente <strong>"+correct+" de "+total+"</strong> posiciones ("+percent+"%). Vuelve a revisar qué decimal es más pequeño comparando cifra por cifra.</div>";
+      }
+    });
+
+    document.getElementById("btnResetOrder").addEventListener("click",()=>{
+      orderContainer.querySelectorAll("input").forEach(i=>i.value="");
+      lastOrderScore=null;
+      statusOrder.className="status status-info";
+      statusOrder.innerHTML="<span>ℹ️</span><div>Escribe los decimales de menor a mayor y haz clic en <strong>“Revisar”</strong>.</div>";
+    });
+
+    // Panel Decimales en contexto
+    const statusEvalua=document.getElementById("statusEvalua");
+    const correctEval={ev1:"a",ev2:"b",ev3:"b",ev4:"b"};
+    document.getElementById("btnCheckEvalua").addEventListener("click",()=>{
+      let total=4,correct=0,unanswered=0,msg=[];
+      Object.keys(correctEval).forEach(q=>{
+        const ans=document.querySelector('input[name="'+q+'"]:checked');
+        const num=q.replace("ev","");
+        if(!ans){unanswered++;return;}
+        if(ans.value===correctEval[q]){
+          correct++;msg.push("Pregunta "+num+": ✅ correcta.");
+        }else{
+          msg.push("Pregunta "+num+": revisa el valor del decimal en la situación.");
+        }
+      });
+      if(unanswered>0){
+        statusEvalua.className="status status-info";
+        statusEvalua.innerHTML="<span>ℹ️</span><div>Te faltan <strong>"+unanswered+"</strong> pregunta(s) por responder.</div>";
+        return;
+      }
+      const percent=Math.round(correct/total*100);
+      lastEvaluaScore={correct,total,percent};
+      if(correct>=3){
+        statusEvalua.className="status status-success";
+        statusEvalua.innerHTML="<span>✅</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Buen dominio de los decimales en contexto.<br>"+msg.join("<br>")+"</div>";
+      }else{
+        statusEvalua.className="status status-error";
+        statusEvalua.innerHTML="<span>📘</span><div>Acertaste <strong>"+correct+" de "+total+"</strong> ("+percent+"%). Puedes practicar de nuevo en los otros módulos y regresar a este.<br>"+msg.join("<br>")+"</div>";
+      }
+    });
+    document.getElementById("btnResetEvalua").addEventListener("click",()=>{
+      Object.keys(correctEval).forEach(q=>{
+        document.querySelectorAll('input[name="'+q+'"]').forEach(r=>r.checked=false);
+      });
+      lastEvaluaScore=null;
+      statusEvalua.className="status status-info";
+      statusEvalua.innerHTML="<span>ℹ️</span><div>Responde todas las preguntas y haz clic en <strong>“Revisar respuestas”</strong>.</div>";
+    });
+
+    // Voz instrucciones
+    const btnPlayVoice=document.getElementById("btnPlayVoice");
+    const instructionsText="Hola, soy el maestro Martin Reta. En esta actividad vas a trabajar con numeros decimales hasta diezmilesimos. Primero explora como se leen algunos decimales. Despues compara cuales son mayores o menores. Luego ordena listas de decimales de menor a mayor. Al final resuelve problemas donde los decimales aparecen en situaciones reales, como precios o distancias.";
+    function speakInstructions(){
+      if(!("speechSynthesis" in window)){
+        alert("Tu navegador no permite la lectura en voz alta. Puedes leer las instrucciones en pantalla.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const u=new SpeechSynthesisUtterance(instructionsText);
+      u.lang="es-MX";
+      const voices=window.speechSynthesis.getVoices();
+      let chosen=null;
+      if(voices && voices.length){
+        chosen=voices.find(v=>v.lang.startsWith("es") && /Hombre|Male|Miguel|Diego|Jorge|Antonio|Carlos/i.test(v.name))
+               || voices.find(v=>v.lang.startsWith("es"))
+               || voices[0];
+      }
+      if(chosen)u.voice=chosen;
+      window.speechSynthesis.speak(u);
+    }
+    btnPlayVoice.addEventListener("click",()=>{
+      const voices=window.speechSynthesis.getVoices();
+      if(!voices || !voices.length){
+        window.speechSynthesis.onvoiceschanged=speakInstructions;
+        window.speechSynthesis.getVoices();
+      }else{
+        speakInstructions();
+      }
+    });
+
+    // Imprimir resultados
+    document.getElementById("btnPrintResults").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      if(!lastExploraScore && !lastCompareScore && !lastOrderScore && !lastEvaluaScore){
+        alert("Primero realiza al menos un módulo para poder imprimir resultados.");
+        return;
+      }
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Resultados del estudiante – Decimales hasta diezmilésimos</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:4px 0;} .small{font-size:12px;color:#4b5563;} .blue{color:#1d4ed8;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Resultados del estudiante – Decimales hasta diezmilésimos (PDA 3)</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta</p>");
+      w.document.write("<p><strong>Proyecto:</strong> Números que cuentan historias</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Lee, escribe y ordena números decimales hasta diezmilésimos en notación decimal y letra, y los interpreta en diferentes contextos.</p>");
+
+      if(lastExploraScore){
+        w.document.write("<h2>Módulo 1. Explora los decimales</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastExploraScore.correct+" de "+lastExploraScore.total+" ("+lastExploraScore.percent+"%)</span></p>");
+      }
+      if(lastCompareScore){
+        w.document.write("<h2>Módulo 2. Compara decimales</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastCompareScore.correct+" de "+lastCompareScore.total+" ("+lastCompareScore.percent+"%)</span></p>");
+      }
+      if(lastOrderScore){
+        w.document.write("<h2>Módulo 3. Ordena decimales</h2>");
+        w.document.write("<p>Puntaje: <span class='blue'>"+lastOrderScore.correct+" de "+lastOrderScore.total+" ("+lastOrderScore.percent+"%)</span></p>");
+      }
+      if(lastEvaluaScore){
+        w.document.write("<h2>Módulo 4. Decimales en contexto</h2>");
+        w.document.write("<p>Puntaje global: <span class='blue'>"+lastEvaluaScore.correct+" de "+lastEvaluaScore.total+" ("+lastEvaluaScore.percent+"%)</span></p>");
+      }
+
+      w.document.write("<p class='small'><strong>Observaciones del docente:</strong></p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("<p class='small'>______________________________________________</p>");
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+
+    // Actividad para imprimir (distinta a las actividades internas)
+    document.getElementById("btnPrintActivity").addEventListener("click",()=>{
+      const studentName=document.getElementById("studentName").value.trim();
+      const w=window.open("","_blank");
+      w.document.write("<html><head><title>Actividad para imprimir – Decimales hasta diezmilésimos</title>");
+      w.document.write('<style>body{font-family:system-ui,Arial,sans-serif;font-size:13px;padding:16px;color:#111827;} h1{font-size:20px;margin-bottom:4px;} h2{font-size:16px;margin-top:16px;margin-bottom:6px;} p{margin:6px 0;} ol{padding-left:18px;} li{margin-bottom:6px;} .small{font-size:12px;color:#4b5563;} table{border-collapse:collapse;width:100%;margin-top:6px;} th,td{border:1px solid #e5e7eb;padding:4px 6px;text-align:center;font-size:12px;} th{background:#eff6ff;} .col-left{text-align:left;font-weight:600;}</style>');
+      w.document.write("</head><body>");
+      w.document.write("<h1>Actividad para imprimir – Decimales hasta diezmilésimos</h1>");
+      w.document.write("<p><strong>Nombre del alumno(a):</strong> "+(studentName||"______________________________")+"</p>");
+      w.document.write("<p><strong>Docente:</strong> Mtro. Martín Reta &nbsp;&nbsp;&nbsp; <strong>Proyecto:</strong> Números que cuentan historias</p>");
+      w.document.write("<p class='small'><strong>PDA:</strong> Lee, escribe y ordena números decimales hasta diezmilésimos en notación decimal y letra, y los interpreta en diferentes contextos.</p>");
+
+      // Parte A
+      w.document.write("<h2>Parte A. De decimal a palabras</h2>");
+      w.document.write("<p>Escribe con palabras cada número decimal.</p>");
+      const decsA=[
+        randDecimal(0,10),
+        randDecimal(0,10),
+        randDecimal(10,50)
+      ];
+      w.document.write("<ol>");
+      decsA.forEach((d,i)=>{
+        w.document.write("<li>"+d.toFixed(4)+" ________________________________________________</li>");
+      });
+      w.document.write("</ol>");
+
+      // Parte B
+      w.document.write("<h2>Parte B. Ordena los decimales</h2>");
+      w.document.write("<p>En cada fila, ordena los decimales de menor a mayor.</p>");
+      w.document.write("<table><tr><th>Fila</th><th colspan='4'>Decimales</th></tr>");
+      for(let i=1;i<=3;i++){
+        const a=randDecimal(0,20),
+              b=randDecimal(0,20),
+              c=randDecimal(0,20),
+              d=randDecimal(0,20);
+        w.document.write("<tr><td class='col-left'>"+i+"</td><td>"+a.toFixed(4)+"</td><td>"+b.toFixed(4)+"</td><td>"+c.toFixed(4)+"</td><td>"+d.toFixed(4)+"</td></tr>");
+        w.document.write("<tr><td></td><td colspan='4'>Menor a mayor: ________________________________</td></tr>");
+      }
+      w.document.write("</table>");
+
+      // Parte C
+      w.document.write("<h2>Parte C. Decimales en la vida diaria</h2>");
+      w.document.write("<p>Responde en el reverso o debajo:</p>");
+      w.document.write("<ol>");
+      w.document.write("<li>En una tienda, tres productos cuestan $12.50, $12.505 y $12.75. ¿Cuál es el más barato? ¿Cuál es el más caro? Explica.</li>");
+      w.document.write("<li>Imagina una carrera de bicicletas donde los tiempos fueron 3.42 s, 3.407 s y 3.5 s. Ordena los tiempos de menor a mayor y explica quién llegó primero.</li>");
+      w.document.write("<li>Escribe un problema de tu vida diaria donde aparezca un número decimal (por ejemplo, al medir, al comprar, al jugar) y resuélvelo.</li>");
+      w.document.write("</ol>");
+
+      w.document.write("</body></html>");
+      w.document.close();
+      w.print();
+    });
+  </script>
+</body>
+</html>

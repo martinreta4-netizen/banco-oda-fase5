@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Mejoro mi autobiografía con sugerencias</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#b91c1c;
+      --primary-soft:#fef2f2;
+      --accent:#fb923c;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#fecaca;
+      --card:#ffffff;
+      --shadow:0 16px 35px rgba(127,29,29,.18);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#fff7ed 0,#fef2f2 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1180px;
+      background:radial-gradient(circle at top left,#fee2e2 0,#ffffff 45%,#fef2f2 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #fed7d7;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.4fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #fee2e2;
+    }
+    @media(max-width:900px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .header-logos{justify-content:center;}
+    }
+    .header-logos{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .header-logos img{
+      max-height:54px;
+      width:auto;
+      display:block;
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.22rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:#7f1d1d;
+    }
+    .title-block h1 .icon{
+      font-size:1.45rem;
+    }
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:3px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#7f1d1d;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+    }
+    .author-block{
+      font-size:.78rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:900px){
+      .author-block{text-align:center;}
+    }
+    .author-block strong{
+      display:block;
+      font-size:.86rem;
+      color:#111827;
+    }
+    .top-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .student-name{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.82rem;
+      background:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #fecaca;
+    }
+    .student-name label{
+      font-weight:600;
+      color:#374151;
+    }
+    .student-name input{
+      border:none;
+      outline:none;
+      font-size:.9rem;
+      min-width:180px;
+    }
+    .avatar-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:5px 9px;
+      border:1px solid #fecaca;
+    }
+    .avatar-row img{
+      height:56px;
+      width:auto;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#7f1d1d;
+    }
+    .btn-voice{
+      border-radius:999px;
+      border:none;
+      background:#b91c1c;
+      color:#fff;
+      padding:5px 10px;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:0 6px 18px rgba(127,29,29,.4);
+    }
+    .btn-voice span{
+      font-size:1rem;
+    }
+    .ejes-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.75rem;
+    }
+    .chip{
+      border-radius:999px;
+      padding:2px 9px;
+      border:1px solid #fed7d7;
+      background:#fff1f2;
+      color:#b91c1c;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#b91c1c;
+    }
+    .steps-bar{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:6px;
+      border:1px solid #fecaca;
+    }
+    .step-tab{
+      flex:1 1 140px;
+      border-radius:999px;
+      border:1px solid transparent;
+      padding:5px 10px;
+      font-size:.82rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      cursor:pointer;
+      color:#7f1d1d;
+      background:#fff;
+      transition:.2s ease;
+    }
+    .step-left{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .step-circle{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:2px solid #fecaca;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.78rem;
+      font-weight:600;
+      background:#fff5f5;
+    }
+    .step-label-main{
+      font-weight:600;
+    }
+    .step-label-sub{
+      font-size:.74rem;
+      color:#9f1239;
+    }
+    .step-tab.active{
+      background:linear-gradient(90deg,#b91c1c,#f97316);
+      border-color:#b91c1c;
+      color:#fff;
+      box-shadow:0 10px 22px rgba(185,28,28,.45);
+    }
+    .step-tab.active .step-circle{
+      background:#fff;
+      border-color:#fee2e2;
+      color:#b91c1c;
+    }
+    .step-icon-right{
+      font-size:.95rem;
+    }
+    main{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:6px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:10px 11px;
+    }
+    .card h2{
+      margin:0 0 4px;
+      font-size:.98rem;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card h2 .icon{
+      font-size:1.1rem;
+    }
+    .card p{
+      font-size:.86rem;
+      color:#374151;
+      margin:.15rem 0;
+    }
+    .two-col{
+      display:grid;
+      grid-template-columns:minmax(0,1.4fr) minmax(0,1.1fr);
+      gap:10px;
+    }
+    @media(max-width:900px){
+      .two-col{grid-template-columns:1fr;}
+    }
+    .example-box{
+      border-radius:14px;
+      padding:8px 10px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      font-size:.84rem;
+      color:#7c2d12;
+    }
+    .example-label{
+      font-size:.78rem;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      color:#c2410c;
+      margin-bottom:3px;
+    }
+    .list{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.85rem;
+    }
+    .list li{margin-bottom:3px;}
+    textarea,input[type="text"]{
+      width:100%;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:5px 7px;
+      font-family:inherit;
+      font-size:.86rem;
+      resize:vertical;
+    }
+    textarea{min-height:80px;}
+    .mini-title{
+      font-weight:600;
+      font-size:.86rem;
+      color:#7f1d1d;
+      margin-top:4px;
+    }
+    .vf-row{
+      margin-top:4px;
+      padding:6px 7px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:.84rem;
+    }
+    .vf-row label{margin-right:8px;}
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+    .btn-secondary{
+      background:#f3f4f6;
+      color:#111827;
+    }
+    .btn-outline{
+      background:#fff;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+    .step-panel{display:none;font-size:.86rem;}
+    .step-panel.active{display:block;}
+    .results-card{
+      font-size:.84rem;
+    }
+    .result-good{color:#166534;font-weight:600;}
+    .result-bad{color:#b91c1c;font-weight:600;}
+    .chips-row-small{
+      display:flex;
+      flex-wrap:wrap;
+      gap:4px;
+      margin-top:4px;
+      font-size:.76rem;
+    }
+    .chip-soft{
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+      border:1px solid #fecaca;
+      color:#7f1d1d;
+    }
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #fee2e2;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        padding:0;
+      }
+      .school-logo-fixed{position:fixed;right:8px;bottom:8px;height:60px;}
+      .btn-row,.steps-bar,.avatar-row,.ejes-row{display:none!important;}
+      .wrapper{
+        box-shadow:none;
+        border:none;
+        border-radius:0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+  <div class="wrapper">
+    <header>
+      <div class="header-logos">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🤝</span>
+          <span>ODA – Mejoro mi autobiografía con sugerencias</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Narración de sucesos autobiográficos.</strong><br>
+          PDA: <strong>Hace y recibe sugerencias sobre aspectos de mejora, y comparte con la comunidad educativa las versiones finales.</strong><br>
+          <span class="phase-label">Lenguajes · Fase 5</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <div class="top-row">
+      <div class="student-name">
+        <label for="studentName">Nombre del alumno(a):</label>
+        <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+      </div>
+      <div class="avatar-row">
+        <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+        <div class="avatar-text">
+          <strong>Hola, soy el maestro Martín.</strong><br>
+          Hoy aprenderemos a dar y recibir sugerencias para mejorar tu autobiografía y compartirla con otros.
+        </div>
+        <button class="btn-voice" type="button" onclick="playGuide()">
+          <span>🔊</span> Escuchar instrucciones
+        </button>
+      </div>
+    </div>
+
+    <div class="ejes-row">
+      <span class="chip"><span class="dot"></span>Inclusión</span>
+      <span class="chip"><span class="dot"></span>Pensamiento crítico</span>
+      <span class="chip"><span class="dot"></span>Lenguajes para la vida</span>
+      <span class="chip"><span class="dot"></span>Interculturalidad crítica</span>
+    </div>
+
+    <div class="steps-bar">
+      <button class="step-tab active" data-step="1" onclick="setStep(1)">
+        <div class="step-left">
+          <div class="step-circle">1</div>
+          <div>
+            <div class="step-label-main">Comprendo la retroalimentación</div>
+            <div class="step-label-sub">Comentarios que ayudan</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="2" onclick="setStep(2)">
+        <div class="step-left">
+          <div class="step-circle">2</div>
+          <div>
+            <div class="step-label-main">Analizo sugerencias</div>
+            <div class="step-label-sub">¿Cuáles sirven más?</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="3" onclick="setStep(3)">
+        <div class="step-left">
+          <div class="step-circle">3</div>
+          <div>
+            <div class="step-label-main">Mejoro mi texto</div>
+            <div class="step-label-sub">Antes y después</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="4" onclick="setStep(4)">
+        <div class="step-left">
+          <div class="step-circle">4</div>
+          <div>
+            <div class="step-label-main">Comparto y reflexiono</div>
+            <div class="step-label-sub">Hoja de resultados</div>
+          </div>
+        </div>
+        <span class="step-icon-right">✓</span>
+      </button>
+    </div>
+
+    <main>
+      <!-- PASO 1 -->
+      <section class="card step-panel active" id="step-1">
+        <h2><span class="icon">💬</span><span>Paso 1. ¿Qué es una buena sugerencia?</span></h2>
+        <div class="two-col">
+          <div>
+            <p>Dar una sugerencia no es regañar ni burlarse. Es decirle a alguien, con respeto, <strong>qué puede mejorar</strong> y <strong>cómo hacerlo</strong>.</p>
+            <ul class="list">
+              <li>Hablo del <strong>texto</strong>, no de la persona.</li>
+              <li>Uso frases como: <em>“podrías…”, “te sugiero…”, “quizá te ayude…”</em>.</li>
+              <li>Digo <strong>qué</strong> me gusta y <strong>qué</strong> se puede mejorar.</li>
+              <li>Evito palabras ofensivas o burlonas.</li>
+            </ul>
+            <p class="mini-title">Ejemplo</p>
+            <div class="example-box">
+              <p><strong>Mala sugerencia:</strong> “Tu texto está feo, no se entiende nada.”</p>
+              <p><strong>Buena sugerencia:</strong> “Tu historia es interesante. Podrías agregar más detalles cuando llegas a la escuela para que imaginemos mejor qué sentiste.”</p>
+            </div>
+          </div>
+          <div>
+            <div class="example-box">
+              <div class="example-label">Actividad 1 · ¿Qué sugerencias ayudan?</div>
+              <p>Imagina que un compañero te muestra su autobiografía. ¿Cuáles sugerencias serían útiles?</p>
+              <div class="vf-row">
+                <p><strong>a)</strong> “Tu texto está bien, ya no le muevas.”</p>
+                <label><input type="checkbox" id="sug1"> Es útil</label>
+              </div>
+              <div class="vf-row">
+                <p><strong>b)</strong> “Me gustó el final. Podrías explicar un poco más qué aprendiste de esa experiencia.”</p>
+                <label><input type="checkbox" id="sug2"> Es útil</label>
+              </div>
+              <div class="vf-row">
+                <p><strong>c)</strong> “No entiendo mucho cuando cuentas lo del camión. Tal vez podrías poner más detalles o separar en dos oraciones.”</p>
+                <label><input type="checkbox" id="sug3"> Es útil</label>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-primary" type="button" onclick="checkStep1()">Comprobar respuestas</button>
+              </div>
+              <div id="fbStep1" style="margin-top:4px;font-size:.82rem;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASO 2 -->
+      <section class="card step-panel" id="step-2">
+        <h2><span class="icon">🧐</span><span>Paso 2. Analizo sugerencias sobre un texto</span></h2>
+        <p>Lee el siguiente fragmento autobiográfico y las sugerencias que recibió.</p>
+        <div class="example-box">
+          <div class="example-label">Texto de ejemplo</div>
+          <p>
+            Ese día llegué tarde a la escuela. Caminé muy rápido pero aun así escuché la campana cuando iba a la mitad del camino. Entré al salón sin decir nada y me senté en mi lugar. Sentía que todos me miraban y me dio mucha pena.
+          </p>
+        </div>
+        <p class="mini-title">Sugerencias que recibió:</p>
+        <ol class="list">
+          <li><strong>S1:</strong> “Podrías describir un poco más cómo era el camino para imaginar por dónde ibas.”</li>
+          <li><strong>S2:</strong> “No me gustó.”</li>
+          <li><strong>S3:</strong> “Tal vez puedes explicar qué pensaste cuando todos te miraban.”</li>
+          <li><strong>S4:</strong> “Tu letra está fea.”</li>
+        </ol>
+        <p class="mini-title">Clasifica cada sugerencia:</p>
+        <div class="vf-row">
+          <p><strong>S1</strong> es…</p>
+          <label><input type="radio" name="c1" value="ayuda"> Sugerencia que ayuda</label>
+          <label><input type="radio" name="c1" value="no"> No ayuda</label>
+        </div>
+        <div class="vf-row">
+          <p><strong>S2</strong> es…</p>
+          <label><input type="radio" name="c2" value="ayuda"> Sugerencia que ayuda</label>
+          <label><input type="radio" name="c2" value="no"> No ayuda</label>
+        </div>
+        <div class="vf-row">
+          <p><strong>S3</strong> es…</p>
+          <label><input type="radio" name="c3" value="ayuda"> Sugerencia que ayuda</label>
+          <label><input type="radio" name="c3" value="no"> No ayuda</label>
+        </div>
+        <div class="vf-row">
+          <p><strong>S4</strong> es…</p>
+          <label><input type="radio" name="c4" value="ayuda"> Sugerencia que ayuda</label>
+          <label><input type="radio" name="c4" value="no"> No ayuda</label>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="checkStep2()">Comprobar clasificación</button>
+        </div>
+        <div id="fbStep2" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- PASO 3 -->
+      <section class="card step-panel" id="step-3">
+        <h2><span class="icon">✍️</span><span>Paso 3. Mejoro mi texto: antes y después</span></h2>
+        <p>Piensa en un fragmento de tu autobiografía (puede ser uno que ya escribiste en otra ODA). Escríbelo primero <strong>como está ahora</strong> y luego escribe una versión <strong>mejorada</strong> después de recibir sugerencias.</p>
+        <p class="mini-title">Mi texto antes de las sugerencias:</p>
+        <textarea id="textBefore" placeholder="Escribe aquí tu fragmento tal como lo tienes ahora."></textarea>
+        <p class="mini-title">Sugerencias que recibí (de un compañero, maestra o familia):</p>
+        <textarea id="textSug" placeholder="Ejemplo: Me dijeron que agregara más detalles del lugar y que separara las ideas en dos párrafos."></textarea>
+        <p class="mini-title">Mi texto mejorado (después de las sugerencias):</p>
+        <textarea id="textAfter" placeholder="Reescribe tu fragmento tomando en cuenta las sugerencias."></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="quickCheckStep3()">Revisión rápida</button>
+        </div>
+        <div id="fbStep3" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- PASO 4 -->
+      <section class="card step-panel" id="step-4">
+        <h2><span class="icon">📄</span><span>Paso 4. Hoja de resultados y compartir con la comunidad</span></h2>
+        <p>Genera tu hoja de resultados sobre cómo haces y recibes sugerencias para mejorar tu autobiografía.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="generateResults()">Generar hoja de resultados</button>
+          <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir actividad</button>
+        </div>
+        <div id="resultsPanel" class="card results-card" style="margin-top:8px;display:none;">
+          <h2><span class="icon">📊</span><span>Hoja de resultados</span></h2>
+          <p><strong>Alumno(a):</strong> <span id="resName"></span></p>
+          <ul class="list">
+            <li><span id="resR1"></span></li>
+            <li><span id="resR2"></span></li>
+            <li><span id="resR3"></span></li>
+          </ul>
+          <p><strong>Comentario del maestro Martín:</strong></p>
+          <p id="resComment"></p>
+          <p class="mini-title">¿Cómo compartiré mi versión final con la comunidad educativa?</p>
+          <textarea id="resShare" placeholder="Ejemplos: leeré mi texto en voz alta al grupo; haremos un muro de autobiografías en el salón; lo compartiré en una cartulina durante la reunión con familias, etc."></textarea>
+          <p class="mini-title">Mi compromiso al dar y recibir sugerencias:</p>
+          <textarea id="resCommit" placeholder="Escribe cómo te comprometes a dar sugerencias respetuosas y a aceptar las que te ayuden a mejorar."></textarea>
+          <div class="btn-row">
+            <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir resultados</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- TARJETA EXTRA: FRASES PARA DAR SUGERENCIAS -->
+      <section class="card">
+        <h2><span class="icon">🧩</span><span>Frases útiles para dar sugerencias</span></h2>
+        <p>Estas frases pueden ayudarte a dar sugerencias con respeto. Usa algunas cuando comentes los textos de tus compañeros.</p>
+        <div class="chips-row-small">
+          <span class="chip-soft">Me gustó mucho cuando...</span>
+          <span class="chip-soft">Podrías explicar mejor...</span>
+          <span class="chip-soft">Quizá te ayude agregar...</span>
+          <span class="chip-soft">No entendí bien esta parte porque...</span>
+          <span class="chip-soft">Tal vez podrías separar en dos oraciones...</span>
+          <span class="chip-soft">Te sugiero describir más...</span>
+          <span class="chip-soft">Lo que más me gustó fue...</span>
+          <span class="chip-soft">¿Qué pasaría si agregaras...?</span>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="project">Proyecto: “Mi historia, mi voz, mi camino”</span>
+      <span>Campo formativo: Lenguajes · Fase 5</span>
+      <span>© 2025. Diseño de ODA: Mtro. Martín Reta. Material educativo. Prohibida su venta.</span>
+    </footer>
+  </div>
+
+  <script>
+    function setStep(n){
+      document.querySelectorAll('.step-tab').forEach(btn=>{
+        btn.classList.toggle('active', Number(btn.dataset.step)===n);
+      });
+      document.querySelectorAll('.step-panel').forEach((p,idx)=>{
+        p.classList.toggle('active', idx===n-1);
+      });
+    }
+
+    function playGuide(){
+      try{
+        const msg=new SpeechSynthesisUtterance(
+          'En esta ODA vas a practicar cómo dar y recibir sugerencias para mejorar tu autobiografía y luego compartirla con tu grupo y tu comunidad.'
+        );
+        msg.lang='es-MX';
+        msg.rate=1;
+        msg.pitch=1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(msg);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function checkStep1(){
+      const s1=document.getElementById('sug1').checked;
+      const s2=document.getElementById('sug2').checked;
+      const s3=document.getElementById('sug3').checked;
+      const fb=document.getElementById('fbStep1');
+      // Las útiles son b y c, a NO es útil
+      const ok = (!s1 && s2 && s3);
+      if(ok){
+        fb.innerHTML='<span class="result-good">✔ Muy bien. Elegiste las sugerencias que realmente ayudan a mejorar el texto.</span>';
+      }else{
+        fb.innerHTML='<span class="result-bad">Revisa: una buena sugerencia dice qué mejorar y cómo hacerlo, no sólo dice si está bien o mal.</span>';
+      }
+    }
+
+    function checkStep2(){
+      const c1=document.querySelector('input[name="c1"]:checked');
+      const c2=document.querySelector('input[name="c2"]:checked');
+      const c3=document.querySelector('input[name="c3"]:checked');
+      const c4=document.querySelector('input[name="c4"]:checked');
+      const fb=document.getElementById('fbStep2');
+      if(!c1 || !c2 || !c3 || !c4){
+        fb.innerHTML='<span class="result-bad">Clasifica todas las sugerencias antes de comprobar.</span>';
+        return;
+      }
+      const ok1=c1.value==='ayuda'; // S1 ayuda
+      const ok2=c2.value==='no';    // S2 no ayuda
+      const ok3=c3.value==='ayuda'; // S3 ayuda
+      const ok4=c4.value==='no';    // S4 no ayuda
+      if(ok1 && ok2 && ok3 && ok4){
+        fb.innerHTML='<span class="result-good">✔ Correcto. Sabes distinguir qué sugerencias mejoran el texto y cuáles no aportan.</span>';
+      }else{
+        fb.innerHTML='<span class="result-bad">Revisa de nuevo. Pregúntate: ¿esta sugerencia me dice qué cambiar o sólo critica?</span>';
+      }
+    }
+
+    function quickCheckStep3(){
+      const before=document.getElementById('textBefore').value;
+      const sug=document.getElementById('textSug').value;
+      const after=document.getElementById('textAfter').value;
+      const fb=document.getElementById('fbStep3');
+      if(!before.trim() || !after.trim()){
+        fb.innerHTML='<span class="result-bad">Escribe tu texto antes y después de las sugerencias.</span>';
+        return;
+      }
+      const lenBefore=before.trim().split(/\s+/).length;
+      const lenAfter=after.trim().split(/\s+/).length;
+      let msg='';
+      if(lenAfter>lenBefore){
+        msg+='Tu nueva versión parece más desarrollada. ';
+      }else{
+        msg+='Tu nueva versión tiene una extensión similar o menor; revisa si realmente agregaste mejoras. ';
+      }
+      if(sug.trim()){
+        msg+='Tomaste en cuenta sugerencias para mejorar tu texto.';
+      }else{
+        msg+='Sería bueno escribir las sugerencias que recibiste para recordar qué cambiaste.';
+      }
+      fb.textContent=msg;
+    }
+
+    function generateResults(){
+      const name=document.getElementById('studentName').value || 'Sin nombre';
+      document.getElementById('resName').textContent=name;
+
+      // R1: comprensión de buenas sugerencias (Paso 1)
+      const s1=document.getElementById('sug1').checked;
+      const s2=document.getElementById('sug2').checked;
+      const s3=document.getElementById('sug3').checked;
+      const r1=document.getElementById('resR1');
+      const okSug = (!s1 && s2 && s3);
+      if(okSug){
+        r1.innerHTML='<span style="color:#1d4ed8;">Reconoce qué comentarios son útiles para mejorar un texto.</span>';
+      }else{
+        r1.innerHTML='<span style="color:#b91c1c;">Debe reforzar la identificación de sugerencias claras y respetuosas.</span>';
+      }
+
+      // R2: análisis de sugerencias (Paso 2)
+      const c1=document.querySelector('input[name="c1"]:checked');
+      const c2=document.querySelector('input[name="c2"]:checked');
+      const c3=document.querySelector('input[name="c3"]:checked');
+      const c4=document.querySelector('input[name="c4"]:checked');
+      const r2=document.getElementById('resR2');
+      const ok1=c1 && c1.value==='ayuda';
+      const ok2=c2 && c2.value==='no';
+      const ok3=c3 && c3.value==='ayuda';
+      const ok4=c4 && c4.value==='no';
+      const okClas = ok1 && ok2 && ok3 && ok4;
+      if(okClas){
+        r2.innerHTML='<span style="color:#1d4ed8;">Distingue entre sugerencias que mejoran el texto y comentarios que no ayudan.</span>';
+      }else{
+        r2.innerHTML='<span style="color:#b91c1c;">Necesita revisar mejor qué tipo de sugerencias realmente mejoran un texto.</span>';
+      }
+
+      // R3: mejora de su propio texto (Paso 3)
+      const before=document.getElementById('textBefore').value.trim();
+      const sug=document.getElementById('textSug').value.trim();
+      const after=document.getElementById('textAfter').value.trim();
+      const r3=document.getElementById('resR3');
+      let okMejora=false;
+      if(before && after){
+        const lenBefore=before.split(/\s+/).length;
+        const lenAfter=after.split(/\s+/).length;
+        okMejora = (lenAfter>=lenBefore) && (after!==before);
+      }
+      if(okMejora && sug){
+        r3.innerHTML='<span style="color:#1d4ed8;">Reescribe su texto tomando en cuenta sugerencias de mejora.</span>';
+      }else{
+        r3.innerHTML='<span style="color:#b91c1c;">Aún necesita mostrar con más claridad cómo las sugerencias mejoran su texto.</span>';
+      }
+
+      const score=(okSug?1:0)+(okClas?1:0)+(okMejora&&sug?1:0);
+      const comment=document.getElementById('resComment');
+      if(score===3){
+        comment.textContent='¡Excelente! Usas las sugerencias como una herramienta para mejorar tus textos y estás listo para compartirlos con otros.';
+      }else if(score===2){
+        comment.textContent='Vas muy bien. Refuerza el aspecto en rojo y tus textos seguirán mejorando con el apoyo de tus compañeros y maestras.';
+      }else{
+        comment.textContent='Sigue practicando. Dar y recibir sugerencias es una habilidad que se aprende con el tiempo y el respeto.';
+      }
+
+      document.getElementById('resultsPanel').style.display='block';
+      setStep(4);
+      document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>

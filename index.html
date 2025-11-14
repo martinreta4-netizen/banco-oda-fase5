@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portal ODA – Mtro. Martín Reta – Escuela Primaria “Gral. Lázaro Cárdenas”. Fase 5</title>
+  <style>
+    :root{
+      --azul:#1d4ed8;
+      --azul-claro:#0ea5e9;
+      --texto:#0f172a;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+    body{
+      min-height:100vh;
+      background:linear-gradient(180deg,#e0f2fe 0%,#fefce8 100%);
+      color:var(--texto);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+    }
+    header{
+      width:100%;max-width:1100px;
+      display:flex;justify-content:space-between;align-items:center;
+      padding:12px 20px;margin-top:6px;flex-wrap:wrap;
+    }
+    header img{height:60px;object-fit:contain;}
+    .title-block{
+      text-align:center;
+      margin:20px 10px 10px;
+      max-width:980px;
+    }
+    .title-block h1{
+      font-size:1.6rem;
+      color:#1d4ed8;
+      margin-bottom:10px;
+    }
+    .title-block p{
+      font-size:1rem;
+      color:#374151;
+      line-height:1.6;
+    }
+    .highlight{font-weight:700;}
+    .controls{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin:24px 0 18px;
+    }
+    .btn{
+      border:none;
+      border-radius:999px;
+      padding:14px 26px;
+      font-size:1rem;
+      cursor:pointer;
+      color:#f9fafb;
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      box-shadow:0 10px 25px rgba(15,23,42,.22);
+      transition:transform .15s ease, box-shadow .15s ease;
+      background:linear-gradient(135deg,#1d4ed8,#0ea5e9);
+    }
+    .btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.28);}
+    .btn-secondary{
+      background:#111827;
+      box-shadow:0 8px 20px rgba(15,23,42,.25);
+    }
+    .grades{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-bottom:30px;
+    }
+    .grade-btn{
+      border:none;
+      border-radius:18px;
+      padding:14px 30px;
+      font-size:1.1rem;
+      cursor:pointer;
+      background:#111827;
+      color:#f9fafb;
+      box-shadow:0 10px 25px rgba(15,23,42,.25);
+      transition:transform .15s, box-shadow .15s;
+    }
+    .grade-btn:hover{transform:translateY(-1px);box-shadow:0 14px 30px rgba(15,23,42,.3);}
+    footer{
+      font-size:.8rem;
+      color:#6b7280;
+      text-align:center;
+      margin:16px 0 14px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Música de fondo (pon odas/musica_fondo.mp3 en tu carpeta) -->
+  <audio id="bgMusic" src="odas/musica_fondo.mp3" loop></audio>
+
+  <header>
+    <img src="odas/sep_logo.png" alt="SEP">
+    <img src="odas/escudo_escuela.png" alt="Escudo Escuela Primaria Gral. Lázaro Cárdenas">
+  </header>
+
+  <div class="title-block">
+    <h1>Portal ODA – Mtro. Martín Reta – Escuela Primaria “Gral. Lázaro Cárdenas”. Fase 5</h1>
+    <p>
+      Bienvenido al portal de Objetos Digitales de Aprendizaje (ODA). Aquí encontrarás recursos interactivos para fortalecer los
+      procesos formativos de la <span class="highlight">Fase 5</span>, diseñados conforme a los principios de la
+      <span class="highlight">Nueva Escuela Mexicana</span>, fomentando la autonomía, la colaboración y el pensamiento crítico
+      en contextos reales de aprendizaje.
+    </p>
+  </div>
+
+  <div class="controls">
+    <button id="playVoice" class="btn">
+      🔊 <span>Escuchar introducción</span>
+    </button>
+    <button id="playMusic" class="btn btn-secondary">
+      🎵 <span>Activar música</span>
+    </button>
+  </div>
+
+  <div class="grades">
+    <button class="grade-btn" onclick="location.href='grado5.html'">5.º Grado</button>
+    <button class="grade-btn" onclick="location.href='grado6.html'">6.º Grado</button>
+  </div>
+
+  <footer>
+    © 2025 · Mtro. Martín Reta · Escuela Primaria “Gral. Lázaro Cárdenas” · Fase 5
+  </footer>
+
+  <script>
+    // Voz de bienvenida
+    function speakIntro(){
+      const texto = "Bienvenido al portal de Objetos Digitales de Aprendizaje de la Escuela Primaria General Lázaro Cárdenas. " +
+                    "Aquí encontrarás recursos interactivos para fortalecer tu aprendizaje en los campos formativos de la Fase cinco, " +
+                    "inspirados en los principios de la Nueva Escuela Mexicana.";
+      if(!('speechSynthesis' in window)){
+        alert("Tu navegador no soporta la lectura en voz alta.");
+        return;
+      }
+      const u = new SpeechSynthesisUtterance(texto);
+      u.lang = "es-MX";
+      u.rate = 1;
+      const v = window.speechSynthesis.getVoices();
+      if(v && v.length){
+        u.voice = v.find(voz => voz.lang.startsWith("es")) || v[0];
+      }
+      window.speechSynthesis.cancel();
+      window.speechSynthesis.speak(u);
+    }
+
+    document.getElementById("playVoice").addEventListener("click", () => {
+      const voces = window.speechSynthesis.getVoices();
+      if(!voces || !voces.length){
+        window.speechSynthesis.onvoiceschanged = speakIntro;
+        window.speechSynthesis.getVoices();
+      }else{
+        speakIntro();
+      }
+    });
+
+    // Música de fondo (usa odas/musica_fondo.mp3)
+    const music = document.getElementById("bgMusic");
+    const btnMusic = document.getElementById("playMusic");
+    btnMusic.addEventListener("click", () => {
+      if(!music.src){
+        alert("Falta el archivo odas/musica_fondo.mp3");
+        return;
+      }
+      if(music.paused){
+        music.volume = 0.35;
+        music.play();
+        btnMusic.innerHTML = "⏸️ <span>Detener música</span>";
+      }else{
+        music.pause();
+        btnMusic.innerHTML = "🎵 <span>Activar música</span>";
+      }
+    });
+  </script>
+</body>
+</html>

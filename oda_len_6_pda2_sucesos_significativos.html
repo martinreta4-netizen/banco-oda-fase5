@@ -1,0 +1,1195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA V3 – Organizo sucesos significativos de mi vida</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#7f1d1d;
+      --primary-soft:#fef2f2;
+      --accent:#fbbf24;
+      --accent-soft:#fffbeb;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#fecaca;
+      --card:#ffffff;
+      --shadow:0 18px 40px rgba(127,29,29,.22);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:radial-gradient(circle at top,#fee2e2 0,#ffffff 40%,#fff7ed 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1240px;
+      background:linear-gradient(135deg,#fef2f2 0,#ffffff 50%,#fffbeb 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #fee2e2;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.6fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #fee2e2;
+    }
+    @media(max-width:900px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .header-logos{justify-content:center;}
+    }
+    .header-logos{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .header-logos img{
+      max-height:54px;
+      width:auto;
+      display:block;
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.26rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:#7f1d1d;
+    }
+    .title-block h1 .icon{
+      font-size:1.5rem;
+    }
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:3px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#7f1d1d;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+    }
+    .badge-grade{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      padding:2px 8px;
+      font-size:.78rem;
+      border-radius:999px;
+      background:#fffbeb;
+      border:1px solid #facc15;
+      color:#92400e;
+      margin-left:4px;
+    }
+    .badge-grade span{
+      font-size:.9rem;
+    }
+    .author-block{
+      font-size:.78rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:900px){
+      .author-block{text-align:center;}
+    }
+    .author-block strong{
+      display:block;
+      font-size:.86rem;
+      color:#111827;
+    }
+    .top-layout{
+      display:grid;
+      grid-template-columns:minmax(0,2.2fr) minmax(260px,1.2fr);
+      gap:10px;
+      align-items:stretch;
+      margin-top:4px;
+    }
+    @media(max-width:900px){
+      .top-layout{
+        grid-template-columns:1fr;
+      }
+    }
+    .student-and-tabs{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+    }
+    .student-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .student-name{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.82rem;
+      background:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #fecaca;
+    }
+    .student-name label{
+      font-weight:600;
+      color:#374151;
+    }
+    .student-name input{
+      border:none;
+      outline:none;
+      font-size:.9rem;
+      min-width:190px;
+    }
+    .ejes-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.74rem;
+    }
+    .chip{
+      border-radius:999px;
+      padding:2px 9px;
+      border:1px solid #fed7d7;
+      background:#fff1f2;
+      color:#b91c1c;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#b91c1c;
+    }
+    .avatar-panel{
+      background:radial-gradient(circle at top,#fee2e2 0,#ffffff 55%);
+      border-radius:20px;
+      border:1px solid #fecaca;
+      padding:8px 10px;
+      display:flex;
+      gap:8px;
+      align-items:center;
+      box-shadow:0 10px 24px rgba(127,29,29,.18);
+    }
+    .avatar-panel img{
+      height:70px;
+      width:auto;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#7f1d1d;
+    }
+    .btn-voice{
+      border-radius:999px;
+      border:none;
+      background:#7f1d1d;
+      color:#fff;
+      padding:5px 10px;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:0 6px 18px rgba(127,29,29,.45);
+      margin-top:4px;
+    }
+    .btn-voice span{
+      font-size:1rem;
+    }
+    .pill-tabs{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:6px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:5px;
+      border:1px solid #fecaca;
+    }
+    .pill-tab{
+      flex:1 1 150px;
+      border-radius:999px;
+      padding:5px 10px;
+      font-size:.82rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      cursor:pointer;
+      border:1px solid transparent;
+      background:#fff;
+      color:#7f1d1d;
+      transition:.2s;
+    }
+    .pill-main{
+      font-weight:600;
+    }
+    .pill-sub{
+      font-size:.72rem;
+      color:#9f1239;
+    }
+    .pill-number{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:2px solid #fecaca;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.78rem;
+      background:#fff5f5;
+    }
+    .pill-tab.active{
+      background:linear-gradient(90deg,#7f1d1d,#f97316);
+      color:#fff;
+      border-color:#7f1d1d;
+      box-shadow:0 10px 24px rgba(127,29,29,.4);
+    }
+    .pill-tab.active .pill-number{
+      background:#fff;
+      border-color:#fee2e2;
+      color:#7f1d1d;
+    }
+    main{
+      margin-top:6px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+    .section-panel{
+      display:none;
+      background:var(--card);
+      border-radius:20px;
+      border:1px solid var(--border);
+      padding:10px 12px;
+    }
+    .section-panel.active{
+      display:block;
+    }
+    .section-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:8px;
+      margin-bottom:4px;
+    }
+    .section-header h2{
+      margin:0;
+      font-size:.98rem;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .section-header h2 .icon{
+      font-size:1.1rem;
+    }
+    .section-badge{
+      font-size:.72rem;
+      padding:2px 7px;
+      border-radius:999px;
+      background:#fffbeb;
+      border:1px solid #facc15;
+      color:#92400e;
+    }
+    .section-panel p{
+      font-size:.86rem;
+      color:#374151;
+      margin:.15rem 0;
+    }
+    .flip-grid{
+      display:grid;
+      grid-template-columns:repeat(3,minmax(0,1fr));
+      gap:10px;
+      margin-top:6px;
+    }
+    @media(max-width:900px){
+      .flip-grid{grid-template-columns:1fr;}
+    }
+    .flip-card{
+      background:transparent;
+      perspective:1000px;
+      cursor:pointer;
+    }
+    .flip-inner{
+      position:relative;
+      width:100%;
+      min-height:150px;
+      transition:transform .5s;
+      transform-style:preserve-3d;
+    }
+    .flip-card.flipped .flip-inner{
+      transform:rotateY(180deg);
+    }
+    .flip-face{
+      position:absolute;
+      inset:0;
+      backface-visibility:hidden;
+      border-radius:18px;
+      border:1px solid #fecaca;
+      padding:8px 9px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .flip-front{
+      background:linear-gradient(145deg,#fef2f2,#fffbeb);
+    }
+    .flip-back{
+      background:#ffffff;
+      transform:rotateY(180deg);
+    }
+    .flip-title{
+      font-weight:700;
+      font-size:.9rem;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .flip-icon{
+      font-size:1.2rem;
+    }
+    .flip-tag{
+      font-size:.72rem;
+      padding:2px 7px;
+      border-radius:999px;
+      align-self:flex-start;
+      background:#fee2e2;
+      color:#7c2d12;
+    }
+    .flip-front p,
+    .flip-back p{
+      font-size:.8rem;
+      margin:.1rem 0;
+    }
+    .list{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.83rem;
+    }
+    .list li{margin-bottom:3px;}
+    .mini-title{
+      font-weight:600;
+      font-size:.86rem;
+      color:#7f1d1d;
+      margin-top:4px;
+    }
+    .compare-grid{
+      display:grid;
+      grid-template-columns:minmax(0,1.2fr) repeat(3,minmax(0,1fr));
+      gap:4px;
+      margin-top:6px;
+      font-size:.8rem;
+      align-items:start;
+    }
+    .compare-grid .head{
+      font-weight:700;
+      background:#fee2e2;
+      padding:4px 5px;
+      border-radius:10px;
+      text-align:center;
+      border:1px solid #fecaca;
+    }
+    .compare-grid .row-label{
+      font-weight:600;
+      background:#f9fafb;
+      border-radius:10px;
+      padding:4px 5px;
+      border:1px solid #e5e7eb;
+    }
+    .compare-cell{
+      background:#ffffff;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:4px 5px;
+    }
+    select{
+      width:100%;
+      border:none;
+      background:transparent;
+      font-size:.8rem;
+      font-family:inherit;
+      outline:none;
+    }
+    .vf-row{
+      margin-top:4px;
+      padding:6px 7px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:.84rem;
+    }
+    .vf-row label{margin-right:8px;}
+    textarea{
+      width:100%;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:5px 7px;
+      font-family:inherit;
+      font-size:.84rem;
+      resize:vertical;
+      min-height:70px;
+    }
+    .plan-table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:4px;
+      font-size:.8rem;
+    }
+    .plan-table th,
+    .plan-table td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      vertical-align:top;
+    }
+    .plan-table th{
+      background:#fef2f2;
+      text-align:center;
+    }
+    .plan-table input{
+      width:100%;
+      border:none;
+      outline:none;
+      font-size:.8rem;
+      font-family:inherit;
+    }
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+    .btn-outline{
+      background:#fff;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+    .result-good{color:#166534;font-weight:600;}
+    .result-bad{color:#b91c1c;font-weight:600;}
+    .results-card{
+      font-size:.84rem;
+      margin-top:6px;
+      border-radius:18px;
+      border:1px solid #fecaca;
+      padding:8px 9px;
+      background:#fffbeb;
+    }
+    .activity-sheet{
+      font-size:.84rem;
+      margin-top:8px;
+      border-radius:18px;
+      border:1px dashed #fecaca;
+      padding:8px 9px;
+      background:#ffffff;
+    }
+    .activity-sheet h3{
+      margin:0 0 4px;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+      font-size:.9rem;
+    }
+    .activity-sheet table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:4px;
+      font-size:.8rem;
+    }
+    .activity-sheet th,
+    .activity-sheet td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      vertical-align:top;
+    }
+    .activity-sheet th{
+      background:#fef2f2;
+      text-align:center;
+    }
+    .activity-sheet .line{
+      display:block;
+      border-bottom:1px solid #e5e7eb;
+      margin:4px 0;
+      height:12px;
+    }
+    .reader-corner{
+      background:#111827;
+      color:#f9fafb;
+      border-radius:18px;
+      padding:8px 10px;
+      margin-top:4px;
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+    }
+    .reader-corner h3{
+      margin:0;
+      font-size:.9rem;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .reader-quote{
+      font-size:.8rem;
+      font-style:italic;
+    }
+    .reader-author{
+      font-size:.78rem;
+      text-align:right;
+      opacity:.9;
+    }
+    footer{
+      margin-top:6px;
+      padding-top:7px;
+      border-top:1px solid #fee2e2;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        padding:0;
+      }
+      .school-logo-fixed{position:fixed;right:8px;bottom:8px;height:60px;}
+      .btn-row,.pill-tabs,.avatar-panel,.reader-corner{display:none!important;}
+      .wrapper{
+        box-shadow:none;
+        border:none;
+        border-radius:0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+
+  <div class="wrapper">
+    <header>
+      <div class="header-logos">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🧵</span>
+          <span>Líneas de mi vida: organizo sucesos significativos</span>
+        </h1>
+        <div class="title-meta">
+          Campo formativo: <strong>Lenguajes.</strong> Contenido: <strong>Narración de sucesos autobiográficos.</strong><br>
+          PDA: <strong>Selecciona sucesos significativos de su vida y los organiza de manera cronológica o temática, según la intención comunicativa.</strong><br>
+          <span class="phase-label">Fase 5</span>
+          <span class="badge-grade"><span>🎓</span>6.º grado</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <div class="top-layout">
+      <div class="student-and-tabs">
+        <div class="student-row">
+          <div class="student-name">
+            <label for="studentName">Nombre del alumno(a):</label>
+            <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+          </div>
+        </div>
+        <div class="ejes-row">
+          <span class="chip"><span class="dot"></span>Inclusión</span>
+          <span class="chip"><span class="dot"></span>Pensamiento crítico</span>
+          <span class="chip"><span class="dot"></span>Lenguajes para la vida</span>
+          <span class="chip"><span class="dot"></span>Interculturalidad crítica</span>
+        </div>
+
+        <div class="pill-tabs">
+          <button class="pill-tab active" data-sec="1" onclick="setSection(1)">
+            <div>
+              <div class="pill-main">Exploro</div>
+              <div class="pill-sub">Sucesos significativos</div>
+            </div>
+            <div class="pill-number">1</div>
+          </button>
+          <button class="pill-tab" data-sec="2" onclick="setSection(2)">
+            <div>
+              <div class="pill-main">Organizo</div>
+              <div class="pill-sub">Cronológico o temático</div>
+            </div>
+            <div class="pill-number">2</div>
+          </button>
+          <button class="pill-tab" data-sec="3" onclick="setSection(3)">
+            <div>
+              <div class="pill-main">Planifico</div>
+              <div class="pill-sub">Borrador de mi vida</div>
+            </div>
+            <div class="pill-number">3</div>
+          </button>
+          <button class="pill-tab" data-sec="4" onclick="setSection(4)">
+            <div>
+              <div class="pill-main">Evalúo</div>
+              <div class="pill-sub">Hoja de resultados</div>
+            </div>
+            <div class="pill-number">4</div>
+          </button>
+        </div>
+      </div>
+
+      <aside class="avatar-panel">
+        <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+        <div>
+          <div class="avatar-text">
+            <strong>Hola, soy el maestro Martín.</strong><br>
+            Hoy vas a elegir <strong>momentos importantes de tu vida</strong> y a decidir si los contarás en orden <strong>cronológico</strong> o por <strong>temas</strong>, como un verdadero autor.
+          </div>
+          <button class="btn-voice" type="button" onclick="playGuide()">
+            <span>🔊</span> Escuchar instrucciones
+          </button>
+        </div>
+      </aside>
+    </div>
+
+    <main>
+      <!-- SECCIÓN 1 -->
+      <section class="section-panel active" id="sec-1">
+        <div class="section-header">
+          <h2><span class="icon">🔍</span><span>Sección 1. Exploro: ¿qué es un suceso significativo?</span></h2>
+          <span class="section-badge">Voltea las tarjetas</span>
+        </div>
+        <p>Da clic en cada tarjeta para ver ejemplos de sucesos. Reflexiona: <strong>¿qué momentos de tu vida valen la pena contarse en una autobiografía?</strong></p>
+
+        <div class="flip-grid">
+          <!-- Suceso cotidiano -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="flip-title">
+                  <span class="flip-icon">☕</span>
+                  <span>Un día cualquiera</span>
+                </div>
+                <span class="flip-tag">Suceso cotidiano</span>
+                <p>“Hoy desayuné cereal y luego vi la tele un rato antes de ir a la escuela.”</p>
+                <p class="mini-title">Pista</p>
+                <p>¿Cambió algo importante en la vida de la persona?</p>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-title">
+                  <span class="flip-icon">☕</span>
+                  <span>Un día cualquiera</span>
+                </div>
+                <ul class="list">
+                  <li>No provoca un cambio importante en la vida.</li>
+                  <li>Puede mencionarse, pero no es el centro de la autobiografía.</li>
+                  <li>Sirve más como detalle para ambientar la historia.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Suceso significativo personal -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="flip-title">
+                  <span class="flip-icon">🏅</span>
+                  <span>Un antes y un después</span>
+                </div>
+                <span class="flip-tag">Suceso significativo personal</span>
+                <p>“El día que gané mi primer torneo de futbol sentí que todo mi esfuerzo valía la pena.”</p>
+                <p class="mini-title">Pista</p>
+                <p>¿Te cambia la forma de pensar, de sentir o de actuar?</p>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-title">
+                  <span class="flip-icon">🏅</span>
+                  <span>Un antes y un después</span>
+                </div>
+                <ul class="list">
+                  <li>Marca un cambio importante en la vida.</li>
+                  <li>Deja aprendizajes o emociones muy fuertes.</li>
+                  <li>Suele ocupar un lugar central en la autobiografía.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Suceso significativo familiar/comunitario -->
+          <div class="flip-card" onclick="toggleFlip(this)">
+            <div class="flip-inner">
+              <div class="flip-face flip-front">
+                <div class="flip-title">
+                  <span class="flip-icon">👨‍👩‍👧‍👦</span>
+                  <span>Memoria familiar o comunitaria</span>
+                </div>
+                <span class="flip-tag">Suceso significativo familiar/comunitario</span>
+                <p>“El día que nos cambiamos al ejido, mi familia y yo comenzamos una nueva etapa de nuestra vida.”</p>
+                <p class="mini-title">Pista</p>
+                <p>¿Afecta también a tu familia o comunidad?</p>
+              </div>
+              <div class="flip-face flip-back">
+                <div class="flip-title">
+                  <span class="flip-icon">👨‍👩‍👧‍👦</span>
+                  <span>Memoria familiar o comunitaria</span>
+                </div>
+                <ul class="list">
+                  <li>Involucra a varias personas, no solo al autor.</li>
+                  <li>Puede explicar costumbres, cambios de trabajo, mudanzas.</li>
+                  <li>Da sentido de pertenencia a la comunidad.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p class="mini-title">Pienso en mi vida</p>
+        <p>Escribe tres sucesos de tu vida que consideres significativos. No hace falta contarlos completos, solo nómbralos.</p>
+        <textarea id="myEvents" placeholder="Ejemplo: El día que aprendí a andar en bicicleta; cuando nació mi hermanito; el primer día en esta escuela."></textarea>
+      </section>
+
+      <!-- SECCIÓN 2 -->
+      <section class="section-panel" id="sec-2">
+        <div class="section-header">
+          <h2><span class="icon">📌</span><span>Sección 2. Organizo: ¿cronológico o temático?</span></h2>
+          <span class="section-badge">Elige la mejor organización</span>
+        </div>
+        <p>Lee las siguientes formas de organizar una autobiografía y elige si son <strong>cronológicas</strong>, <strong>temáticas</strong> o <strong>desordenadas</strong>.</p>
+
+        <div class="compare-grid">
+          <div></div>
+          <div class="head">Frase A</div>
+          <div class="head">Frase B</div>
+          <div class="head">Frase C</div>
+
+          <div class="row-label">Descripción</div>
+          <div class="compare-cell">
+            <p>“Primero cuento mi infancia, luego la primaria y después cómo es mi vida ahora en secundaria.”</p>
+          </div>
+          <div class="compare-cell">
+            <p>“En un párrafo junto todos mis recuerdos de la escuela, en otro solo lo que viví con mi familia y en otro lo que aprendí en el futbol.”</p>
+          </div>
+          <div class="compare-cell">
+            <p>“Empiezo hablando de mi niñez, luego salto al futuro, luego regreso a la primaria y después hablo de cualquier tema sin orden.”</p>
+          </div>
+
+          <div class="row-label">Tipo de organización</div>
+          <div class="compare-cell">
+            <select id="orgA">
+              <option value="">Selecciona…</option>
+              <option value="cron">Cronológica</option>
+              <option value="tem">Temática</option>
+              <option value="des">Desordenada</option>
+            </select>
+          </div>
+          <div class="compare-cell">
+            <select id="orgB">
+              <option value="">Selecciona…</option>
+              <option value="cron">Cronológica</option>
+              <option value="tem">Temática</option>
+              <option value="des">Desordenada</option>
+            </select>
+          </div>
+          <div class="compare-cell">
+            <select id="orgC">
+              <option value="">Selecciona…</option>
+              <option value="cron">Cronológica</option>
+              <option value="tem">Temática</option>
+              <option value="des">Desordenada</option>
+            </select>
+          </div>
+        </div>
+
+        <p class="mini-title">Reflexiono sobre la intención</p>
+        <div class="vf-row">
+          <p>Marca las afirmaciones correctas:</p>
+          <label><input type="checkbox" id="ck1"> La organización cronológica sigue el paso del tiempo: antes, durante y después.</label><br>
+          <label><input type="checkbox" id="ck2"> La organización temática se agrupa por temas o aspectos importantes de mi vida.</label><br>
+          <label><input type="checkbox" id="ck3"> Una autobiografía desordenada ayuda a que el lector entienda mejor mi historia.</label>
+        </div>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="checkOrganization()">Comprobar</button>
+        </div>
+        <div id="fbOrg" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- SECCIÓN 3 -->
+      <section class="section-panel" id="sec-3">
+        <div class="section-header">
+          <h2><span class="icon">🗺️</span><span>Sección 3. Planifico: borrador de mi autobiografía</span></h2>
+          <span class="section-badge">Plan de escritura</span>
+        </div>
+        <p>Ahora construye un pequeño <strong>plan</strong> de tu autobiografía. Elige algunos sucesos significativos y decide si los organizarás de manera <strong>cronológica</strong> o <strong>temática</strong>.</p>
+
+        <table class="plan-table">
+          <tr>
+            <th>Momento de mi vida</th>
+            <th>Suceso significativo</th>
+            <th>¿Cómo lo organizaré?</th>
+          </tr>
+          <tr>
+            <td><input id="m1" placeholder="Ej. Infancia en el ejido"></td>
+            <td><input id="s1" placeholder="Ej. Cuando aprendí a montar bicicleta"></td>
+            <td>
+              <select id="t1">
+                <option value="">Selecciona…</option>
+                <option value="cron">Cronológico</option>
+                <option value="tem">Temático</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td><input id="m2" placeholder="Ej. Mis años en primaria"></td>
+            <td><input id="s2" placeholder="Ej. El día que cambié de escuela"></td>
+            <td>
+              <select id="t2">
+                <option value="">Selecciona…</option>
+                <option value="cron">Cronológico</option>
+                <option value="tem">Temático</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td><input id="m3" placeholder="Ej. Vida familiar / deportes"></td>
+            <td><input id="s3" placeholder="Ej. Primer torneo, mudanza, etc."></td>
+            <td>
+              <select id="t3">
+                <option value="">Selecciona…</option>
+                <option value="cron">Cronológico</option>
+                <option value="tem">Temático</option>
+              </select>
+            </td>
+          </tr>
+        </table>
+
+        <p class="mini-title">Reflexiono sobre mi decisión</p>
+        <textarea id="refPlan" placeholder="Explica por qué elegiste esa forma de organizar tu autobiografía. ¿Te ayuda más contarla paso a paso en el tiempo o por temas importantes?"></textarea>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="checkPlan()">Revisión rápida</button>
+        </div>
+        <div id="fbPlan" style="margin-top:4px;font-size:.82rem;"></div>
+      </section>
+
+      <!-- SECCIÓN 4 -->
+      <section class="section-panel" id="sec-4">
+        <div class="section-header">
+          <h2><span class="icon">📋</span><span>Sección 4. Evalúo: hoja de resultados</span></h2>
+          <span class="section-badge">Autovaloración</span>
+        </div>
+        <p>Con la siguiente hoja de resultados podrás saber cómo vas en este PDA y qué puedes mejorar al <strong>seleccionar y organizar sucesos de tu vida</strong>.</p>
+
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="generateResults()">Generar hoja de resultados</button>
+          <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir ODA</button>
+        </div>
+
+        <!-- HOJA DE RESULTADOS -->
+        <div id="resultsPanel" class="results-card" style="display:none;">
+          <h3 style="margin:0 0 4px;color:#7f1d1d;display:flex;align-items:center;gap:6px;">
+            <span>📊</span><span>Hoja de resultados – Líneas de mi vida</span>
+          </h3>
+          <p><strong>Alumno(a):</strong> <span id="resName"></span></p>
+          <ul class="list">
+            <li><span id="res1"></span></li>
+            <li><span id="res2"></span></li>
+            <li><span id="res3"></span></li>
+          </ul>
+          <p><strong>Comentario del maestro Martín:</strong></p>
+          <p id="resComment"></p>
+          <p class="mini-title">Mi compromiso como autor(a) de mi vida:</p>
+          <textarea id="resCommit" placeholder="Escribe qué te propones hacer para mejorar la selección y organización de los sucesos de tu autobiografía."></textarea>
+
+          <div class="btn-row">
+            <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir resultados</button>
+          </div>
+        </div>
+
+        <!-- HOJA DE ACTIVIDADES IMPRIMIBLE -->
+        <div class="activity-sheet" id="activitySheet">
+          <h3><span>📄</span><span>Hoja de actividades – Sucesos significativos y organización</span></h3>
+          <p><strong>Nombre del alumno(a):</strong> _________________________________   <strong>Grado y grupo:</strong> __________</p>
+          <p><strong>Instrucciones:</strong> Responde con letra clara. Esta hoja se puede trabajar en el cuaderno o entregarse al maestro.</p>
+
+          <p class="mini-title">1. ¿Es un suceso significativo?</p>
+          <p>Escribe <strong>S</strong> si consideras que el suceso es significativo para una autobiografía o <strong>C</strong> si es solo un suceso cotidiano.</p>
+          <ol class="list">
+            <li>___ “El día que me cambié de casa y dejé a mis amigos del barrio.”</li>
+            <li>___ “Cuando fui a la tienda a comprar unas papas y un refresco.”</li>
+            <li>___ “El momento en que aprendí a leer y pude leerle un cuento a mi hermanito.”</li>
+          </ol>
+
+          <p class="mini-title">2. Ordeno cronológicamente</p>
+          <p>Numera del 1 al 4 los sucesos según el orden en que pudieron haber ocurrido.</p>
+          <ol class="list">
+            <li>___ Me gradué de la primaria.</li>
+            <li>___ Entré al preescolar.</li>
+            <li>___ Inicié sexto grado.</li>
+            <li>___ Nací en una comunidad rural.</li>
+          </ol>
+
+          <p class="mini-title">3. Organización temática</p>
+          <p>Escribe dos temas con los que podrías organizar tu autobiografía y menciona al menos un suceso para cada uno.</p>
+          <table>
+            <tr>
+              <th>Tema</th>
+              <th>Suceso(s) relacionado(s)</th>
+            </tr>
+            <tr>
+              <td><span class="line"></span></td>
+              <td><span class="line"></span><span class="line"></span></td>
+            </tr>
+            <tr>
+              <td><span class="line"></span></td>
+              <td><span class="line"></span><span class="line"></span></td>
+            </tr>
+          </table>
+
+          <p class="mini-title">4. Reflexiono</p>
+          <p>¿Qué te ayuda más a entender una historia de vida: que esté ordenada por el tiempo o por temas? Explica tu respuesta.</p>
+          <span class="line"></span>
+          <span class="line"></span>
+        </div>
+      </section>
+
+      <!-- RINCÓN DEL LECTOR -->
+      <section class="reader-corner">
+        <h3><span>🌟</span><span>Rincón del lector</span></h3>
+        <p class="reader-quote">“Elegir qué contar de tu vida es como acomodar fotos en un álbum: decides qué momentos van primero y cuáles se miran juntos.”</p>
+        <p class="reader-author">— Comunidad lectora de la escuela</p>
+      </section>
+    </main>
+
+    <footer>
+      <span class="project">Proyecto: “Mi historia, mi voz, mi camino”</span>
+      <span>Campo formativo: Lenguajes · Fase 5</span>
+      <span>© 2025. Diseño de ODA: Mtro. Martín Reta. Material educativo. Prohibida su venta.</span>
+    </footer>
+  </div>
+
+  <script>
+    function setSection(n){
+      document.querySelectorAll('.pill-tab').forEach(btn=>{
+        btn.classList.toggle('active', Number(btn.dataset.sec)===n);
+      });
+      document.querySelectorAll('.section-panel').forEach((sec,idx)=>{
+        sec.classList.toggle('active', idx===n-1);
+      });
+    }
+
+    function toggleFlip(card){
+      card.classList.toggle('flipped');
+    }
+
+    function playGuide(){
+      try{
+        const msg=new SpeechSynthesisUtterance(
+          'En esta ODA vas a pensar en los sucesos más importantes de tu vida y a decidir cómo los vas a organizar, ya sea por orden del tiempo o por temas. Ese será el plan para tu autobiografía.'
+        );
+        msg.lang='es-MX';
+        msg.rate=1;
+        msg.pitch=1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(msg);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function checkOrganization(){
+      const orgA=document.getElementById('orgA').value;
+      const orgB=document.getElementById('orgB').value;
+      const orgC=document.getElementById('orgC').value;
+      const ck1=document.getElementById('ck1').checked;
+      const ck2=document.getElementById('ck2').checked;
+      const ck3=document.getElementById('ck3').checked;
+      const fb=document.getElementById('fbOrg');
+
+      const okSel = (orgA==='cron' && orgB==='tem' && orgC==='des');
+      const okCk  = (ck1 && ck2 && !ck3);
+
+      if(okSel && okCk){
+        fb.innerHTML='<span class="result-good">✔ Excelente. Reconoces la diferencia entre organización cronológica, temática y un texto desordenado.</span>';
+      }else if(okSel || okCk){
+        fb.innerHTML='<span class="result-bad">Vas bien, pero revisa de nuevo tus respuestas. Piensa qué ayuda al lector a entender mejor la historia.</span>';
+      }else{
+        fb.innerHTML='<span class="result-bad">Revisa tus respuestas. Observa de nuevo qué se agrupa por tiempo y qué por temas.</span>';
+      }
+    }
+
+    function checkPlan(){
+      const m1=document.getElementById('m1').value.trim();
+      const s1=document.getElementById('s1').value.trim();
+      const t1=document.getElementById('t1').value;
+      const m2=document.getElementById('m2').value.trim();
+      const s2=document.getElementById('s2').value.trim();
+      const t2=document.getElementById('t2').value;
+      const m3=document.getElementById('m3').value.trim();
+      const s3=document.getElementById('s3').value.trim();
+      const t3=document.getElementById('t3').value;
+      const ref=document.getElementById('refPlan').value.trim();
+      const fb=document.getElementById('fbPlan');
+
+      let filasCompletas = 0;
+      if(m1 && s1 && t1) filasCompletas++;
+      if(m2 && s2 && t2) filasCompletas++;
+      if(m3 && s3 && t3) filasCompletas++;
+
+      const words = ref.split(/\s+/).filter(Boolean).length;
+      let msg='';
+
+      if(filasCompletas>=2){
+        msg += 'Tienes un buen plan con varios sucesos significativos organizados. ';
+      }else if(filasCompletas===1){
+        msg += 'Ya comenzaste tu plan, agrega más sucesos y decide cómo los organizarás. ';
+      }else{
+        msg += 'Todavía necesitas completar tu plan con sucesos significativos y su forma de organización. ';
+      }
+
+      if(words>=25){
+        msg += 'Tu explicación muestra que piensas en el lector y en la intención de tu autobiografía.';
+      }else if(words>0){
+        msg += 'Tu explicación es breve; trata de explicar mejor por qué elegiste esa forma de organizar tu historia.';
+      }else{
+        msg += 'Escribe tu reflexión sobre por qué organizarás así tu autobiografía.';
+      }
+
+      fb.textContent=msg;
+    }
+
+    function generateResults(){
+      const name=document.getElementById('studentName').value || 'Sin nombre';
+      document.getElementById('resName').textContent=name;
+
+      // Result 1: organización cronológica/temática
+      const orgA=document.getElementById('orgA').value;
+      const orgB=document.getElementById('orgB').value;
+      const orgC=document.getElementById('orgC').value;
+      const ck1=document.getElementById('ck1').checked;
+      const ck2=document.getElementById('ck2').checked;
+      const ck3=document.getElementById('ck3').checked;
+      const okSel = (orgA==='cron' && orgB==='tem' && orgC==='des');
+      const okCk  = (ck1 && ck2 && !ck3);
+      const r1=document.getElementById('res1');
+
+      if(okSel && okCk){
+        r1.innerHTML='<span style="color:#1d4ed8;">Distingue claramente entre organización cronológica, temática y desordenada.</span>';
+      }else{
+        r1.innerHTML='<span style="color:#b91c1c;">Necesita reforzar la diferencia entre organización cronológica, temática y textos desordenados.</span>';
+      }
+
+      // Result 2: plan de autobiografía
+      const m1=document.getElementById('m1').value.trim();
+      const s1=document.getElementById('s1').value.trim();
+      const t1=document.getElementById('t1').value;
+      const m2=document.getElementById('m2').value.trim();
+      const s2=document.getElementById('s2').value.trim();
+      const t2=document.getElementById('t2').value;
+      const m3=document.getElementById('m3').value.trim();
+      const s3=document.getElementById('s3').value.trim();
+      const t3=document.getElementById('t3').value;
+      let filasCompletas = 0;
+      if(m1 && s1 && t1) filasCompletas++;
+      if(m2 && s2 && t2) filasCompletas++;
+      if(m3 && s3 && t3) filasCompletas++;
+
+      const r2=document.getElementById('res2');
+      if(filasCompletas>=2){
+        r2.innerHTML='<span style="color:#1d4ed8;">Elabora un plan de autobiografía con varios sucesos significativos y su forma de organización.</span>';
+      }else if(filasCompletas===1){
+        r2.innerHTML='<span style="color:#b91c1c;">Ha iniciado un plan, pero aún faltan más sucesos significativos y su organización.</span>';
+      }else{
+        r2.innerHTML='<span style="color:#b91c1c;">Aún no construye un plan claro con sucesos significativos.</span>';
+      }
+
+      // Result 3: reflexión
+      const ref=document.getElementById('refPlan').value.trim();
+      const words = ref.split(/\s+/).filter(Boolean).length;
+      const r3=document.getElementById('res3');
+      if(words>=25){
+        r3.innerHTML='<span style="color:#1d4ed8;">Reflexiona sobre la intención comunicativa de su autobiografía y la forma de organizarla.</span>';
+      }else if(words>0){
+        r3.innerHTML='<span style="color:#b91c1c;">Ha comenzado a reflexionar, pero puede profundizar más en sus ideas.</span>';
+      }else{
+        r3.innerHTML='<span style="color:#b91c1c;">Aún no escribe su reflexión sobre cómo organizará su autobiografía.</span>';
+      }
+
+      const score=(okSel&&okCk?1:0)+(filasCompletas>=2?1:0)+(words>=25?1:0);
+      const comment=document.getElementById('resComment');
+      if(score===3){
+        comment.textContent='¡Excelente! Seleccionas y organizas con claridad los sucesos de tu vida para construir una autobiografía coherente.';
+      }else if(score===2){
+        comment.textContent='Vas muy bien. Refuerza el aspecto que aparece en rojo para seguir mejorando tu autobiografía.';
+      }else{
+        comment.textContent='Sigue practicando. Elegir bien los sucesos y ordenarlos ayudará a que tu historia se entienda mejor.';
+      }
+
+      document.getElementById('resultsPanel').style.display='block';
+      setSection(4);
+      document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>

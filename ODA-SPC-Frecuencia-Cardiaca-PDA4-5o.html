@@ -1,0 +1,979 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>ODA - SPC - Mi corazón en movimiento (PDA 4)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --azul-oscuro: #0d47a1;
+      --azul-medio: #1976d2;
+      --azul-claro: #e3f2fd;
+      --gris-claro: #f5f5f5;
+      --texto: #123047;
+      --exito: #1565c0;
+      --dificultad: #c62828;
+      --amarillo: #ffb300;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+    body {
+      background: radial-gradient(circle at top, #e3f2fd 0%, #bbdefb 40%, #e3f2fd 100%);
+      color: var(--texto);
+      padding: 16px;
+    }
+    .oda-contenedor {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      border: 3px solid var(--azul-medio);
+    }
+    header {
+      background: linear-gradient(90deg, var(--azul-oscuro), var(--azul-medio));
+      color: white;
+      padding: 10px 18px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .logos {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .logos img {
+      height: 50px;
+      object-fit: contain;
+      background: white;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .titulo-encabezado {
+      text-align: center;
+      flex: 1;
+    }
+    .titulo-encabezado h1 {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    .titulo-encabezado h2 {
+      font-size: 0.9rem;
+      margin-top: 4px;
+      font-weight: 400;
+    }
+    .sub-encabezado {
+      font-size: 0.75rem;
+      opacity: 0.9;
+      margin-top: 4px;
+    }
+    .avatar-contenedor {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .avatar-contenedor img {
+      height: 70px;
+      width: auto;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #bbdefb;
+      object-fit: contain;
+    }
+    .avatar-texto {
+      font-size: 0.75rem;
+      max-width: 140px;
+    }
+    main {
+      padding: 16px 18px 20px 18px;
+      display: grid;
+      grid-template-columns: minmax(0, 2.3fr) minmax(260px, 1fr);
+      gap: 16px;
+    }
+    @media (max-width: 900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .avatar-contenedor {
+        display: none;
+      }
+    }
+    .tarjeta-presentacion {
+      background: var(--azul-claro);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+      border-left: 5px solid var(--azul-oscuro);
+    }
+    .tarjeta-presentacion h2 {
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+    .badge-campo {
+      display: inline-block;
+      background: #ffffffdd;
+      color: var(--azul-oscuro);
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      margin-bottom: 4px;
+      border: 1px solid #bbdefb;
+    }
+    .info-programa {
+      font-size: 0.75rem;
+      margin-bottom: 4px;
+    }
+    .info-programa strong {
+      color: var(--azul-oscuro);
+    }
+    .pda-texto {
+      font-size: 0.75rem;
+      margin-top: 6px;
+      padding: 6px 8px;
+      border-radius: 10px;
+      background: #ffffffaa;
+      border: 1px dashed var(--azul-medio);
+    }
+    .datos-alumno {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+      font-size: 0.78rem;
+    }
+    .datos-alumno label {
+      font-weight: 600;
+      margin-right: 4px;
+    }
+    .datos-alumno input {
+      border-radius: 999px;
+      border: 1px solid #90caf9;
+      padding: 3px 8px;
+      font-size: 0.78rem;
+      min-width: 130px;
+    }
+    .tabs-menu {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+    .tabs-menu button {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      background: #ffffff;
+      font-size: 0.78rem;
+      padding: 6px 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+    .tabs-menu button.activo {
+      background: var(--azul-medio);
+      color: white;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    }
+    .tabs-menu button span.icono {
+      font-size: 0.9rem;
+    }
+    .tab-contenido {
+      display: none;
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 12px 14px;
+      border: 1px solid #e0e0e0;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+    .tab-contenido.activo {
+      display: block;
+    }
+    h3 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+      color: var(--azul-oscuro);
+    }
+    p {
+      font-size: 0.8rem;
+      margin-bottom: 6px;
+      line-height: 1.4;
+    }
+    ul {
+      padding-left: 18px;
+      margin-bottom: 6px;
+    }
+    ul li {
+      font-size: 0.8rem;
+      margin-bottom: 3px;
+    }
+    .bloque {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: var(--gris-claro);
+    }
+    .bloque h4 {
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      color: var(--azul-oscuro);
+    }
+    .etiqueta-ejes {
+      display: inline-block;
+      font-size: 0.72rem;
+      background: #e8f5e9;
+      border-radius: 999px;
+      padding: 2px 8px;
+      margin-right: 4px;
+      margin-bottom: 4px;
+      border: 1px solid #c8e6c9;
+    }
+    .boton-voz {
+      border-radius: 999px;
+      border: 1px solid var(--azul-medio);
+      background: #e3f2fd;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .boton-voz:hover {
+      background: #bbdefb;
+    }
+    .columna-derecha {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .tarjeta-avatar-lado {
+      background: var(--azul-claro);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: center;
+      border: 1px solid #bbdefb;
+    }
+    .tarjeta-avatar-lado img {
+      height: 110px;
+      width: auto;
+      border-radius: 50%;
+      background: #e3f2fd;
+      border: 2px solid #90caf9;
+      margin-bottom: 6px;
+      object-fit: contain;
+    }
+    .tarjeta-avatar-lado p {
+      font-size: 0.77rem;
+    }
+    .tarjeta-acciones {
+      background: #ffffff;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px solid #e0e0e0;
+    }
+    .tarjeta-acciones h3 {
+      margin-bottom: 4px;
+    }
+    .tarjeta-acciones button {
+      width: 100%;
+      margin-top: 6px;
+      border-radius: 999px;
+      border: none;
+      padding: 8px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      background: var(--azul-oscuro);
+      color: white;
+    }
+    .tarjeta-acciones button.secundario {
+      background: #ffffff;
+      color: var(--azul-oscuro);
+      border: 1px solid var(--azul-oscuro);
+    }
+    .tarjeta-acciones button:hover {
+      filter: brightness(1.05);
+    }
+    .tarjeta-notas {
+      background: #fafafa;
+      border-radius: 14px;
+      padding: 10px;
+      border: 1px dashed #b0bec5;
+    }
+    .tarjeta-notas textarea {
+      width: 100%;
+      min-height: 80px;
+      border-radius: 10px;
+      border: 1px solid #cfd8dc;
+      padding: 6px;
+      font-size: 0.8rem;
+      resize: vertical;
+    }
+    .actividad-bloque {
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 10px;
+      background: #fafafa;
+      border: 1px solid #e0e0e0;
+    }
+    .actividad-bloque p.titulo {
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 0.82rem;
+    }
+    .tabla-pulso {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 4px;
+      font-size: 0.78rem;
+    }
+    .tabla-pulso th, .tabla-pulso td {
+      border: 1px solid #cfd8dc;
+      padding: 4px 6px;
+      text-align: center;
+    }
+    .tabla-pulso th {
+      background: #e3f2fd;
+      font-weight: 600;
+    }
+    .tabla-pulso input {
+      width: 90%;
+      border-radius: 6px;
+      border: 1px solid #cfd8dc;
+      padding: 3px;
+      font-size: 0.78rem;
+    }
+    .sem-ref {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 4px;
+      margin-top: 4px;
+    }
+    .sem-ref div {
+      text-align: center;
+      font-size: 0.75rem;
+      padding: 4px;
+      border-radius: 8px;
+    }
+    .sem-verde { background: #c8e6c9; }
+    .sem-amarillo { background: #ffe082; }
+    .sem-rojo { background: #ffcdd2; }
+    .retroalimentacion {
+      font-size: 0.78rem;
+      margin-top: 4px;
+      font-weight: 600;
+    }
+    .retro-ok { color: var(--exito); }
+    .retro-mal { color: var(--dificultad); }
+    .lista-auto {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 6px;
+    }
+    .item-auto {
+      padding: 6px;
+      border-radius: 10px;
+      background: #ffffff;
+      border: 1px solid #e0e0e0;
+      font-size: 0.78rem;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+    .item-auto input {
+      margin-top: 2px;
+    }
+    .item-auto span { flex: 1; }
+    .logro {
+      color: var(--exito);
+      font-weight: 600;
+    }
+    .dificultad {
+      color: var(--dificultad);
+      font-weight: 600;
+    }
+    textarea {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #cfd8dc;
+      padding: 6px;
+      font-size: 0.8rem;
+      resize: vertical;
+      min-height: 50px;
+    }
+    .imprimible {
+      background: white;
+      border-radius: 10px;
+      padding: 10px;
+      border: 1px dashed #b0bec5;
+      margin-bottom: 8px;
+    }
+    .imprimible h4 {
+      text-align: center;
+      margin-bottom: 4px;
+      font-size: 0.88rem;
+      color: var(--azul-oscuro);
+    }
+    .imprimible p,
+    .imprimible li {
+      font-size: 0.78rem;
+    }
+    .copyright {
+      text-align: center;
+      font-size: 0.7rem;
+      color: #607d8b;
+      padding: 6px 10px 10px 10px;
+      border-top: 1px solid #e0e0e0;
+      background: #fafafa;
+    }
+    @media print {
+      body {
+        background: #ffffff;
+        padding: 0;
+      }
+      .oda-contenedor {
+        border: none;
+        box-shadow: none;
+      }
+      .tarjeta-acciones,
+      .tarjeta-notas,
+      .tabs-menu,
+      .boton-voz,
+      .no-imprimir,
+      .avatar-contenedor,
+      .tarjeta-avatar-lado {
+        display: none !important;
+      }
+      .tab-contenido {
+        max-height: none;
+        overflow: visible;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="oda-contenedor">
+    <header>
+      <div class="logos">
+        <img src="sep_logo.png" alt="Logo SEP" />
+      </div>
+      <div class="titulo-encabezado">
+        <h1>Saberes y Pensamiento Científico – Fase 5</h1>
+        <h2>Mi corazón en movimiento</h2>
+        <div class="sub-encabezado">
+          Contenido: <strong>Estructura y funcionamiento del cuerpo humano: sistemas circulatorio, respiratorio e inmunológico, y su relación con la salud ambiental, así como acciones para su cuidado.</strong>
+        </div>
+      </div>
+      <div class="avatar-contenedor">
+        <img src="avatar_guia.png" alt="Avatar guía" />
+        <div class="avatar-texto">
+          <strong>Hola, soy tu guía.</strong><br />
+          Hoy conoceremos cómo cambia tu pulso cuando te mueves o descansas.
+        </div>
+      </div>
+      <div class="logos">
+        <img src="escudo_escuela.png" alt="Escudo escuela" />
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div class="tarjeta-presentacion">
+          <div class="badge-campo">Campo formativo: Saberes y Pensamiento Científico</div>
+          <h2>Quinto grado · Frecuencia cardiaca</h2>
+          <div class="info-programa">
+            <strong>PDA (5.º – 4):</strong><br />
+            Comprende que la frecuencia cardiaca es el número de latidos del corazón en un minuto
+            y establece relaciones entre la actividad física y la frecuencia cardiaca.
+          </div>
+          <div class="pda-texto" id="texto-intro-p4">
+            <strong>Propósito de la ODA:</strong>
+            Que las niñas y los niños identifiquen qué es la frecuencia cardiaca, aprendan a
+            medir su pulso en reposo y después de moverse, y comparen esos datos para
+            relacionarlos con la actividad física y el cuidado de su salud.
+          </div>
+          <button class="boton-voz no-imprimir" onclick="leerTexto('texto-intro-p4')">
+            🔊 Escuchar la consigna inicial
+          </button>
+          <div class="datos-alumno">
+            <div>
+              <label for="nombre-alumno">Nombre del alumno(a):</label>
+              <input type="text" id="nombre-alumno" placeholder="Escribe tu nombre" />
+            </div>
+            <div>
+              <label for="grado-grupo">Grado y grupo:</label>
+              <input type="text" id="grado-grupo" placeholder="5.º / 6.º" />
+            </div>
+            <div>
+              <label for="fecha">Fecha:</label>
+              <input type="text" id="fecha" placeholder="dd/mm/aaaa" />
+            </div>
+          </div>
+        </div>
+
+        <nav class="tabs-menu no-imprimir">
+          <button class="activo" data-tab="inicio">
+            <span class="icono">🏁</span> Inicio
+          </button>
+          <button data-tab="explora">
+            <span class="icono">🔍</span> Explora
+          </button>
+          <button data-tab="actividades">
+            <span class="icono">✏️</span> Actividades en línea
+          </button>
+          <button data-tab="evalua">
+            <span class="icono">📊</span> Evalúo mi aprendizaje
+          </button>
+          <button data-tab="imprimibles">
+            <span class="icono">🖨️</span> Imprimibles
+          </button>
+        </nav>
+
+        <!-- INICIO -->
+        <section id="inicio" class="tab-contenido activo">
+          <h3>1. Bienvenida: ¿cuántas veces late tu corazón?</h3>
+          <div class="bloque">
+            <h4>¿Qué aprenderás?</h4>
+            <p>
+              Vas a descubrir qué es la <strong>frecuencia cardiaca</strong>, dónde puedes sentir
+              tu pulso y cómo cambia cuando estás en reposo o cuando haces actividad física.
+            </p>
+            <p>
+              Trabajaremos con una <strong>tabla dentro de esta ODA</strong>, donde registrarás tus
+              observaciones para analizarlas después.
+            </p>
+          </div>
+          <div class="bloque">
+            <h4>Ejes articuladores presentes</h4>
+            <span class="etiqueta-ejes">Vida saludable</span>
+            <span class="etiqueta-ejes">Pensamiento crítico</span>
+            <p>
+              Reflexionarás sobre cómo el movimiento, el descanso y tus hábitos diarios
+              influyen en tu corazón, para tomar decisiones que favorezcan tu salud.
+            </p>
+          </div>
+        </section>
+
+        <!-- EXPLORA -->
+        <section id="explora" class="tab-contenido">
+          <h3>2. Explora: ¿qué es la frecuencia cardiaca?</h3>
+          <button class="boton-voz" onclick="leerTexto('texto-explora-p4')">
+            🔊 Escuchar la lectura
+          </button>
+          <div class="bloque" id="texto-explora-p4">
+            <h4>Lectura guiada</h4>
+            <p>
+              Tu corazón es un músculo que late todo el tiempo. Cada latido impulsa sangre
+              por las arterias hacia todo tu cuerpo. La <strong>frecuencia cardiaca</strong> es el
+              número de latidos del corazón en un minuto.
+            </p>
+            <p>
+              Puedes sentir el pulso en lugares donde una arteria pasa cerca de la piel, por
+              ejemplo en la <strong>muñeca</strong> o en el <strong>cuello</strong>. Para contarlo, colocas dos dedos
+              suavemente y cuentas cuántos latidos sientes en cierto tiempo.
+            </p>
+            <p>
+              Cuando estás <strong>en reposo</strong> (sentado o acostado tranquilo) tu frecuencia
+              cardiaca es más baja. Cuando corres, saltas o haces ejercicio, tus músculos
+              necesitan más oxígeno y el corazón late más rápido para llevarles sangre.
+            </p>
+            <p>
+              Después de un tiempo de descanso, tu pulso vuelve a bajar. Observar estos
+              cambios te ayuda a comprender cómo responde tu cuerpo a la actividad física.
+            </p>
+          </div>
+          <div class="bloque">
+            <h4>Semáforo de frecuencia cardiaca (solo como referencia general)</h4>
+            <div class="sem-ref">
+              <div class="sem-verde">
+                <strong>Verde</strong><br />
+                Pulso tranquilo en reposo.
+              </div>
+              <div class="sem-amarillo">
+                <strong>Amarillo</strong><br />
+                Pulso más rápido después de actividad.
+              </div>
+              <div class="sem-rojo">
+                <strong>Rojo</strong><br />
+                Si te sientes mal, avisa a una persona adulta.
+              </div>
+            </div>
+            <p style="margin-top:4px;">
+              Recuerda: si al hacer actividad sientes mareo, dolor en el pecho o falta de aire,
+              <strong>debes detenerte y avisar</strong> a tu maestra, maestro o familia.
+            </p>
+          </div>
+        </section>
+
+        <!-- ACTIVIDADES EN LÍNEA -->
+        <section id="actividades" class="tab-contenido">
+          <h3>3. Actividades dentro de la ODA</h3>
+
+          <div class="actividad-bloque">
+            <p class="titulo">3.1 Registro de mi pulso</p>
+            <p>
+              Con ayuda de tu maestra o maestro, realiza los siguientes pasos y escribe tus
+              datos directamente en esta tabla:
+            </p>
+            <ol style="padding-left:18px; font-size:0.78rem;">
+              <li>Siéntate tranquilo durante 2 minutos.</li>
+              <li>Coloca dos dedos en tu muñeca o cuello y cuenta los latidos durante 30 segundos.</li>
+              <li>Multiplica por 2 para aproximar los latidos por minuto.</li>
+              <li>Realiza 1 minuto de actividad física (por ejemplo, saltar en tu lugar).</li>
+              <li>Vuelve a contar tu pulso durante 30 segundos y multiplícalo por 2.</li>
+            </ol>
+            <table class="tabla-pulso">
+              <thead>
+                <tr>
+                  <th>Situación</th>
+                  <th>Latidos en 30 s</th>
+                  <th>Frecuencia cardiaca aproximada (latidos/min)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Reposo</td>
+                  <td><input type="number" id="p4-reposo-30" min="0" oninput="calcPulso('reposo')" /></td>
+                  <td><input type="number" id="p4-reposo-min" readonly /></td>
+                </tr>
+                <tr>
+                  <td>Después de actividad</td>
+                  <td><input type="number" id="p4-act-30" min="0" oninput="calcPulso('act')" /></td>
+                  <td><input type="number" id="p4-act-min" readonly /></td>
+                </tr>
+              </tbody>
+            </table>
+            <div id="retro-pulso" class="retroalimentacion"></div>
+          </div>
+
+          <div class="actividad-bloque">
+            <p class="titulo">3.2 ¿Qué observo en mis datos?</p>
+            <p>Responde en este espacio usando tus palabras:</p>
+            <p style="font-size:0.78rem; margin-bottom:2px;">
+              a) ¿En qué situación tu corazón latió más rápido? ¿Por qué crees que ocurrió eso?
+            </p>
+            <textarea id="p4-obs-a"></textarea>
+            <p style="font-size:0.78rem; margin:4px 0 2px 0;">
+              b) ¿Cómo se relaciona tu frecuencia cardiaca con la actividad física que realizaste?
+            </p>
+            <textarea id="p4-obs-b"></textarea>
+          </div>
+
+          <div class="actividad-bloque">
+            <p class="titulo">3.3 Selecciona la respuesta correcta</p>
+            <p style="font-weight:400; margin-bottom:4px;">
+              Cuando haces ejercicio, tu frecuencia cardiaca normalmente…
+            </p>
+            <label style="display:block; font-size:0.8rem; margin-bottom:3px;">
+              <input type="radio" name="p4-mc" value="a" onchange="revisarP4(this.value)" />
+              a) Disminuye, porque el corazón deja de trabajar.
+            </label>
+            <label style="display:block; font-size:0.8rem; margin-bottom:3px;">
+              <input type="radio" name="p4-mc" value="b" onchange="revisarP4(this.value)" />
+              b) Aumenta, porque el cuerpo necesita más oxígeno y sangre.
+            </label>
+            <label style="display:block; font-size:0.8rem; margin-bottom:3px;">
+              <input type="radio" name="p4-mc" value="c" onchange="revisarP4(this.value)" />
+              c) Se detiene por unos segundos.
+            </label>
+            <div id="retro-p4-mc" class="retroalimentacion"></div>
+          </div>
+        </section>
+
+        <!-- EVALÚO -->
+        <section id="evalua" class="tab-contenido">
+          <h3>4. Evalúo mi aprendizaje</h3>
+          <div class="bloque">
+            <h4>Autoevaluación dentro de la ODA</h4>
+            <p>Marca con una ✓ lo que consideras que ya lograste.</p>
+            <div class="lista-auto">
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Sé explicar con mis palabras qué es la frecuencia cardiaca.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Logré medir mi pulso en reposo y después de actividad física.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Puedo comparar mis datos y decir cuándo mi corazón late más rápido.</span>
+              </div>
+              <div class="item-auto">
+                <input type="checkbox" />
+                <span>Identifico que la actividad física moderada es buena para mi salud.</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="bloque">
+            <h4>Reflexión corta</h4>
+            <p style="font-size:0.78rem; margin-bottom:2px;">
+              Escribe una acción concreta que realizarás esta semana para cuidar tu corazón.
+            </p>
+            <textarea id="p4-compromiso" placeholder="Ejemplo: caminar 20 minutos al día, jugar menos videojuegos y moverme más, etc."></textarea>
+          </div>
+        </section>
+
+        <!-- IMPRIMIBLES -->
+        <section id="imprimibles" class="tab-contenido">
+          <h3>5. Material para imprimir</h3>
+
+          <div class="imprimible" id="actividad-impresa-p4">
+            <h4>Actividad para imprimir – Mi corazón en movimiento</h4>
+            <p><strong>Nombre del alumno(a): _______________________   Grado y grupo: _________</strong></p>
+            <p><strong>Instrucciones:</strong> Completa esta hoja. Todas las respuestas se escriben aquí.</p>
+
+            <p style="margin-top:6px;"><strong>1. Registro de frecuencia cardiaca</strong></p>
+            <table class="tabla-pulso">
+              <thead>
+                <tr>
+                  <th>Situación</th>
+                  <th>Latidos en 30 s</th>
+                  <th>Frecuencia cardiaca aproximada (latidos/min)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Reposo</td>
+                  <td>__________</td>
+                  <td>__________</td>
+                </tr>
+                <tr>
+                  <td>Después de actividad</td>
+                  <td>__________</td>
+                  <td>__________</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <p style="margin-top:6px;"><strong>2. Explico lo que observo</strong></p>
+            <p style="font-size:0.78rem;">
+              a) ¿En qué situación tu corazón latió más rápido? ¿Por qué crees que ocurrió eso?
+            </p>
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+
+            <p style="font-size:0.78rem; margin-top:4px;">
+              b) ¿Cómo se relaciona tu frecuencia cardiaca con la actividad física que realizaste?
+            </p>
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+
+            <p style="margin-top:6px;"><strong>3. Elijo la respuesta correcta</strong></p>
+            <p style="font-size:0.78rem;">
+              Cuando haces ejercicio, tu frecuencia cardiaca normalmente…
+            </p>
+            <p>a) Disminuye, porque el corazón deja de trabajar.</p>
+            <p>b) Aumenta, porque el cuerpo necesita más oxígeno y sangre.</p>
+            <p>c) Se detiene por unos segundos.</p>
+            <p>Respuesta: _________</p>
+
+            <p style="margin-top:6px;"><strong>4. Mi compromiso</strong></p>
+            <p>Escribe una acción que realizarás para cuidar tu corazón:</p>
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+          </div>
+
+          <div class="imprimible" id="resultados-impresos-p4">
+            <h4>Hoja de resultados – Frecuencia cardiaca</h4>
+            <p><strong>Nombre del alumno(a): ______________________  Grado y grupo: _________</strong></p>
+            <p><strong>PDA trabajado (5.º – 4):</strong> Comprende la frecuencia cardiaca y establece relaciones entre esta y la actividad física.</p>
+
+            <p style="margin-top:6px;"><strong>Logros observados (marcar en azul):</strong></p>
+            <ul style="margin-left:16px; margin-top:2px;">
+              <li>Identifica qué es la frecuencia cardiaca.</li>
+              <li>Mide y registra su pulso en reposo y después de actividad física.</li>
+              <li>Compara sus datos y explica los cambios observados.</li>
+              <li>Propone al menos una acción para cuidar su corazón.</li>
+            </ul>
+
+            <p style="margin-top:6px;"><strong>Dificultades detectadas (marcar en rojo):</strong></p>
+            <ul style="margin-left:16px; margin-top:2px;">
+              <li>Presenta dificultades para medir el pulso.</li>
+              <li>Requiere apoyo para interpretar los cambios en la frecuencia cardiaca.</li>
+              <li>No relaciona la actividad física con el cuidado del sistema circulatorio.</li>
+            </ul>
+
+            <p style="margin-top:6px;"><strong>Observaciones de la maestra o maestro:</strong></p>
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+
+            <p style="margin-top:6px;"><strong>Compromisos de mejora del alumno(a):</strong></p>
+            <p>__________________________________________________________________________</p>
+            <p>__________________________________________________________________________</p>
+          </div>
+
+          <p class="no-imprimir" style="font-size:0.78rem; margin-top:4px;">
+            Usa los botones del panel derecho para imprimir solo la <strong>actividad</strong> o solo la
+            <strong>hoja de resultados</strong>.
+          </p>
+        </section>
+      </section>
+
+      <!-- COLUMNA DERECHA -->
+      <aside class="columna-derecha">
+        <div class="tarjeta-avatar-lado">
+          <img src="avatar_guia.png" alt="Avatar guía" />
+          <p>
+            <strong>Tip del guía:</strong><br />
+            Después de correr o jugar, pon tu mano en el pecho
+            y siente cómo late más rápido tu corazón.
+          </p>
+        </div>
+
+        <div class="tarjeta-acciones">
+          <h3>Impresiones rápidas</h3>
+          <button onclick="imprimirSeccion('actividad-impresa-p4')">
+            🖨️ Imprimir actividad para el alumno
+          </button>
+          <button class="secundario" onclick="imprimirSeccion('resultados-impresos-p4')">
+            🖨️ Imprimir hoja de resultados
+          </button>
+        </div>
+
+        <div class="tarjeta-notas">
+          <h3>Notas para el docente</h3>
+          <p style="font-size:0.75rem; margin-bottom:4px;">
+            Registra ajustes o acuerdos didácticos para futuras sesiones con este contenido.
+          </p>
+          <textarea placeholder="Ejemplo: usar cronómetro proyectado, realizar actividades de distinta intensidad y comparar registros del grupo."></textarea>
+        </div>
+      </aside>
+    </main>
+
+    <div class="copyright">
+      © 2025. Autor: Martín Reta (docente) en co-creación con ChatGPT (OpenAI).
+      Uso estrictamente educativo y sin fines de lucro.
+    </div>
+  </div>
+
+  <script>
+    // Cambio de pestañas
+    document.querySelectorAll(".tabs-menu button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const tabId = btn.getAttribute("data-tab");
+        document
+          .querySelectorAll(".tabs-menu button")
+          .forEach((b) => b.classList.remove("activo"));
+        btn.classList.add("activo");
+        document
+          .querySelectorAll(".tab-contenido")
+          .forEach((sec) => sec.classList.remove("activo"));
+        document.getElementById(tabId).classList.add("activo");
+      });
+    });
+
+    // Voz
+    function leerTexto(idElemento) {
+      const elemento = document.getElementById(idElemento);
+      if (!elemento) return;
+      const texto = elemento.innerText || elemento.textContent;
+      if (!("speechSynthesis" in window)) {
+        alert("Lo siento, tu navegador no soporta lectura en voz alta.");
+        return;
+      }
+      window.speechSynthesis.cancel();
+      const mensaje = new SpeechSynthesisUtterance(texto);
+      mensaje.lang = "es-MX";
+      const voces = window.speechSynthesis.getVoices();
+      const vozMasculina =
+        voces.find(
+          (v) =>
+            v.lang.startsWith("es") &&
+            (v.name.toLowerCase().includes("male") ||
+              v.name.toLowerCase().includes("hombre") ||
+              v.name.toLowerCase().includes("miguel") ||
+              v.name.toLowerCase().includes("diego"))
+        ) ||
+        voces.find((v) => v.lang.startsWith("es")) ||
+        null;
+      if (vozMasculina) {
+        mensaje.voice = vozMasculina;
+      }
+      window.speechSynthesis.speak(mensaje);
+    }
+    if ("speechSynthesis" in window) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+
+    // Cálculo de frecuencia cardiaca
+    function calcPulso(tipo) {
+      let valor30, campoMin;
+      const retro = document.getElementById("retro-pulso");
+      if (tipo === "reposo") {
+        valor30 = parseInt(document.getElementById("p4-reposo-30").value || "0", 10);
+        campoMin = document.getElementById("p4-reposo-min");
+      } else {
+        valor30 = parseInt(document.getElementById("p4-act-30").value || "0", 10);
+        campoMin = document.getElementById("p4-act-min");
+      }
+      if (!campoMin) return;
+      if (valor30 > 0) {
+        const resultado = valor30 * 2;
+        campoMin.value = resultado;
+      } else {
+        campoMin.value = "";
+      }
+
+      const reposo = parseInt(document.getElementById("p4-reposo-min").value || "0", 10);
+      const act = parseInt(document.getElementById("p4-act-min").value || "0", 10);
+      if (reposo > 0 && act > 0 && retro) {
+        if (act > reposo) {
+          retro.textContent = "Tu pulso es mayor después de la actividad física, lo cual es esperado.";
+          retro.className = "retroalimentacion retro-ok";
+        } else if (act === reposo) {
+          retro.textContent = "Tu pulso casi no cambió. Verifica si la actividad fue suficientemente intensa.";
+          retro.className = "retroalimentacion";
+        } else {
+          retro.textContent = "Tu pulso en reposo parece mayor que después de moverte. Revisa tus medidas.";
+          retro.className = "retroalimentacion retro-mal";
+        }
+      }
+    }
+
+    // Retroalimentación pregunta de opción múltiple
+    function revisarP4(valor) {
+      const retro = document.getElementById("retro-p4-mc");
+      if (!retro) return;
+      if (valor === "b") {
+        retro.textContent = "✔ Correcto: al hacer actividad física, el corazón late más rápido para llevar más oxígeno.";
+        retro.className = "retroalimentacion retro-ok";
+      } else {
+        retro.textContent = "✘ Revisa la lectura: el corazón no se detiene ni disminuye su trabajo cuando te mueves.";
+        retro.className = "retroalimentacion retro-mal";
+      }
+    }
+
+    // Impresión de secciones
+    function imprimirSeccion(idSeccion) {
+      const seccion = document.getElementById(idSeccion);
+      if (!seccion) return;
+      const ventana = window.open("", "_blank");
+      ventana.document.write("<html><head><title>Imprimir</title>");
+      ventana.document.write(
+        '<meta charset="UTF-8"><style>body{font-family:Segoe UI,system-ui,sans-serif;font-size:12px;padding:12px;} h4{text-align:center;margin-bottom:6px;} table{border-collapse:collapse;width:100%;} th,td{border:1px solid #999;padding:4px;} ul,ol{padding-left:18px;}</style>'
+      );
+      ventana.document.write("</head><body>");
+      ventana.document.write(seccion.innerHTML);
+      ventana.document.write("</body></html>");
+      ventana.document.close();
+      ventana.focus();
+      ventana.print();
+      ventana.close();
+    }
+  </script>
+</body>
+</html>

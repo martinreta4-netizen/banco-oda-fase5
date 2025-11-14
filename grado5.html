@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – 5.º Grado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --rojo:#dc2626;
+      --azul:#1d4ed8;
+      --azul-claro:#0ea5e9;
+      --bg:#f9fafb;
+    }
+    *{box-sizing:border-box;margin:0;padding:0;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;}
+    body{
+      min-height:100vh;
+      background:linear-gradient(180deg,#e0f2fe 0%,#fefce8 100%);
+      color:#111827;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:18px 10px 24px;
+    }
+    header{
+      width:100%;max-width:1000px;
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:10px;
+    }
+    header img{height:50px;object-fit:contain;}
+    .title{
+      text-align:center;
+      margin:6px 0 18px;
+    }
+    .title h1{font-size:1.4rem;color:#1d4ed8;margin-bottom:4px;}
+    .title p{font-size:.95rem;color:#4b5563;}
+    .back{
+      margin-bottom:10px;
+      font-size:.9rem;
+    }
+    .back a{color:#1d4ed8;text-decoration:none;}
+    .back a:hover{text-decoration:underline;}
+    .campo-buttons{
+      display:flex;flex-wrap:wrap;gap:10px;justify-content:center;
+      margin-bottom:18px;
+    }
+    .campo-btn{
+      border:none;
+      border-radius:14px;
+      padding:10px 18px;
+      font-size:.95rem;
+      cursor:pointer;
+      color:#f9fafb;
+      box-shadow:0 8px 18px rgba(15,23,42,.25);
+      transition:transform .15s, box-shadow .15s;
+    }
+    .campo-btn:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(15,23,42,.28);}
+    .rojo{background:var(--rojo);}
+    .azul{background:var(--azul);}
+    .azul-claro{background:var(--azul-claro);color:#0f172a;}
+    .panel{
+      width:100%;max-width:1000px;
+      background:#ffffffee;
+      border-radius:18px;
+      padding:16px 18px;
+      box-shadow:0 10px 30px rgba(15,23,42,.2);
+      display:none;
+    }
+    .panel.active{display:block;}
+    .panel h2{font-size:1.2rem;margin-bottom:6px;}
+    .panel p{font-size:.9rem;color:#4b5563;margin-bottom:10px;}
+    .content-btn{
+      border:none;
+      border-radius:999px;
+      padding:10px 18px;
+      margin:6px 0 10px;
+      font-size:.95rem;
+      cursor:pointer;
+      background:#0f172a;
+      color:#f9fafb;
+      box-shadow:0 8px 18px rgba(15,23,42,.25);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .content-btn span.icon{font-size:1.1rem;}
+    .oda-list{
+      display:none;
+      margin-top:10px;
+      padding-top:8px;
+      border-top:1px solid #e5e7eb;
+    }
+    .oda-list.active{display:flex;flex-wrap:wrap;gap:8px;}
+    .oda-link{
+      text-decoration:none;
+      padding:8px 12px;
+      border-radius:10px;
+      background:#f3f4f6;
+      color:#111827;
+      font-size:.88rem;
+      transition:background .15s;
+    }
+    .oda-link:hover{background:#e0f2fe;}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="back"><a href="index.html">← Regresar a la portada</a></div>
+    <img src="odas/escudo_escuela.png" alt="Escudo">
+  </header>
+
+  <div class="title">
+    <h1>5.º Grado – Portal de ODA</h1>
+    <p>Selecciona un <strong>campo formativo</strong> y luego el <strong>contenido</strong> para entrar a las ODA.</p>
+  </div>
+
+  <div class="campo-buttons">
+    <button class="campo-btn rojo" data-campo="leng">Lenguajes</button>
+    <button class="campo-btn azul" data-campo="spc">Saberes y Pensamiento Científico</button>
+    <button class="campo-btn azul-claro" data-campo="pmat">Pensamiento Matemático</button>
+  </div>
+
+  <!-- Lenguajes -->
+  <section id="panel-leng" class="panel">
+    <h2>Lenguajes – 5.º grado</h2>
+    <p>Contenido: <strong>Narración de sucesos autobiográficos.</strong></p>
+
+    <button class="content-btn" data-target="odas-leng">
+      <span class="icon">📖</span><span>Ver ODA del contenido</span>
+    </button>
+
+    <div id="odas-leng" class="oda-list">
+      <a class="oda-link" href="odas/oda_lenguajes5_autobiografias_lecturasPDA1.html" target="_blank">
+        PDA 1 – Lectura de autobiografías
+      </a>
+      <a class="oda-link" href="odas/oda_lenguajes5_autobiografia_sucesos_horizontal.html" target="_blank">
+        PDA 2 – Sucesos significativos
+      </a>
+      <a class="oda-link" href="odas/oda_lenguajes5_autobiografia_descripciones_horizontal.html" target="_blank">
+        PDA 3 – Descripciones
+      </a>
+      <a class="oda-link" href="odas/oda_lenguajes5_autobiografia_escritura_horizontal.html" target="_blank">
+        PDA 4 – Escritura de la autobiografía
+      </a>
+      <a class="oda-link" href="odas/oda_lenguajes5_autobiografia_sugerencias_horizontal.html" target="_blank">
+        PDA 5 – Revisión y sugerencias
+      </a>
+    </div>
+  </section>
+
+  <!-- SPC -->
+  <section id="panel-spc" class="panel">
+    <h2>Saberes y Pensamiento Científico – 5.º grado</h2>
+    <p>
+      Contenido: <strong>Estructura y funcionamiento del cuerpo humano: sistemas circulatorio, respiratorio e inmunológico,
+      y su relación con la salud ambiental, así como acciones para su cuidado.</strong>
+    </p>
+
+    <button class="content-btn" data-target="odas-spc">
+      <span class="icon">🧬</span><span>Ver ODA del contenido</span>
+    </button>
+
+    <div id="odas-spc" class="oda-list">
+      <a class="oda-link" href="odas/ODA-SPC-Sistema-Respiratorio-PDA1-5o.html" target="_blank">
+        PDA 1 – Sistema respiratorio
+      </a>
+      <a class="oda-link" href="odas/ODA-SPC-Sistema-Circulatorio-PDA2-5o.html" target="_blank">
+        PDA 2 – Sistema circulatorio
+      </a>
+      <a class="oda-link" href="odas/ODA-SPC-Sistema-Inmunologico-PDA3-5o.html" target="_blank">
+        PDA 3 – Sistema inmunológico
+      </a>
+      <a class="oda-link" href="odas/ODA-SPC-Frecuencia-Cardiaca-PDA4-5o.html" target="_blank">
+        PDA 4 – Frecuencia cardiaca
+      </a>
+      <a class="oda-link" href="odas/ODA-SPC-Riesgos-Salud-PDA5-5o.html" target="_blank">
+        PDA 5 – Riesgos y cuidado de la salud
+      </a>
+    </div>
+  </section>
+
+  <!-- Pensamiento Matemático -->
+  <section id="panel-pmat" class="panel">
+    <h2>Pensamiento Matemático – 5.º grado</h2>
+    <p>Contenido: <strong>El estudio de los números.</strong></p>
+
+    <button class="content-btn" data-target="odas-pmat">
+      <span class="icon">🔢</span><span>Ver ODA del contenido</span>
+    </button>
+
+    <div id="odas-pmat" class="oda-list">
+      <a class="oda-link" href="odas/oda_pmat_pda2_5o.html" target="_blank">
+        PDA 2 – Números naturales grandes
+      </a>
+      <a class="oda-link" href="odas/oda_pmat_pda3_5o_decimales.html" target="_blank">
+        PDA 3 – Números decimales
+      </a>
+      <a class="oda-link" href="odas/oda_pmat_pda4_5o_fracciones_equivalentes.html" target="_blank">
+        PDA 4 – Fracciones equivalentes
+      </a>
+      <a class="oda-link" href="odas/oda_pmat_pda5_5o_fracciones_decimales.html" target="_blank">
+        PDA 5 – Relación fracciones–decimales
+      </a>
+    </div>
+  </section>
+
+  <script>
+    // mostrar panel por campo
+    const buttonsCampo = document.querySelectorAll(".campo-btn");
+    const panels = {
+      leng: document.getElementById("panel-leng"),
+      spc: document.getElementById("panel-spc"),
+      pmat: document.getElementById("panel-pmat")
+    };
+    buttonsCampo.forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const campo = btn.dataset.campo;
+        Object.values(panels).forEach(p=>p.classList.remove("active"));
+        panels[campo].classList.add("active");
+        window.scrollTo({top:180,behavior:"smooth"});
+      });
+    });
+
+    // mostrar lista de ODA al hacer clic en el contenido
+    document.querySelectorAll(".content-btn").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const id = btn.dataset.target;
+        const lista = document.getElementById(id);
+        lista.classList.toggle("active");
+      });
+    });
+  </script>
+</body>
+</html>

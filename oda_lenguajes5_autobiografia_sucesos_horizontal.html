@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>ODA – Sucesos autobiográficos significativos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    :root{
+      --primary:#b91c1c;
+      --primary-soft:#fef2f2;
+      --accent:#fb923c;
+      --text:#111827;
+      --muted:#6b7280;
+      --border:#fecaca;
+      --card:#ffffff;
+      --shadow:0 16px 35px rgba(127,29,29,.18);
+    }
+    *{box-sizing:border-box;}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,"Segoe UI",sans-serif;
+      background:linear-gradient(180deg,#fff7ed 0,#fef2f2 40%,#f9fafb 100%);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      justify-content:center;
+      padding:14px 10px;
+      position:relative;
+    }
+    /* Escudo fijo abajo */
+    .school-logo-fixed{
+      position:fixed;
+      right:16px;
+      bottom:10px;
+      height:86px;
+      opacity:0.95;
+      z-index:5;
+      pointer-events:none;
+    }
+    .wrapper{
+      position:relative;
+      z-index:1;
+      width:100%;
+      max-width:1180px;
+      background:radial-gradient(circle at top left,#fee2e2 0,#ffffff 45%,#fef2f2 100%);
+      border-radius:26px;
+      box-shadow:var(--shadow);
+      padding:14px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      border:1px solid #fed7d7;
+    }
+    header{
+      display:grid;
+      grid-template-columns:auto minmax(0,2.4fr) auto;
+      gap:10px;
+      align-items:center;
+      padding-bottom:8px;
+      border-bottom:1px solid #fee2e2;
+    }
+    @media(max-width:900px){
+      header{
+        grid-template-columns:1fr;
+        text-align:center;
+      }
+      .header-logos{justify-content:center;}
+    }
+    .header-logos{
+      display:flex;
+      align-items:center;
+      gap:8px;
+    }
+    .header-logos img{
+      max-height:54px;
+      width:auto;
+      display:block;
+    }
+    .title-block h1{
+      margin:0;
+      font-size:1.22rem;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      flex-wrap:wrap;
+      color:#7f1d1d;
+    }
+    .title-block h1 .icon{
+      font-size:1.45rem;
+    }
+    .title-meta{
+      margin-top:3px;
+      font-size:.84rem;
+      color:var(--muted);
+    }
+    .phase-label{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      margin-top:3px;
+      font-size:.8rem;
+      font-weight:600;
+      color:#7f1d1d;
+      padding:2px 8px;
+      border-radius:999px;
+      background:#fee2e2;
+    }
+    .author-block{
+      font-size:.78rem;
+      color:#4b5563;
+      text-align:right;
+    }
+    @media(max-width:900px){
+      .author-block{text-align:center;}
+    }
+    .author-block strong{
+      display:block;
+      font-size:.86rem;
+      color:#111827;
+    }
+    .top-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .student-name{
+      display:flex;
+      flex-direction:column;
+      gap:4px;
+      font-size:.82rem;
+      background:#fff;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid #fecaca;
+    }
+    .student-name label{
+      font-weight:600;
+      color:#374151;
+    }
+    .student-name input{
+      border:none;
+      outline:none;
+      font-size:.9rem;
+      min-width:180px;
+    }
+    .avatar-row{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:5px 9px;
+      border:1px solid #fecaca;
+    }
+    .avatar-row img{
+      height:56px;
+      width:auto;
+      display:block;
+    }
+    .avatar-text{
+      font-size:.8rem;
+      color:#7f1d1d;
+    }
+    .btn-voice{
+      border-radius:999px;
+      border:none;
+      background:#b91c1c;
+      color:#fff;
+      padding:5px 10px;
+      font-size:.8rem;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      box-shadow:0 6px 18px rgba(127,29,29,.4);
+    }
+    .btn-voice span{
+      font-size:1rem;
+    }
+    .ejes-row{
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+      margin-top:4px;
+      font-size:.75rem;
+    }
+    .chip{
+      border-radius:999px;
+      padding:2px 9px;
+      border:1px solid #fed7d7;
+      background:#fff1f2;
+      color:#b91c1c;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip .dot{
+      width:8px;
+      height:8px;
+      border-radius:50%;
+      background:#b91c1c;
+    }
+    /* Horizontal steps */
+    .steps-bar{
+      margin-top:4px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      background:#fee2e2;
+      border-radius:999px;
+      padding:6px;
+      border:1px solid #fecaca;
+    }
+    .step-tab{
+      flex:1 1 140px;
+      border-radius:999px;
+      border:1px solid transparent;
+      padding:5px 10px;
+      font-size:.82rem;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:6px;
+      cursor:pointer;
+      color:#7f1d1d;
+      background:#fff;
+      transition:.2s ease;
+    }
+    .step-left{
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .step-circle{
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      border:2px solid #fecaca;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:.78rem;
+      font-weight:600;
+      background:#fff5f5;
+    }
+    .step-label-main{
+      font-weight:600;
+    }
+    .step-label-sub{
+      font-size:.74rem;
+      color:#9f1239;
+    }
+    .step-tab.active{
+      background:linear-gradient(90deg,#b91c1c,#f97316);
+      border-color:#b91c1c;
+      color:#fff;
+      box-shadow:0 10px 22px rgba(185,28,28,.45);
+    }
+    .step-tab.active .step-circle{
+      background:#fff;
+      border-color:#fee2e2;
+      color:#b91c1c;
+    }
+    .step-icon-right{
+      font-size:.95rem;
+    }
+    main{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      margin-top:6px;
+    }
+    .card{
+      background:var(--card);
+      border-radius:18px;
+      border:1px solid var(--border);
+      padding:10px 11px;
+    }
+    .card h2{
+      margin:0 0 4px;
+      font-size:.98rem;
+      color:#7f1d1d;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+    .card h2 .icon{
+      font-size:1.1rem;
+    }
+    .card p{
+      font-size:.86rem;
+      color:#374151;
+      margin:.15rem 0;
+    }
+    .two-col{
+      display:grid;
+      grid-template-columns:minmax(0,1.5fr) minmax(0,1.1fr);
+      gap:10px;
+    }
+    @media(max-width:900px){
+      .two-col{grid-template-columns:1fr;}
+    }
+    .example-box{
+      border-radius:14px;
+      padding:8px 10px;
+      background:#fff7ed;
+      border:1px solid #fed7aa;
+      font-size:.84rem;
+      color:#7c2d12;
+    }
+    .example-label{
+      font-size:.78rem;
+      font-weight:600;
+      text-transform:uppercase;
+      letter-spacing:.04em;
+      color:#c2410c;
+      margin-bottom:3px;
+    }
+    .list{
+      margin:4px 0 0;
+      padding-left:18px;
+      font-size:.85rem;
+    }
+    .list li{margin-bottom:3px;}
+    .status-tag{
+      display:inline-flex;
+      align-items:center;
+      gap:4px;
+      border-radius:999px;
+      padding:2px 7px;
+      font-size:.75rem;
+      margin-top:4px;
+    }
+    .ok{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;}
+    .warn{background:#fef2f2;color:#b91c1c;border:1px solid #fecaca;}
+    textarea,input[type="text"],select{
+      width:100%;
+      border-radius:10px;
+      border:1px solid #e5e7eb;
+      padding:5px 7px;
+      font-family:inherit;
+      font-size:.86rem;
+      resize:vertical;
+    }
+    textarea{min-height:80px;}
+    .mini-title{
+      font-weight:600;
+      font-size:.86rem;
+      color:#7f1d1d;
+      margin-top:4px;
+    }
+    .moments-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+      gap:8px;
+      margin-top:4px;
+    }
+    .moment-card{
+      border-radius:12px;
+      padding:6px 7px;
+      background:#fef2f2;
+      border:1px solid #fecaca;
+      font-size:.82rem;
+    }
+    .moment-card label{
+      font-size:.78rem;
+      font-weight:600;
+      color:#7f1d1d;
+    }
+    .btn-row{
+      margin-top:6px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    .btn{
+      border-radius:999px;
+      border:none;
+      font-size:.8rem;
+      padding:6px 10px;
+      cursor:pointer;
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-weight:600;
+    }
+    .btn-primary{
+      background:var(--primary);
+      color:#fff;
+    }
+    .btn-secondary{
+      background:#f3f4f6;
+      color:#111827;
+    }
+    .btn-outline{
+      background:#fff;
+      color:#b91c1c;
+      border:1px solid #fecaca;
+    }
+    .step-panel{display:none;font-size:.86rem;}
+    .step-panel.active{display:block;}
+    .vf-row{
+      margin-top:4px;
+      padding:6px 7px;
+      border-radius:10px;
+      background:#f9fafb;
+      border:1px solid #e5e7eb;
+      font-size:.84rem;
+    }
+    .vf-row label{margin-right:8px;}
+    .order-table{
+      width:100%;
+      border-collapse:collapse;
+      font-size:.84rem;
+      margin-top:4px;
+    }
+    .order-table th,.order-table td{
+      border:1px solid #e5e7eb;
+      padding:4px 6px;
+      text-align:left;
+    }
+    .order-table th{
+      background:#fef2f2;
+      color:#7f1d1d;
+    }
+    .result-bad{color:#b91c1c;font-weight:600;}
+    .result-good{color:#166534;font-weight:600;}
+    .results-card{
+      font-size:.84rem;
+    }
+    footer{
+      margin-top:4px;
+      padding-top:7px;
+      border-top:1px solid #fee2e2;
+      font-size:.78rem;
+      color:#6b7280;
+      display:flex;
+      justify-content:space-between;
+      flex-wrap:wrap;
+      gap:6px;
+    }
+    footer .project{
+      font-style:italic;
+      color:#4b5563;
+    }
+    @media print{
+      body{
+        background:#ffffff;
+        padding:0;
+      }
+      .school-logo-fixed{position:fixed;right:8px;bottom:8px;height:60px;}
+      .btn-row,.steps-bar,.avatar-row,.ejes-row{display:none!important;}
+      .wrapper{
+        box-shadow:none;
+        border:none;
+        border-radius:0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <img src="escudo_escuela.png" alt="Escudo escuela" class="school-logo-fixed">
+  <div class="wrapper">
+    <header>
+      <div class="header-logos">
+        <img src="sep_logo.png" alt="Secretaría de Educación Pública">
+      </div>
+      <div class="title-block">
+        <h1>
+          <span class="icon">🧠</span>
+          <span>ODA – Sucesos autobiográficos significativos</span>
+        </h1>
+        <div class="title-meta">
+          Contenido: <strong>Narración de sucesos autobiográficos.</strong><br>
+          PDA: <strong>Determina los sucesos autobiográficos que desea narrar y los organiza lógicamente, resaltando los aspectos más significativos.</strong><br>
+          <span class="phase-label">Lenguajes · Fase 5</span>
+        </div>
+      </div>
+      <div class="author-block">
+        <strong>Autor: Mtro. Martín Reta</strong>
+        Escuela Primaria “Gral. Lázaro Cárdenas”<br>
+        Ejido Santa María, Pesquería, N.L.
+      </div>
+    </header>
+
+    <div class="top-row">
+      <div class="student-name">
+        <label for="studentName">Nombre del alumno(a):</label>
+        <input type="text" id="studentName" placeholder="Escribe tu nombre aquí">
+      </div>
+      <div class="avatar-row">
+        <img src="avatar_guia.png" alt="Avatar del Mtro. Martín Reta">
+        <div class="avatar-text">
+          <strong>Hola, soy el maestro Martín.</strong><br>
+          Hoy te ayudaré a elegir y ordenar los momentos más importantes de tu vida para tu autobiografía.
+        </div>
+        <button class="btn-voice" type="button" onclick="playGuide()">
+          <span>🔊</span> Escuchar instrucciones
+        </button>
+      </div>
+    </div>
+
+    <div class="ejes-row">
+      <span class="chip"><span class="dot"></span>Inclusión</span>
+      <span class="chip"><span class="dot"></span>Interculturalidad crítica</span>
+      <span class="chip"><span class="dot"></span>Pensamiento crítico</span>
+      <span class="chip"><span class="dot"></span>Lenguajes para la vida</span>
+    </div>
+
+    <div class="steps-bar">
+      <button class="step-tab active" data-step="1" onclick="setStep(1)">
+        <div class="step-left">
+          <div class="step-circle">1</div>
+          <div>
+            <div class="step-label-main">Identifico sucesos</div>
+            <div class="step-label-sub">¿Qué vale la pena contar?</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="2" onclick="setStep(2)">
+        <div class="step-left">
+          <div class="step-circle">2</div>
+          <div>
+            <div class="step-label-main">Ordeno una historia</div>
+            <div class="step-label-sub">Inicio, desarrollo y cierre</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="3" onclick="setStep(3)">
+        <div class="step-left">
+          <div class="step-circle">3</div>
+          <div>
+            <div class="step-label-main">Mis momentos clave</div>
+            <div class="step-label-sub">De mi vida real</div>
+          </div>
+        </div>
+        <span class="step-icon-right">➜</span>
+      </button>
+      <button class="step-tab" data-step="4" onclick="setStep(4)">
+        <div class="step-left">
+          <div class="step-circle">4</div>
+          <div>
+            <div class="step-label-main">Borrador de índice</div>
+            <div class="step-label-sub">Lista ordenada para escribir</div>
+          </div>
+        </div>
+        <span class="step-icon-right">✓</span>
+      </button>
+    </div>
+
+    <main>
+      <!-- PASO 1 -->
+      <section class="card step-panel active" id="step-1">
+        <h2><span class="icon">🔍</span><span>Paso 1. ¿Qué es un suceso autobiográfico significativo?</span></h2>
+        <div class="two-col">
+          <div>
+            <p>Un <strong>suceso autobiográfico</strong> es un momento real de tu vida que recuerdas con claridad y que te marcó de alguna forma: te enseñó algo, te hizo cambiar, te hizo muy feliz o te puso a pensar.</p>
+            <p>No todos los días son igual de importantes. Cuando escribes tu autobiografía, <strong>eliges sólo algunos sucesos</strong> para contar una historia interesante y clara.</p>
+            <ul class="list">
+              <li><strong>Significativo</strong> = dejó una huella en ti.</li>
+              <li><strong>Claro</strong> = puedes recordar qué pasó antes, durante y después.</li>
+              <li><strong>Compartible</strong> = vale la pena contarlo a otras personas.</li>
+            </ul>
+            <div class="status-tag ok">💡 Sugerencia: piensa en “primeras veces”, cambios importantes, retos superados o momentos muy felices o tristes.</div>
+          </div>
+          <div>
+            <div class="example-box">
+              <div class="example-label">Actividad 1 · ¿Es un buen suceso para mi autobiografía?</div>
+              <p>Marca <strong>V</strong> si crees que es un buen suceso significativo, o <strong>F</strong> si no lo es tanto.</p>
+              <div class="vf-row">
+                <p>a) El día que aprendí a andar en bici sin rueditas.</p>
+                <label><input type="radio" name="vf1" value="V"> V</label>
+                <label><input type="radio" name="vf1" value="F"> F</label>
+              </div>
+              <div class="vf-row">
+                <p>b) El día que desayuné lo mismo de siempre.</p>
+                <label><input type="radio" name="vf2" value="V"> V</label>
+                <label><input type="radio" name="vf2" value="F"> F</label>
+              </div>
+              <div class="vf-row">
+                <p>c) Cuando cambié de escuela y conocí a mis nuevos compañeros.</p>
+                <label><input type="radio" name="vf3" value="V"> V</label>
+                <label><input type="radio" name="vf3" value="F"> F</label>
+              </div>
+              <div class="btn-row">
+                <button class="btn btn-primary" type="button" onclick="checkVF()">Comprobar</button>
+              </div>
+              <div id="vfFeedback" class="status-tag warn" style="display:none;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PASO 2 -->
+      <section class="card step-panel" id="step-2">
+        <h2><span class="icon">📚</span><span>Paso 2. Ordeno los sucesos de otra persona</span></h2>
+        <p>Observa estos sucesos de la vida de Leo. Están desordenados. Escribe en la columna <strong>“Orden”</strong> el número que les corresponde (1 = primero, 5 = último).</p>
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Orden</th>
+              <th>Suceso en la vida de Leo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="number" id="ord1" min="1" max="5"></td>
+              <td>A. Leo jugó su primer partido como portero en el equipo de la escuela.</td>
+            </tr>
+            <tr>
+              <td><input type="number" id="ord2" min="1" max="5"></td>
+              <td>B. Leo se cayó aprendiendo a andar en bicicleta y se raspó las rodillas.</td>
+            </tr>
+            <tr>
+              <td><input type="number" id="ord3" min="1" max="5"></td>
+              <td>C. Leo conoció a su mejor amigo en el parque de su colonia.</td>
+            </tr>
+            <tr>
+              <td><input type="number" id="ord4" min="1" max="5"></td>
+              <td>D. Leo entró por primera vez a la primaria y se despidió de su mamá en la puerta.</td>
+            </tr>
+            <tr>
+              <td><input type="number" id="ord5" min="1" max="5"></td>
+              <td>E. Leo ganó un reconocimiento por ser un buen compañero.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="mini-title">Piensa: ¿qué suceso podría ir en el <strong>inicio</strong> de su autobiografía? ¿Cuál sería un buen <strong>cierre</strong>?</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="checkOrder()">Comprobar orden</button>
+          <button class="btn btn-secondary" type="button" onclick="fillExampleOrder()">Llenar ejemplo</button>
+        </div>
+        <div id="orderFeedback" class="results-card" style="margin-top:6px;"></div>
+      </section>
+
+      <!-- PASO 3 -->
+      <section class="card step-panel" id="step-3">
+        <h2><span class="icon">✍️</span><span>Paso 3. Mis momentos importantes</span></h2>
+        <p>Ahora piensa en <strong>tus propios sucesos autobiográficos</strong>. Escribe hasta cinco momentos que hayan sido importantes en tu vida. No tienen que ser perfectos, sólo claros.</p>
+        <div class="moments-grid">
+          <div class="moment-card">
+            <label for="mom1">Momento 1:</label>
+            <textarea id="mom1" placeholder="Ejemplo: El día que llegué por primera vez a esta escuela."></textarea>
+          </div>
+          <div class="moment-card">
+            <label for="mom2">Momento 2:</label>
+            <textarea id="mom2"></textarea>
+          </div>
+          <div class="moment-card">
+            <label for="mom3">Momento 3:</label>
+            <textarea id="mom3"></textarea>
+          </div>
+          <div class="moment-card">
+            <label for="mom4">Momento 4:</label>
+            <textarea id="mom4"></textarea>
+          </div>
+          <div class="moment-card">
+            <label for="mom5">Momento 5:</label>
+            <textarea id="mom5"></textarea>
+          </div>
+        </div>
+        <p class="mini-title">De todos tus momentos, elige cuál te parece <strong>más significativo</strong> para tu autobiografía.</p>
+        <div class="vf-row">
+          <label><input type="radio" name="momSel" value="1"> Momento 1</label>
+          <label><input type="radio" name="momSel" value="2"> Momento 2</label>
+          <label><input type="radio" name="momSel" value="3"> Momento 3</label>
+          <label><input type="radio" name="momSel" value="4"> Momento 4</label>
+          <label><input type="radio" name="momSel" value="5"> Momento 5</label>
+        </div>
+        <p class="mini-title">Explica por qué lo consideras significativo:</p>
+        <textarea id="momExplain" placeholder="Porque cambió algo en mi vida, aprendí algo importante, conocí a alguien, superé un miedo, etc."></textarea>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="prepareIndex()">Pasar al borrador de índice</button>
+        </div>
+      </section>
+
+      <!-- PASO 4 -->
+      <section class="card step-panel" id="step-4">
+        <h2><span class="icon">📑</span><span>Paso 4. Borrador de índice para mi autobiografía</span></h2>
+        <p>Observa los momentos que escribiste y ordénalos de manera lógica. Piensa: ¿con qué suceso quieres <strong>comenzar</strong>? ¿Cuál podría ser el <strong>cierre</strong> de tu historia?</p>
+        <table class="order-table">
+          <thead>
+            <tr>
+              <th>Orden en mi historia</th>
+              <th>Suceso autobiográfico</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Inicio (1)</td>
+              <td><input type="text" id="idx1" placeholder="Escribe aquí el suceso con el que iniciarás."></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><input type="text" id="idx2"></td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><input type="text" id="idx3"></td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><input type="text" id="idx4"></td>
+            </tr>
+            <tr>
+              <td>Cierre (5)</td>
+              <td><input type="text" id="idx5" placeholder="Un buen suceso para cerrar tu historia."></td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="mini-title">Este puede ser el <strong>índice de capítulos</strong> de tu futura autobiografía.</p>
+        <div class="btn-row">
+          <button class="btn btn-primary" type="button" onclick="generateResults()">Generar hoja de resultados</button>
+          <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir actividad</button>
+        </div>
+        <div id="resultsPanel" class="card results-card" style="margin-top:8px;display:none;">
+          <h2><span class="icon">📄</span><span>Hoja de resultados</span></h2>
+          <p><strong>Alumno(a):</strong> <span id="resName"></span></p>
+          <p><strong>Logros en azul</strong y <strong>aspectos por mejorar en rojo</strong>:</p>
+          <ul class="list">
+            <li><span id="resVF"></span></li>
+            <li><span id="resOrder"></span></li>
+            <li><span id="resMoments"></span></li>
+          </ul>
+          <p><strong>Comentario del maestro Martín:</strong></p>
+          <p id="resComment"></p>
+          <div class="btn-row">
+            <button class="btn btn-outline" type="button" onclick="window.print()">🖨️ Imprimir resultados</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <span class="project">Proyecto: “Mi historia, mi voz, mi camino”</span>
+      <span>Campo formativo: Lenguajes · Fase 5</span>
+    </footer>
+  </div>
+
+  <script>
+    function setStep(n){
+      document.querySelectorAll('.step-tab').forEach(btn=>{
+        btn.classList.toggle('active', Number(btn.dataset.step)===n);
+      });
+      document.querySelectorAll('.step-panel').forEach((p,idx)=>{
+        p.classList.toggle('active', idx===n-1);
+      });
+    }
+
+    function playGuide(){
+      try{
+        const msg=new SpeechSynthesisUtterance(
+          'Bienvenido a esta ODA. Hoy elegirás los momentos más importantes de tu vida y los ordenarás para poder escribir tu autobiografía.'
+        );
+        msg.lang='es-MX';
+        msg.rate=1;
+        msg.pitch=1;
+        window.speechSynthesis.cancel();
+        window.speechSynthesis.speak(msg);
+      }catch(e){
+        console.error(e);
+      }
+    }
+
+    function checkVF(){
+      const a=document.querySelector('input[name="vf1"]:checked');
+      const b=document.querySelector('input[name="vf2"]:checked');
+      const c=document.querySelector('input[name="vf3"]:checked');
+      let correct=0;
+      if(a && a.value==='V') correct++;
+      if(b && b.value==='F') correct++;
+      if(c && c.value==='V') correct++;
+      const fb=document.getElementById('vfFeedback');
+      fb.style.display='inline-flex';
+      if(correct===3){
+        fb.textContent='✅ Muy bien. Reconoces qué sucesos son más significativos para contarlos en una autobiografía.';
+      }else{
+        fb.textContent='🔁 Sigue practicando. Recuerda: elegimos momentos que nos marcaron, no cosas de todos los días.';
+      }
+    }
+
+    function checkOrder(){
+      const expected=[2,4,3,1,5]; // B, D, C, A, E en orden cronológico
+      const inputs=[
+        document.getElementById('ord1'),
+        document.getElementById('ord2'),
+        document.getElementById('ord3'),
+        document.getElementById('ord4'),
+        document.getElementById('ord5')
+      ];
+      let filled=true;
+      let good=true;
+      inputs.forEach((inp,idx)=>{
+        const val=parseInt(inp.value,10);
+        if(isNaN(val)){filled=false;}
+        if(val!==expected[idx]){good=false;}
+      });
+      const fb=document.getElementById('orderFeedback');
+      if(!filled){
+        fb.innerHTML='<span class="result-bad">Completa todos los espacios con un número del 1 al 5.</span>';
+        return;
+      }
+      if(good){
+        fb.innerHTML='<span class="result-good">✔ Excelente. Ordenaste lógicamente los sucesos de la vida de Leo.</span>';
+      }else{
+        fb.innerHTML='<span class="result-bad">Revisa de nuevo. Piensa qué suceso pudo ocurrir antes y cuál podría ser un buen final.</span>';
+      }
+    }
+
+    function fillExampleOrder(){
+      document.getElementById('ord1').value=2;
+      document.getElementById('ord2').value=4;
+      document.getElementById('ord3').value=3;
+      document.getElementById('ord4').value=1;
+      document.getElementById('ord5').value=5;
+      checkOrder();
+    }
+
+    function prepareIndex(){
+      const moms=[
+        document.getElementById('mom1').value.trim(),
+        document.getElementById('mom2').value.trim(),
+        document.getElementById('mom3').value.trim(),
+        document.getElementById('mom4').value.trim(),
+        document.getElementById('mom5').value.trim()
+      ].filter(t=>t.length>0);
+      if(moms.length===0){
+        alert('Escribe al menos un momento importante para continuar.');
+        return;
+      }
+      // Colocar los primeros cinco en el índice en el mismo orden
+      document.getElementById('idx1').value=moms[0] || '';
+      document.getElementById('idx2').value=moms[1] || '';
+      document.getElementById('idx3').value=moms[2] || '';
+      document.getElementById('idx4').value=moms[3] || '';
+      document.getElementById('idx5').value=moms[4] || moms[moms.length-1] || '';
+      setStep(4);
+    }
+
+    function generateResults(){
+      const name=document.getElementById('studentName').value || 'Sin nombre';
+      const vf1=document.querySelector('input[name="vf1"]:checked');
+      const vf2=document.querySelector('input[name="vf2"]:checked');
+      const vf3=document.querySelector('input[name="vf3"]:checked');
+      let vfOk = vf1 && vf1.value==='V' && vf2 && vf2.value==='F' && vf3 && vf3.value==='V';
+
+      const ord1=parseInt(document.getElementById('ord1').value,10);
+      const ord2=parseInt(document.getElementById('ord2').value,10);
+      const ord3=parseInt(document.getElementById('ord3').value,10);
+      const ord4=parseInt(document.getElementById('ord4').value,10);
+      const ord5=parseInt(document.getElementById('ord5').value,10);
+      const expected=[2,4,3,1,5];
+      let ordFilled = ![ord1,ord2,ord3,ord4,ord5].some(v=>isNaN(v));
+      let ordOk = ordFilled && ord1===expected[0] && ord2===expected[1] && ord3===expected[2] && ord4===expected[3] && ord5===expected[4];
+
+      const momsFilled=[
+        document.getElementById('mom1').value.trim(),
+        document.getElementById('mom2').value.trim(),
+        document.getElementById('mom3').value.trim(),
+        document.getElementById('mom4').value.trim(),
+        document.getElementById('mom5').value.trim()
+      ].filter(t=>t.length>0).length>=2;
+      const momSel=document.querySelector('input[name="momSel"]:checked');
+      const momExplain=document.getElementById('momExplain').value.trim().length>=15;
+
+      document.getElementById('resName').textContent=name;
+
+      const resVF=document.getElementById('resVF');
+      resVF.innerHTML = vfOk
+        ? '<span style="color:#1d4ed8;">Has identificado correctamente qué sucesos son más significativos para contar.</span>'
+        : '<span style="color:#b91c1c;">Necesitas reforzar la diferencia entre momentos importantes y sucesos cotidianos.</span>';
+
+      const resOrder=document.getElementById('resOrder');
+      resOrder.innerHTML = ordOk
+        ? '<span style="color:#1d4ed8;">Ordenaste lógicamente los sucesos de otra persona (inicio, desarrollo y cierre).</span>'
+        : '<span style="color:#b91c1c;">Aún te cuesta ordenar sucesos; vuelve a pensar qué pasó primero y qué podría ir al final.</span>';
+
+      const resMoments=document.getElementById('resMoments');
+      const momentsOk = momsFilled && momSel && momExplain;
+      resMoments.innerHTML = momentsOk
+        ? '<span style="color:#1d4ed8;">Elegiste y justificaste momentos importantes de tu propia vida para tu futura autobiografía.</span>'
+        : '<span style="color:#b91c1c;">Necesitas completar tus momentos importantes y explicar por qué uno de ellos es significativo.</span>';
+
+      const resComment=document.getElementById('resComment');
+      const score = (vfOk?1:0)+(ordOk?1:0)+(momentsOk?1:0);
+      if(score===3){
+        resComment.textContent='¡Excelente trabajo! Ya puedes empezar a escribir tu autobiografía con una lista clara de sucesos importantes.';
+      }else if(score===2){
+        resComment.textContent='Vas por muy buen camino. Refuerza el punto marcado en rojo y volverás a intentarlo con más seguridad.';
+      }else{
+        resComment.textContent='No te desanimes. Relee las consignas, pide apoyo si lo necesitas y vuelve a intentar seleccionar y ordenar tus sucesos.';
+      }
+
+      document.getElementById('resultsPanel').style.display='block';
+      setStep(4);
+      document.getElementById('resultsPanel').scrollIntoView({behavior:'smooth'});
+    }
+  </script>
+</body>
+</html>
